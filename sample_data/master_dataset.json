@@ -1,0 +1,240 @@
+[
+    {
+        "id": "friends_pivot-Scene-001",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-001.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-001.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-001.jpg"
+        },
+        "features": {
+            "text": "Oh, I just don't think it's gonna fit. Oh, yeah, we'll come on up. Up, up, up. Up. Yes, oh, oh. Here we go, pivot. pivot. pivot.",
+            "ocr": "No text found on screen",
+            "emoji": "😠"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-002",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-002.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-002.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-002.jpg"
+        },
+        "features": {
+            "text": "K-VAT! K-VAT! K-VAT!",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-003",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-003.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-003.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-003.jpg"
+        },
+        "features": {
+            "text": "小子 小子 小子",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-004",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-004.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-004.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-004.jpg"
+        },
+        "features": {
+            "text": "",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-005",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-005.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-005.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-005.jpg"
+        },
+        "features": {
+            "text": "Okay, I don't think it's gonna pivot anymore.",
+            "ocr": "No text found on screen",
+            "emoji": "😠"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-006",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-006.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-006.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-006.jpg"
+        },
+        "features": {
+            "text": "You think?",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-007",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-007.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-007.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-007.jpg"
+        },
+        "features": {
+            "text": "All right, let's bring it back down and try again.",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-008",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-008.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-008.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-008.jpg"
+        },
+        "features": {
+            "text": "Oh",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-009",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-009.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-009.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-009.jpg"
+        },
+        "features": {
+            "text": "",
+            "ocr": "FRE Hola",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-010",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-010.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-010.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-010.jpg"
+        },
+        "features": {
+            "text": "Oh",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-011",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-011.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-011.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-011.jpg"
+        },
+        "features": {
+            "text": "Okay, yeah, I need to really stop now.",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-012",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-012.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-012.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-012.jpg"
+        },
+        "features": {
+            "text": "I can't believe that didn't work.",
+            "ocr": "No text found on screen",
+            "emoji": "🤷"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-013",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-013.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-013.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-013.jpg"
+        },
+        "features": {
+            "text": "I know, I mean either. I mean, I have a sketch.",
+            "ocr": "FTRE Ee",
+            "emoji": "🤷"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-014",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-014.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-014.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-014.jpg"
+        },
+        "features": {
+            "text": "",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-015",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-015.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-015.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-015.jpg"
+        },
+        "features": {
+            "text": "Okay, now what do you mean when you say pivot?",
+            "ocr": "No text found on screen",
+            "emoji": "😠"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-016",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-016.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-016.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-016.jpg"
+        },
+        "features": {
+            "text": "",
+            "ocr": "FR.ie N P s AVAILABLE ON You ube",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    },
+    {
+        "id": "friends_pivot-Scene-017",
+        "modality_paths": {
+            "video_source": "dataset_clips\\friends_pivot-Scene-017.mp4",
+            "audio_source": "dataset_clips\\friends_pivot-Scene-017.wav",
+            "image_source": "dataset_clips\\friends_pivot-Scene-017.jpg"
+        },
+        "features": {
+            "text": "",
+            "ocr": "No text found on screen",
+            "emoji": "😐"
+        },
+        "label_humor": 1
+    }
+]

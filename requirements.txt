@@ -1,0 +1,5 @@
+yt-dlp==2023.12.30
+scenedetect[opencv]==0.7.1
+openai-whisper==20231117
+easyocr==1.7.1
+googletrans==4.0.0-rc1

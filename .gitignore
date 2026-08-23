@@ -1,0 +1,11 @@
+# Ignore large video datasets
+dataset_clips/
+*.mp4
+*.wav
+*.jpg
+
+# Allow the specific sample data folder
+!sample_data/
+
+# Python cache
+__pycache__/
