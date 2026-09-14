@@ -1,73 +1,700 @@
+import multiprocessing
 import os
-import subprocess
 import json
-import easyocr
+import subprocess
+import queue
+
 from faster_whisper import WhisperModel
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
-print("Loading Faster-Whisper AI... (Highly Optimized Audio to Text)")
-# Using 'tiny' size with INT8 quantization for maximum CPU speed
-model = WhisperModel("tiny", device="cpu", compute_type="int8")
 
-print("Loading EasyOCR... (Image to Text)")
-reader = easyocr.Reader(['en'], gpu=False) 
+SAMPLE_DIR = "sample_clips"
+OUTPUT_NAME = "dataset.json"
+WHISPER_MODEL = "tiny"
 
-CLIP_DIR = "dataset_clips"
-DATA_JSON = []
+whisper = None
 
-def get_emoji_from_text(text):
-    text_lower = text.lower()
-    if "pivot" in text_lower or "stuck" in text_lower: return "😠" 
-    elif "work" in text_lower or "sketch" in text_lower: return "🤷" 
-    elif "oh yeah" in text_lower or "yes" in text_lower: return "😂" 
-    elif "neither" in text_lower or "know" in text_lower: return "🙄" 
-    else: return "😐"
 
-def process_clip(filename):
-    base_name = filename.replace(".mp4", "")
-    video_path = os.path.join(CLIP_DIR, filename)
-    audio_path = os.path.join(CLIP_DIR, f"{base_name}.wav")
-    image_path = os.path.join(CLIP_DIR, f"{base_name}.jpg")
-    
-    # 1 & 2. Extract Audio and Image
-    subprocess.run(["ffmpeg", "-y", "-i", video_path, "-q:a", "0", "-map", "a", audio_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    subprocess.run(["ffmpeg", "-y", "-i", video_path, "-vf", r"select='eq(n\,0)'", "-vframes", "1", image_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+def run_ffmpeg(command):
+    result = subprocess.run(
+        command,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+        text=True
+    )
+    return result.returncode == 0
 
-    # 3. Transcribe with Faster-Whisper
-    try:
-        segments, info = model.transcribe(audio_path, beam_size=5)
-        transcript = " ".join([segment.text for segment in segments]).strip()
-    except Exception as e:
-        transcript = f"Transcription failed: {e}"
 
-    # 4. Read OCR
-    try:
-        ocr_results = reader.readtext(image_path, detail=0) 
-        ocr_text = " ".join(ocr_results) if ocr_results else "No text found on screen"
-    except Exception as e:
-        ocr_text = f"OCR failed: {e}"
+def extract_audio(video_path, audio_path, start, duration):
+    success = run_ffmpeg([
+        "ffmpeg",
+        "-y",
+        "-ss",
+        str(start),
+        "-i",
+        video_path,
+        "-t",
+        str(duration),
+        "-vn",
+        "-acodec",
+        "pcm_s16le",
+        audio_path
+    ])
 
-    # 5. Build JSON Object
-    emoji = get_emoji_from_text(transcript)
-    print(f"Finished {base_name}: {transcript[:40]}... [{emoji}]")
-    
+    if not success or not os.path.exists(audio_path):
+        return {
+            "status": "failed",
+            "path": ""
+        }
+
     return {
-        "id": base_name,
-        "modality_paths": {"video_source": video_path, "audio_source": audio_path, "image_source": image_path},
-        "features": {"text": transcript, "ocr": ocr_text, "emoji": emoji},
-        "label_humor": 1 
+        "status": "success",
+        "path": audio_path
     }
 
-if __name__ == "__main__":
-    video_files = [f for f in os.listdir(CLIP_DIR) if f.endswith(".mp4")]
-    print(f"\n🚀 Starting multiprocessing pipeline for {len(video_files)} clips...")
-    
-    # Process 4 clips simultaneously to max out CPU
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = {executor.submit(process_clip, vf): vf for vf in video_files}
-        for future in as_completed(futures):
-            DATA_JSON.append(future.result())
 
-    with open("master_dataset.json", "w", encoding='utf-8') as f:
-        json.dump(DATA_JSON, f, indent=4, ensure_ascii=False)
-    print("\n✅ Ultimate 5-Modality Blueprint Complete! Check master_dataset.json")
+def extract_image(video_path, image_path, start, duration):
+    representative_time = duration / 2
+
+    success = run_ffmpeg([
+        "ffmpeg",
+        "-y",
+        "-ss",
+        str(start + representative_time),
+        "-i",
+        video_path,
+        "-frames:v",
+        "1",
+        image_path
+    ])
+
+    if not success or not os.path.exists(image_path):
+        return {
+            "status": "failed",
+            "path": ""
+        }
+
+    return {
+        "status": "success",
+        "path": image_path
+    }
+
+
+def transcribe(audio_path):
+    try:
+        segments, _ = whisper.transcribe(
+            audio_path,
+            beam_size=5
+        )
+
+        text = " ".join(
+            segment.text.strip()
+            for segment in segments
+        ).strip()
+
+        if not text:
+            return {
+                "status": "empty",
+                "value": ""
+            }
+
+        return {
+            "status": "success",
+            "value": text
+        }
+
+    except Exception as e:
+        print(f"Whisper failed: {e}")
+
+        return {
+            "status": "failed",
+            "value": ""
+        }
+
+
+def ocr_worker(request_queue, response_queue):
+    import easyocr
+
+    print("OCR worker: loading EasyOCR...")
+
+    reader = easyocr.Reader(
+        ["en"],
+        gpu=False
+    )
+
+    print("OCR worker: ready.")
+
+    while True:
+        request = request_queue.get()
+
+        if request is None:
+            break
+
+        sample_id, image_path = request
+
+        try:
+            results = reader.readtext(
+                image_path,
+                detail=0
+            )
+
+            text = " ".join(
+                item.strip()
+                for item in results
+                if item.strip()
+            ).strip()
+
+            if text:
+                response_queue.put({
+                    "sample_id": sample_id,
+                    "status": "success",
+                    "value": text
+                })
+            else:
+                response_queue.put({
+                    "sample_id": sample_id,
+                    "status": "empty",
+                    "value": ""
+                })
+
+        except Exception as e:
+            print(f"OCR failed for {sample_id}: {e}")
+
+            response_queue.put({
+                "sample_id": sample_id,
+                "status": "failed",
+                "value": ""
+            })
+
+
+def start_ocr_worker():
+    request_queue = multiprocessing.Queue()
+    response_queue = multiprocessing.Queue()
+
+    process = multiprocessing.Process(
+        target=ocr_worker,
+        args=(
+            request_queue,
+            response_queue
+        ),
+        daemon=True
+    )
+
+    process.start()
+
+    return (
+        process,
+        request_queue,
+        response_queue
+    )
+
+
+def restart_ocr_worker(
+    ocr_process,
+    ocr_request_queue,
+    ocr_response_queue
+):
+    print("Restarting OCR worker...")
+
+    if ocr_process.is_alive():
+        ocr_process.terminate()
+        ocr_process.join(timeout=5)
+
+    return start_ocr_worker()
+
+
+def extract_ocr(
+    sample_id,
+    image_path,
+    ocr_request_queue,
+    ocr_response_queue,
+    timeout=60
+):
+    ocr_request_queue.put(
+        (sample_id, image_path)
+    )
+
+    try:
+        while True:
+            result = ocr_response_queue.get(
+                timeout=timeout
+            )
+
+            # Ignore stale responses.
+            if result.get("sample_id") != sample_id:
+                continue
+
+            result.pop("sample_id", None)
+
+            return result
+
+    except queue.Empty:
+        print(f"OCR timeout: {sample_id}")
+
+        return {
+            "status": "failed",
+            "value": ""
+        }
+
+
+def derive_emoji(text):
+    text_lower = text.lower()
+
+    if "pivot" in text_lower or "stuck" in text_lower:
+        emoji = "\U0001F621"
+
+    elif "work" in text_lower or "sketch" in text_lower:
+        emoji = "\U0001F937"
+
+    elif "oh yeah" in text_lower or "yes" in text_lower:
+        emoji = "\U0001F602"
+
+    elif "neither" in text_lower or "know" in text_lower:
+        emoji = "\U0001F644"
+
+    else:
+        emoji = "\U0001F610"
+
+    return {
+        "status": "derived",
+        "value": emoji
+    }
+
+
+def relative_path(path):
+    return os.path.relpath(path).replace("\\", "/")
+
+
+def process_candidate(
+    video_folder,
+    candidate,
+    ocr_request_queue,
+    ocr_response_queue
+):
+    video_name = os.path.basename(video_folder)
+
+    candidate_id = candidate["candidate_id"]
+    source_file = candidate["source_file"]
+
+    start = candidate["start_seconds"]
+    end = candidate["end_seconds"]
+    duration = candidate["duration_seconds"]
+
+    video_path = os.path.join(
+        video_folder,
+        source_file
+    )
+
+    output_folder = os.path.join(
+        video_folder,
+        "extracted"
+    )
+
+    audio_folder = os.path.join(
+        output_folder,
+        "audio"
+    )
+
+    image_folder = os.path.join(
+        output_folder,
+        "images"
+    )
+
+    os.makedirs(
+        audio_folder,
+        exist_ok=True
+    )
+
+    os.makedirs(
+        image_folder,
+        exist_ok=True
+    )
+
+    audio_path = os.path.join(
+        audio_folder,
+        f"{candidate_id}.wav"
+    )
+
+    image_path = os.path.join(
+        image_folder,
+        f"{candidate_id}.jpg"
+    )
+
+    sample_id = f"{video_name}-{candidate_id}"
+
+    print(
+        f"Processing "
+        f"{video_name}/{candidate_id}..."
+    )
+
+    # -------------------------
+    # AUDIO
+    # -------------------------
+
+    audio = extract_audio(
+        video_path,
+        audio_path,
+        start,
+        duration
+    )
+
+    # -------------------------
+    # TEXT
+    # -------------------------
+
+    if audio["status"] == "success":
+        text = transcribe(
+            audio["path"]
+        )
+    else:
+        text = {
+            "status": "failed",
+            "value": ""
+        }
+
+    # -------------------------
+    # IMAGE
+    # -------------------------
+
+    image = extract_image(
+        video_path,
+        image_path,
+        start,
+        duration
+    )
+
+    # -------------------------
+    # OCR
+    # -------------------------
+
+    if image["status"] == "success":
+        ocr = extract_ocr(
+            sample_id,
+            image["path"],
+            ocr_request_queue,
+            ocr_response_queue
+        )
+
+        # Tell the caller whether OCR timed out.
+        ocr_timed_out = (
+            ocr["status"] == "failed"
+        )
+
+    else:
+        ocr = {
+            "status": "failed",
+            "value": ""
+        }
+
+        ocr_timed_out = False
+
+    # -------------------------
+    # EMOJI
+    # -------------------------
+
+    emoji = derive_emoji(
+        text["value"]
+        if text["status"] == "success"
+        else ""
+    )
+
+    result = {
+        "sample_id": sample_id,
+
+        "source": {
+            "video_id": video_name,
+            "video_file": f"{video_name}.mp4",
+            "source_scene": candidate["source_scene"],
+            "source_file": source_file
+        },
+
+        "timing": {
+            "start_seconds": start,
+            "end_seconds": end,
+            "duration_seconds": duration
+        },
+
+        "modalities": {
+            "text": text,
+
+            "image": {
+                "status": image["status"],
+                "path": (
+                    relative_path(image["path"])
+                    if image["path"]
+                    else ""
+                )
+            },
+
+            "audio": {
+                "status": audio["status"],
+                "path": (
+                    relative_path(audio["path"])
+                    if audio["path"]
+                    else ""
+                )
+            },
+
+            "ocr": ocr,
+
+            "emoji": emoji
+        },
+
+        "metadata": {
+            "candidate_type": candidate["type"]
+        }
+    }
+
+    return result, ocr_timed_out
+
+
+def load_candidates(video_folder):
+    report_path = os.path.join(
+        video_folder,
+        "candidate_report.json"
+    )
+
+    with open(
+        report_path,
+        "r",
+        encoding="utf-8"
+    ) as f:
+        report = json.load(f)
+
+    return report["candidates"]
+
+
+def load_existing_dataset(output_path):
+    if not os.path.exists(output_path):
+        return []
+
+    try:
+        with open(
+            output_path,
+            "r",
+            encoding="utf-8"
+        ) as f:
+            return json.load(f)
+
+    except (
+        json.JSONDecodeError,
+        OSError
+    ):
+        print(
+            "Existing dataset could not be read. "
+            "Starting with an empty dataset."
+        )
+
+        return []
+
+
+def save_dataset(output_path, dataset):
+    temp_path = output_path + ".tmp"
+
+    with open(
+        temp_path,
+        "w",
+        encoding="utf-8"
+    ) as f:
+        json.dump(
+            dataset,
+            f,
+            indent=4,
+            ensure_ascii=False
+        )
+
+    os.replace(
+        temp_path,
+        output_path
+    )
+
+
+def extract_video_dataset(video_folder):
+    global whisper
+
+    multiprocessing.freeze_support()
+
+    print("Loading Faster-Whisper...")
+
+    whisper = WhisperModel(
+        WHISPER_MODEL,
+        device="cpu",
+        compute_type="int8"
+    )
+
+    # -------------------------
+    # START OCR WORKER
+    # -------------------------
+
+    (
+        ocr_process,
+        ocr_request_queue,
+        ocr_response_queue
+    ) = start_ocr_worker()
+
+    total_candidates = 0
+    total_processed = 0
+    total_skipped = 0
+    total_ocr_restarts = 0
+
+    try:
+        video_folders = [video_folder]
+
+        for video_folder in video_folders:
+
+            report_path = os.path.join(
+                video_folder,
+                "candidate_report.json"
+            )
+
+            if not os.path.exists(
+                report_path
+            ):
+                continue
+
+            video_name = os.path.basename(
+                video_folder
+            )
+
+            candidates = load_candidates(
+                video_folder
+            )
+
+            output_path = os.path.join(
+                video_folder,
+                OUTPUT_NAME
+            )
+
+            dataset = load_existing_dataset(
+                output_path
+            )
+
+            completed_ids = {
+                item["sample_id"]
+                for item in dataset
+                if "sample_id" in item
+            }
+
+            print(
+                f"\n{'=' * 60}"
+                f"\nVideo: {video_name}"
+                f"\nCandidates: {len(candidates)}"
+                f"\nAlready completed: {len(completed_ids)}"
+                f"\n{'=' * 60}"
+            )
+
+            for candidate in candidates:
+
+                sample_id = (
+                    f"{video_name}-"
+                    f"{candidate['candidate_id']}"
+                )
+
+                if sample_id in completed_ids:
+                    print(
+                        f"Skipping {sample_id}"
+                    )
+
+                    total_skipped += 1
+                    continue
+
+                result, ocr_timed_out = process_candidate(
+                    video_folder,
+                    candidate,
+                    ocr_request_queue,
+                    ocr_response_queue
+                )
+
+                dataset.append(result)
+                completed_ids.add(sample_id)
+
+                save_dataset(
+                    output_path,
+                    dataset
+                )
+
+                total_processed += 1
+
+                # -------------------------
+                # OCR RECOVERY
+                # -------------------------
+
+                if ocr_timed_out:
+                    (
+                        ocr_process,
+                        ocr_request_queue,
+                        ocr_response_queue
+                    ) = restart_ocr_worker(
+                        ocr_process,
+                        ocr_request_queue,
+                        ocr_response_queue
+                    )
+
+                    total_ocr_restarts += 1
+
+            total_candidates += len(
+                candidates
+            )
+
+            print(
+                f"\nSaved dataset:"
+                f"\n{output_path}"
+                f"\nCompleted: {len(dataset)}"
+            )
+
+    except KeyboardInterrupt:
+        print(
+            "\n\nExtraction interrupted by user."
+        )
+
+    finally:
+
+        if ocr_process.is_alive():
+            ocr_request_queue.put(None)
+
+            ocr_process.join(
+                timeout=10
+            )
+
+        if ocr_process.is_alive():
+            ocr_process.terminate()
+
+            ocr_process.join()
+            
+            print(
+        f"\n{'=' * 60}"
+        f"\nEXTRACTION STOPPED/COMPLETE"
+        f"\nTotal candidates encountered: "
+        f"{total_candidates}"
+        f"\nProcessed this run: "
+        f"{total_processed}"
+        f"\nSkipped existing: "
+        f"{total_skipped}"
+        f"\nOCR worker restarts: "
+        f"{total_ocr_restarts}"
+        f"\n{'=' * 60}"
+    )
+
+
+if __name__ == "__main__":
+    video_folders = [
+        os.path.join(
+            SAMPLE_DIR,
+            folder
+        )
+        for folder in os.listdir(SAMPLE_DIR)
+        if os.path.isdir(
+            os.path.join(
+                SAMPLE_DIR,
+                folder
+            )
+        )
+    ]
+
+    if not video_folders:
+        print(
+            f"No video folders found in '{SAMPLE_DIR}'."
+        )
+        raise SystemExit
+
+    for video_folder in video_folders:
+        extract_video_dataset(video_folder)
