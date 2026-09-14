@@ -1,31 +1,44 @@
-# Multimodal Multiparty Humour Detection (Phase 1) 🎭
+# Multimodal Humor & Hate Speech Detection (MMHD) - Phase 1
 
-This repository contains the automated data extraction pipeline for creating a large-scale multimodal, multiparty humor detection dataset. 
+This repository contains the Phase 1 automated data extraction pipeline for processing raw video clips into a highly optimized, 5-modality dataset. This blueprint prepares raw media for downstream multimodal machine learning models.
 
-Our goal is to build the foundation for an advanced AI model capable of detecting humor across five distinct modalities, ultimately translating this into a Hindi-language benchmark.
+## 🚀 Core Optimizations
+To handle large-scale dataset generation (5,000–8,000 clips) efficiently, this pipeline is optimized for maximum hardware utilization:
+* **Parallel Processing:** Implements Python's `ThreadPoolExecutor` to process multiple scenes concurrently, eliminating sequential bottlenecks and utilizing all available CPU cores.
+* **Faster-Whisper Integration:** Replaced the standard OpenAI Whisper library with `faster-whisper` (CTranslate2 backend) using INT8 quantization, achieving up to 4x faster speech-to-text processing on standard CPUs.
 
-## The Pipeline Architecture
+## 🧠 Extracted Modalities
+1. **Video:** Isolated scene `.mp4` (via SceneDetect & FFmpeg)
+2. **Audio:** Extracted `.wav` (via FFmpeg)
+3. **Visual Frame:** Exact middle keyframe `.jpg` (via FFmpeg)
+4. **Transcript:** Dialogue extraction (via Faster-Whisper)
+5. **OCR:** Background text detection (via EasyOCR)
+* **Bonus:** Automated heuristic emoji mapping based on transcript context.
 
-Instead of manually clipping videos and noting timestamps, we built an automated Python engine that takes a raw video file and automatically outputs a structured dataset containing 5 modalities:
+## 🛠️ Installation
 
-* **Video/Context:** Automated scene detection using `PySceneDetect` to isolate multiparty camera cuts.
-* **Audio:** Isolated `.wav` extraction via `FFmpeg`.
-* **Text (Transcript):** AI Speech-to-Text generation using `OpenAI Whisper`.
-* **OCR (Optical Character Recognition):** On-screen text detection using `EasyOCR`.
-* **Emoji (Sentiment):** Rule-based NLP mapping translating dialogue context into reactive emojis.
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/saurav80325-create/MMHD-phase1.git](https://github.com/saurav80325-create/MMHD-phase1.git)
+   cd MMHD-phase1
+   ```
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   *(Note: FFmpeg must be installed and added to your system PATH).*
 
-##  Quick Start for the Junior Team
+## 🏃‍♂️ How to Run
 
-To scale this dataset to our 1,000+ clip milestone, please follow these steps on your local Windows machines.
+1. Place your raw `.mp4` video clips into the `dataset_clips/` directory. Use `yt-dlp` and `scenedetect` to download and split your source videos.
+2. Execute the extraction script from the root directory:
+   ```bash
+   python src/extract.py
+   ```
+3. The pipeline will dynamically assemble a `master_dataset.json` file containing the aligned metadata and local file paths for every scene.
 
-1. **Install System Requirements:**
-   Install FFmpeg via command prompt: `winget install ffmpeg` (Restart terminal after installing).
-
-2. **Install Python Libraries:**
-   `python -m pip install -U yt-dlp scenedetect[opencv] openai-whisper easyocr googletrans==4.0.0-rc1`
-
-3. **Run the Extraction:**
-   * Download a source video using `yt-dlp`.
-   * Chop the scenes using `scenedetect -i raw_video.mp4 split-video -o dataset_clips/`.
-   * Run our master extraction script: `python src/extract_hindi.py`.
-   * Validate the outputs in the JSON file.
+## ☁️ Scaling to 8,000+ Clips
+For massive dataset generation, executing on a local CPU is not recommended. 
+1. Clone this repository into a **Google Colab** or Kaggle notebook environment.
+2. In `src/extract.py`, update EasyOCR to utilize the GPU: `reader = easyocr.Reader(['en'], gpu=True)`.
+3. Leverage the free NVIDIA GPU acceleration to process thousands of clips in hours instead of weeks.
