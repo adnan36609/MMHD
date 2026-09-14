@@ -16,6 +16,7 @@ venv/
 # Old/generated files
 dataset_clips/
 master_dataset.json
+sample_data/master_dataset.json
 
 # Local/tool directories
 src/cls/
