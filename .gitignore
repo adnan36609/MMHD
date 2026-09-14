@@ -1,12 +1,22 @@
-# Allow all media and dataset clips to be committed
-# dataset_clips/
-# *.mp4
-# *.wav
-# *.jpg
+# Generated source videos
+source_videos/
+
+# Generated sample clips and extracted modalities
+sample_clips/
 
 # Python cache
 __pycache__/
+*.pyc
+
+# Local environment
+.env
+.venv/
+venv/
+
+# Old/generated files
 dataset_clips/
 master_dataset.json
-src/cls
-src/yt-dlp
+
+# Local/tool directories
+src/cls/
+src/yt-dlp/
