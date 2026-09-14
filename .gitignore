@@ -1,11 +1,12 @@
-# Ignore large video datasets
-dataset_clips/
-*.mp4
-*.wav
-*.jpg
-
-# Allow the specific sample data folder
-!sample_data/
+# Allow all media and dataset clips to be committed
+# dataset_clips/
+# *.mp4
+# *.wav
+# *.jpg
 
 # Python cache
 __pycache__/
+dataset_clips/
+master_dataset.json
+src/cls
+src/yt-dlp
