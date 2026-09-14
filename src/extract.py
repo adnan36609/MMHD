@@ -231,7 +231,7 @@ def extract_ocr(
         print(f"OCR timeout: {sample_id}")
 
         return {
-            "status": "failed",
+            "status": "timeout",
             "value": ""
         }
 
@@ -376,7 +376,7 @@ def process_candidate(
 
         # Tell the caller whether OCR timed out.
         ocr_timed_out = (
-            ocr["status"] == "failed"
+            ocr["status"] == "timeout"
         )
 
     else:
