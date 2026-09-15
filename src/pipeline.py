@@ -6,26 +6,30 @@ from candidate import process_video_candidates
 from extract import extract_video_dataset
 
 
-VIDEO_URLS = [
-    "https://www.youtube.com/watch?v=dYp-KUK73RE",
-]
-
-
 def main():
+    video_url = input("Enter YouTube video URL: ").strip()
+
+    if not video_url:
+        print("No URL provided.")
+        return
+
+    video_urls = [video_url]
+
     print("\n" + "=" * 60)
     print("STEP 1: DOWNLOADING SOURCE VIDEOS")
     print("=" * 60)
 
     downloaded_videos = []
 
-    for url in VIDEO_URLS:
+    for url in video_urls:
         try:
             video_path = download_video(url)
             downloaded_videos.append(video_path)
-
         except Exception as e:
             print(f"Download failed: {url}")
             print(f"Error: {e}")
+
+    # keep the rest of your existing code unchanged
 
     print("\n" + "=" * 60)
     print("STEP 2: SEGMENTING SOURCE VIDEOS")
