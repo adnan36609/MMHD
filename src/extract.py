@@ -232,10 +232,10 @@ def ocr_worker(
         sample_id, image_path = request
 
         try:
-
             results = reader.readtext(
                 image_path,
-                detail=0
+                detail=0,
+                mag_ratio=0.75
             )
 
             text = " ".join(

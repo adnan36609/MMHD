@@ -346,6 +346,8 @@ OCR is applied to both extracted representative images.
 
 A persistent OCR worker is used so that EasyOCR does not need to be repeatedly initialized for every candidate.
 
+OCR uses `mag_ratio=0.75` to reduce CPU processing time while retaining useful text extraction quality.
+
 If no readable text is present in the sampled images, OCR may legitimately return:
 
 ```text
