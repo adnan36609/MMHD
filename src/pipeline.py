@@ -29,8 +29,6 @@ def main():
             print(f"Download failed: {url}")
             print(f"Error: {e}")
 
-    # keep the rest of your existing code unchanged
-
     print("\n" + "=" * 60)
     print("STEP 2: SEGMENTING SOURCE VIDEOS")
     print("=" * 60)
@@ -53,7 +51,7 @@ def main():
         )
 
         process_video_candidates(video_folder)
-        
+
     print("\n" + "=" * 60)
     print("STEP 4: EXTRACTING MULTIMODAL DATA")
     print("=" * 60)
@@ -63,12 +61,12 @@ def main():
             os.path.basename(video_path)
         )[0]
 
-    video_folder = os.path.join(
-        "sample_clips",
-        video_name
-    )
+        video_folder = os.path.join(
+            "sample_clips",
+            video_name
+        )
 
-    extract_video_dataset(video_folder)
+        extract_video_dataset(video_folder)
 
     print("\n" + "=" * 60)
     print("PIPELINE STEP COMPLETE")
