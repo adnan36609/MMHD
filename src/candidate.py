@@ -5,7 +5,9 @@ SAMPLE_DIR = "sample_clips"
 
 MAX_SCENE_DURATION = 30.0
 WINDOW_DURATION = 10.0
-OVERLAP = 5.0
+
+MIN_LONG_SCENE_CANDIDATES = 2
+MAX_LONG_SCENE_CANDIDATES = 6
 
 
 def process_scene_folder(scene_folder):
@@ -24,7 +26,6 @@ def process_scene_folder(scene_folder):
     candidates = []
 
     for scene_number, duration in enumerate(durations, start=1):
-
         scene_id = f"Scene-{scene_number:03d}"
         scene_file = f"{video_name}-{scene_id}.mp4"
 
@@ -40,25 +41,37 @@ def process_scene_folder(scene_folder):
             })
 
         else:
-            start = 0.0
-            window_number = 1
+            # Select a diverse set of windows distributed
+            # across the entire long scene.
 
-            while start < duration:
+            candidate_count = min(
+    MAX_LONG_SCENE_CANDIDATES,
+    max(
+        MIN_LONG_SCENE_CANDIDATES,
+        int(duration / WINDOW_DURATION)
+    )
+)
+
+            max_start = duration - WINDOW_DURATION
+
+            for i in range(candidate_count):
+                if candidate_count == 1:
+                    start = 0.0
+                else:
+                    start = (
+                        i * max_start
+                        / (candidate_count - 1)
+                    )
+
                 end = min(
                     start + WINDOW_DURATION,
                     duration
                 )
 
-                remaining = duration - start
-
-                # Don't create a tiny final fragment.
-                if remaining < 3.0:
-                    break
-
                 candidates.append({
                     "candidate_id": (
                         f"{scene_id}-"
-                        f"Window-{window_number:03d}"
+                        f"Window-{i + 1:03d}"
                     ),
                     "source_scene": scene_id,
                     "source_file": scene_file,
@@ -68,14 +81,12 @@ def process_scene_folder(scene_folder):
                     "type": "long_scene_window"
                 })
 
-                window_number += 1
-                start += WINDOW_DURATION - OVERLAP
-
     candidate_report = {
         "source_video": source_video,
         "max_natural_scene_duration": MAX_SCENE_DURATION,
         "window_duration": WINDOW_DURATION,
-        "overlap": OVERLAP,
+        "min_long_scene_candidates": MIN_LONG_SCENE_CANDIDATES,
+        "max_long_scene_candidates": MAX_LONG_SCENE_CANDIDATES,
         "candidate_count": len(candidates),
         "candidates": candidates
     }
