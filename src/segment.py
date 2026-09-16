@@ -26,7 +26,7 @@ def segment_video(video_path):
 
     start_time = time.perf_counter()
 
-    video = open_video(video_path)
+    video = open_video(video_path, backend="pyav")
 
     scene_manager = SceneManager()
     scene_manager.add_detector(

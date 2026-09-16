@@ -179,7 +179,7 @@ If the video has already been downloaded, the existing file is reused.
 
 ## 2. Scene Detection
 
-`src/segment.py` uses **PySceneDetect ContentDetector**.
+`src/segment.py` uses **PySceneDetect ContentDetector** with the **PyAV backend** for FFmpeg-backed video decoding.
 
 Current configuration:
 
