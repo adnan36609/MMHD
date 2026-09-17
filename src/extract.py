@@ -676,6 +676,67 @@ def load_dataset(dataset_path):
         return []
 
 
+
+def candidate_matches_record(
+    record,
+    candidate
+):
+
+    timing = record.get(
+        "timing",
+        {}
+    )
+
+    source = record.get(
+        "source",
+        {}
+    )
+
+    metadata = record.get(
+        "metadata",
+        {}
+    )
+
+    return (
+        source.get("source_scene")
+        == candidate["source_scene"]
+
+        and source.get("source_file")
+        == candidate["source_file"]
+
+        and abs(
+            timing.get(
+                "start_seconds",
+                -1
+            )
+            - candidate["start_seconds"]
+        ) <= 1e-6
+
+        and abs(
+            timing.get(
+                "end_seconds",
+                -1
+            )
+            - candidate["end_seconds"]
+        ) <= 1e-6
+
+        and abs(
+            timing.get(
+                "duration_seconds",
+                -1
+            )
+            - candidate["duration_seconds"]
+        ) <= 1e-6
+
+        and metadata.get(
+            "candidate_type"
+        )
+        == candidate.get(
+            "type",
+            ""
+        )
+    )
+
 def save_dataset(
     dataset_path,
     dataset
@@ -732,9 +793,9 @@ def extract_video_dataset(
         dataset_path
     )
 
-    completed_ids = {
+    records_by_id = {
 
-        item.get("sample_id")
+        item.get("sample_id"): item
 
         for item in dataset
 
@@ -751,8 +812,8 @@ def extract_video_dataset(
     )
 
     print(
-        f"Already completed: "
-        f"{len(completed_ids)}"
+        f"Existing records: "
+        f"{len(records_by_id)}"
     )
 
     # -----------------------------------------------------
@@ -803,8 +864,34 @@ def extract_video_dataset(
                 f"{candidate_id}"
             )
 
-            if sample_id in completed_ids:
-                continue
+            existing_record = records_by_id.get(
+                sample_id
+            )
+
+            if existing_record is not None:
+
+                if candidate_matches_record(
+                    existing_record,
+                    candidate
+                ):
+                    continue
+
+                print(
+                    f"Stale record detected for "
+                    f"{sample_id}. Reprocessing."
+                )
+
+                dataset = [
+                    item
+                    for item in dataset
+                    if item.get("sample_id")
+                    != sample_id
+                ]
+
+                records_by_id.pop(
+                    sample_id,
+                    None
+                )
 
             print(
                 f"\nProcessing "
@@ -823,9 +910,9 @@ def extract_video_dataset(
                 result
             )
 
-            completed_ids.add(
+            records_by_id[
                 sample_id
-            )
+            ] = result
 
             save_dataset(
                 dataset_path,
