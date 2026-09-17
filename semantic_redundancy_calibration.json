@@ -1,0 +1,1546 @@
+{
+    "usable_text_samples": 433,
+    "total_within_video_pairs": 23543,
+    "exact_duplicate_groups": 0,
+    "exact_duplicate_groups_detail": [],
+    "threshold_calibration": [
+        {
+            "threshold": 0.8,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        },
+        {
+            "threshold": 0.85,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        },
+        {
+            "threshold": 0.88,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        },
+        {
+            "threshold": 0.9,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        },
+        {
+            "threshold": 0.92,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        },
+        {
+            "threshold": 0.95,
+            "flagged_pairs": 0,
+            "same_scene_pairs": 0,
+            "cross_scene_pairs": 0
+        }
+    ],
+    "top_similarity_pairs": [
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.7819731831550598,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-002",
+                "scene": "Scene-002",
+                "text": "Marcelo and Jimmy tonight show numero uno. Oh! This is..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-112",
+                "scene": "Scene-112",
+                "text": "on my own. So this is Marcelo and Jimmy tonight show number three."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.7728414535522461,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-039",
+                "scene": "Scene-039",
+                "text": "Okay, alright Peter what's your last name?"
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-043",
+                "scene": "Scene-043",
+                "text": "So your full name is Peter Peter"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.7506197690963745,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-007",
+                "scene": "Scene-007",
+                "text": "and Milton Williams from the Patriots said..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.709896445274353,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-005",
+                "scene": "Scene-005",
+                "text": "Then Elijah Verrattucker from the Patriots said,"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-029",
+                "scene": "Scene-029",
+                "text": "Then Brendan Schooler from the Patriots said"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.7052158117294312,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-013",
+                "scene": "Scene-013",
+                "text": "and Mac Hollins from the Patriots said this."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-029",
+                "scene": "Scene-029",
+                "text": "Then Brendan Schooler from the Patriots said"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6953206062316895,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-007",
+                "scene": "Scene-007",
+                "text": "and Milton Williams from the Patriots said..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-013",
+                "scene": "Scene-013",
+                "text": "and Mac Hollins from the Patriots said this."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6891912817955017,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-013",
+                "scene": "Scene-013",
+                "text": "and Mac Hollins from the Patriots said this."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.66749507188797,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-089",
+                "scene": "Scene-089",
+                "text": "Meanwhile, the patrons are like, you're hired. Wow, yeah, I can. You guys, it's officially back to school time, right now, a lot of college kids are meeting their freshman roommates for the first time. And there's some signs in whether you have a good college roommate or a bad one. We have some examples right here. For instance, you have a good college roommate if..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-095",
+                "scene": "Scene-095",
+                "text": "And finally you have a good college roommate if"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6658560633659363,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-098",
+                "scene": "Scene-098",
+                "text": "until you look into it. You see, Matthew McConeys mother recently revealed that she, quote unquote, new Woody's father back in the late 60s. But when did she know him? Nine months before Matthew was born."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-104",
+                "scene": "Scene-104",
+                "text": "And what year did Woody's dad marry? What is mom?"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6606650352478027,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-007",
+                "scene": "Scene-007",
+                "text": "and Milton Williams from the Patriots said..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-029",
+                "scene": "Scene-029",
+                "text": "Then Brendan Schooler from the Patriots said"
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.6546975374221802,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-005-Window-001",
+                "scene": "Scene-005",
+                "text": "No, I know that sounds like a bribe. In Trump's defense age..."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-009",
+                "scene": "Scene-009",
+                "text": "That sounds like a bribe, that's cause..."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.6544606685638428,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-103",
+                "scene": "Scene-103",
+                "text": "According to sources, every criminal in the world is now dead."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-105",
+                "scene": "Scene-105",
+                "text": "But you killed every criminal in the entire world."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.6508172154426575,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-012",
+                "scene": "Scene-012",
+                "text": "travel to Ireland to attend the Irish Open Golf Tournament at his resort."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-013-Window-003",
+                "scene": "Scene-013",
+                "text": "I try a Trump want to Ireland for a golf tournament and is at his private club at Trump really likes Ireland In fact, he just releases his own Irish jig. Oh, yeah, check this out."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6506739854812622,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-003",
+                "scene": "Scene-097",
+                "text": "and Woody are in fact half brothers in real life. If you guys heard this, I mean, it's just one of those crazy internet things that's completely far-fetched, and has no basis in reality."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-104",
+                "scene": "Scene-104",
+                "text": "And what year did Woody's dad marry? What is mom?"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.6491446495056152,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-032",
+                "scene": "Scene-032",
+                "text": "Making his tonight show debut. Please welcome the very funny Marcelo Hernandez."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.6475780010223389,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-133",
+                "scene": "Scene-133",
+                "text": "But I never got the pills and, you know, one year, I went to summer school for pre-algebra. And there was a kid in the summer school that his mom let him have ADD."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-134-Window-001",
+                "scene": "Scene-134",
+                "text": "And he gave me some of the pills, right? Before a math test, I'm a part of the..."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6440521478652954,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-005",
+                "scene": "Scene-005",
+                "text": "Then Elijah Verrattucker from the Patriots said,"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-007",
+                "scene": "Scene-007",
+                "text": "and Milton Williams from the Patriots said..."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6415735483169556,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-029",
+                "scene": "Scene-029",
+                "text": "Then Brendan Schooler from the Patriots said"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.623236358165741,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-001",
+                "scene": "Scene-097",
+                "text": "That's how you know We have a great show tonight Matthew McConaughey is my gift"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-131",
+                "scene": "Scene-131",
+                "text": "Matthew McCarton, hey!"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6205301284790039,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-098",
+                "scene": "Scene-098",
+                "text": "until you look into it. You see, Matthew McConeys mother recently revealed that she, quote unquote, new Woody's father back in the late 60s. But when did she know him? Nine months before Matthew was born."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-102",
+                "scene": "Scene-102",
+                "text": "That's right, Matthew McConaughey, nine. Now, let me ask you this, Matthew. How many years a partner you and Woody?"
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.6202125549316406,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-073",
+                "scene": "Scene-073",
+                "text": "Okay, but next headline was"
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-075",
+                "scene": "Scene-075",
+                "text": "Then you made. And finally this headline was..."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.6182194352149963,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-031",
+                "scene": "Scene-031",
+                "text": "So you write any person's name and that thing."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-124",
+                "scene": "Scene-124",
+                "text": "write the name of a person who..."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.6160061955451965,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-057-Window-003",
+                "scene": "Scene-057",
+                "text": "He doesn't know what happened. When an American that loses his woman, the song is always, WERE ARE YOU?! WHAT HAPPENED?!"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-057-Window-002",
+                "scene": "Scene-057",
+                "text": "You know, you lose a woman you sing about her and I found a big difference between when a Latin guy sings about losing a woman and a American guy does it. When an American guy sings about losing his woman he seems very confused."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.6157363653182983,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-071",
+                "scene": "Scene-071",
+                "text": "Nice. Good boy. Nice headline, what?"
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-073",
+                "scene": "Scene-073",
+                "text": "Okay, but next headline was"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.6099510788917542,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-116",
+                "scene": "Scene-116",
+                "text": "I'm gonna be proud of you!"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-117",
+                "scene": "Scene-117",
+                "text": "Gotta be proud of this guy here."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6088317632675171,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-053",
+                "scene": "Scene-053",
+                "text": "What about the Steelers?"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-063",
+                "scene": "Scene-063",
+                "text": "I'm down, if you had the guess what the Steelers look like, what would you say?"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.6070644855499268,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-005",
+                "scene": "Scene-005",
+                "text": "Then Elijah Verrattucker from the Patriots said,"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.605197548866272,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-057-Window-001",
+                "scene": "Scene-057",
+                "text": "The people, the music, James, the music, James, it's... I noticed something this summer. I feel like a lot of our music Latin music gets about when you lose a woman."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-057-Window-002",
+                "scene": "Scene-057",
+                "text": "You know, you lose a woman you sing about her and I found a big difference between when a Latin guy sings about losing a woman and a American guy does it. When an American guy sings about losing his woman he seems very confused."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.6005591154098511,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-126",
+                "scene": "Scene-126",
+                "text": "Can you break it down for us a bit? What is the key to a Sebastian Metascarco impression? Well, Sebastian, if you want to do Sebastian right, you have to always be exhaling."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-129",
+                "scene": "Scene-129",
+                "text": "And he's like, do you have any idea how fast you were going? I feel like Sebastian would be like, I'm just doing my best."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5990458726882935,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-002",
+                "scene": "Scene-002",
+                "text": "Bol Champions Seattle Seahawks hosting the New England Patriots."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-003",
+                "scene": "Scene-003",
+                "text": "Tonight it was a New England Patriots versus the Seattle Seahawks, or as it'll soon be called, the American Patriots versus the Seattle Americans. Taking place in America Stadium. You had the NFL season officially kicked off tonight with a Super Bowl rematch between the Seahawks and the Patriots, the players are fired up about the new season. Check out what they had to say. First up, Seahawks quarterback Sam Darnell said."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.5963361263275146,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-031",
+                "scene": "Scene-031",
+                "text": "So you write any person's name and that thing."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-008",
+                "scene": "Scene-008",
+                "text": "If you write the full name of a person in a dish,"
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.5963236689567566,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-063",
+                "scene": "Scene-063",
+                "text": "Nice. Juice. This next headline, what?"
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-071",
+                "scene": "Scene-071",
+                "text": "Nice. Good boy. Nice headline, what?"
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.5959007740020752,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-096",
+                "scene": "Scene-096",
+                "text": "My name's not Mom, dumbass!"
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-097",
+                "scene": "Scene-097",
+                "text": "Told you, mom of these years. Don't even know your real name."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5945248603820801,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-002",
+                "scene": "Scene-002",
+                "text": "Marcelo and Jimmy tonight show numero uno. Oh! This is..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-032",
+                "scene": "Scene-032",
+                "text": "Making his tonight show debut. Please welcome the very funny Marcelo Hernandez."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5937875509262085,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-083",
+                "scene": "Scene-083",
+                "text": "Did he stop playing trumpet? Yep. Marching band. That's right. You were? You get a letter for the marching band. Oh, yeah. That's what I got my letter in. Oh, here you are playing soccer, by the way. And Marcelo. Come on."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-136-Window-002",
+                "scene": "Scene-136",
+                "text": "I didn't write my name. I didn't write my name. Congrats again on the special American boy, Marcelo's a big deal, but you know what I like to love all the bits on, go into it. You're doing something tonight."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5933864116668701,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-018",
+                "scene": "Scene-018",
+                "text": "She started talking cigarettes. I like what she would call me and she"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-019",
+                "scene": "Scene-019",
+                "text": "You're like, so have they told you if you got it? And I'm like, no, are you smoking a cigarette? And she's like, yes, I started yesterday. Now tell me, then I got it and then she quit cigarettes."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5890147686004639,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-155",
+                "scene": "Scene-155",
+                "text": "I'm talking about. Marcelo Hernandez. That's great. His status special American boy is available right now on Netflix."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5868282914161682,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-134-Window-001",
+                "scene": "Scene-134",
+                "text": "And he gave me some of the pills, right? Before a math test, I'm a part of the..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-134-Window-002",
+                "scene": "Scene-134",
+                "text": "I didn't study for the test, but I took the pills because I was like, what could go wrong? And I took the pills and I did do the test. It all seemed, it all made sense to me. The num-"
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5868209600448608,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-008",
+                "scene": "Scene-008",
+                "text": "We have $5,000 of Republicans when there's November."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-005-Window-003",
+                "scene": "Scene-005",
+                "text": "That's right, Trump promised to pay every American $5,000 for Republicans win the mid-terms as little confusing, but the White House just put out this video message to clarify. Watch this."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.582211434841156,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-005",
+                "scene": "Scene-005",
+                "text": "Then Elijah Verrattucker from the Patriots said,"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-013",
+                "scene": "Scene-013",
+                "text": "and Mac Hollins from the Patriots said this."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.580971360206604,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-104",
+                "scene": "Scene-104",
+                "text": "and saying, I, um, I kind of never imagined that it could be something that crazy. Like, I didn't write the sketch. It was, uh, Kiro Sullivan and Jimmy Fowley and Suity Green. And, um, I was able to actually take a couple of them, uh, to, uh, to the concert, and they got to see it live. And it was crazy. And also Ali Levittan was writing on that. Um, and then, I put that picture up with Sabrina. And then a couple of my aunts were like, and why have we not met for her? Yeah, I know."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-099-Window-003",
+                "scene": "Scene-099",
+                "text": "And then Sabrina Carpenter, these Sabrina Carpenter, has you arrested at our concert and brought on stage."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5795312523841858,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-017",
+                "scene": "Scene-017",
+                "text": "cigarettes while we were waiting to find out if I got it or not."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-019",
+                "scene": "Scene-019",
+                "text": "You're like, so have they told you if you got it? And I'm like, no, are you smoking a cigarette? And she's like, yes, I started yesterday. Now tell me, then I got it and then she quit cigarettes."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.576769232749939,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-032",
+                "scene": "Scene-032",
+                "text": "Making his tonight show debut. Please welcome the very funny Marcelo Hernandez."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-112",
+                "scene": "Scene-112",
+                "text": "on my own. So this is Marcelo and Jimmy tonight show number three."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5736504793167114,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-032",
+                "scene": "Scene-032",
+                "text": "Making his tonight show debut. Please welcome the very funny Marcelo Hernandez."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-155",
+                "scene": "Scene-155",
+                "text": "I'm talking about. Marcelo Hernandez. That's great. His status special American boy is available right now on Netflix."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5733606815338135,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-136-Window-002",
+                "scene": "Scene-136",
+                "text": "I didn't write my name. I didn't write my name. Congrats again on the special American boy, Marcelo's a big deal, but you know what I like to love all the bits on, go into it. You're doing something tonight."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.5733380913734436,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-034",
+                "scene": "Scene-034",
+                "text": "They suffocate themselves."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-036",
+                "scene": "Scene-036",
+                "text": "I thought it was impossible to suffocate yourself."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.5729551315307617,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-051",
+                "scene": "Scene-051",
+                "text": "I saw them on the internet and performing and it's tricky, amazing stuff. You're going to be, your minds are going to be blown. And they have a great look to them. And we call them and say, hey, could we have you on the show? They don't really do much press or, you know, so it was a big deal for us to get them. So they're going to perform a new song tonight. And this is the..."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-057",
+                "scene": "Scene-057",
+                "text": "They're new song tonight."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.570571780204773,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-063",
+                "scene": "Scene-063",
+                "text": "Nice. Juice. This next headline, what?"
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-073",
+                "scene": "Scene-073",
+                "text": "Okay, but next headline was"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5649756193161011,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-014",
+                "scene": "Scene-014",
+                "text": "I can't get the grade that got me here, yeah. You're fantastic on Center at Live, it is your second season. Yes. You auditioned to be on the show, did you feel like you went well? The others are with me."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-015",
+                "scene": "Scene-015",
+                "text": "First of all, I want to say real quick. It's my second season. I'm very grateful to a lot of the writers that have helped me. The please don't destroy boys. Jake Nordwin, Mike DeChanzo, Colin Jost, and Ego who have all taken me under their wing and really helped me. But the audition is scary because you're almost stand up by the stand-up in my audition. And I did stand up 12 times a week, maybe more. And then you get to the audition. You do your best stand-up that you've worked on so hard to zero laughs. And then right after your mom calls you and goes, so how did Ego?"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5637037754058838,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-005",
+                "scene": "Scene-005",
+                "text": "That's it. That's it. Good. Hey. Welcome to the show. Yes. Welcome to the show. And thank you for being here. By the way, I did meet your beautiful mother before the show. She's here tonight. She's in the... probably in the audience somewhere. She..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-046",
+                "scene": "Scene-046",
+                "text": "I mean, we're a little more comfortable, yeah. Last time you were here, your mom came with you. Oh, yes, you're beautiful mom. Oh, yes, she was actually in the audience. We cut her in the audience. Oh, my."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5627370476722717,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-002",
+                "scene": "Scene-002",
+                "text": "Marcelo and Jimmy tonight show numero uno. Oh! This is..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5625531673431396,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-073",
+                "scene": "Scene-073",
+                "text": "Looking good, hey, up in Super Bowl this week."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-075",
+                "scene": "Scene-075",
+                "text": "in the Super Bowl because I'll show you the picture of who's a young keen in right here."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5605974197387695,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-024",
+                "scene": "Scene-024",
+                "text": "That's how it's going. Yeah, that's how it's going for you. Good. You know, you got there or maybe you won't. Because I never got it. Before you got on Sarah Live, we were talking. You did stand up. We were talking backstage at how you used to go on the street and try to sell tickets to come to your shows. Yeah, I did that for three years. That's what tickets on the street. And..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-099-Window-001",
+                "scene": "Scene-099",
+                "text": "picture backstage. It's unbelievable. You and go of character. You have such a good time with it. And your dedication to the fans nightly, bro. Like you're your god."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5587979555130005,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-102",
+                "scene": "Scene-102",
+                "text": "That's right, Matthew McConaughey, nine. Now, let me ask you this, Matthew. How many years a partner you and Woody?"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-104",
+                "scene": "Scene-104",
+                "text": "And what year did Woody's dad marry? What is mom?"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5560145974159241,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-054",
+                "scene": "Scene-054",
+                "text": "I can't be stopped. I must be stopped. I said, I wanted to ask you about your summer. You got some time off from Sarant Live. I heard you... Wait, would you go Dominican Republic? Yes, yes."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-055",
+                "scene": "Scene-055",
+                "text": "You have to go to the Dominican in the summer jam."
+            }
+        },
+        {
+            "video_id": "dYp-KUK73RE",
+            "similarity": 0.5551159381866455,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "dYp-KUK73RE-Scene-014",
+                "scene": "Scene-014",
+                "text": "Guess you didn't mean what you wrote and that song about me because you said for as- Where are you stills?"
+            },
+            "sample_b": {
+                "sample_id": "dYp-KUK73RE-Scene-015",
+                "scene": "Scene-015",
+                "text": "I think that's happening. I guess you didn't mean, you didn't mean what you wrote and that's song about me. Don't write something down for me. I mean, can I try different? I got my job. Come on, I'm trying."
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5528975129127502,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-004",
+                "scene": "Scene-004",
+                "text": "Give every American adult $5,000."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-005-Window-003",
+                "scene": "Scene-005",
+                "text": "That's right, Trump promised to pay every American $5,000 for Republicans win the mid-terms as little confusing, but the White House just put out this video message to clarify. Watch this."
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5499434471130371,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-004",
+                "scene": "Scene-004",
+                "text": "Give every American adult $5,000."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-005-Window-002",
+                "scene": "Scene-005",
+                "text": "There you go. $5,000 for everyone. The only catch is the money must be spent at the Mara Lago gift shop. Yeah."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5480420589447021,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-038-Window-002",
+                "scene": "Scene-038",
+                "text": "And they only do that to us, okay? That's what's funny to me. They only do it to Latinos They would never do it to anybody else a white person would never go up to a black guy and be like, hey man"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-038-Window-003",
+                "scene": "Scene-038",
+                "text": "They would never do that, but they do it to us, okay? And we never do it to them. That's what's funny to me. We never do it to them. My dad doesn't really speak English."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5463367700576782,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-002",
+                "scene": "Scene-097",
+                "text": "He stars in the new show, Brothers with Woody Harrelson. But what's really interesting is that the show is based on a consumer."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-003",
+                "scene": "Scene-097",
+                "text": "and Woody are in fact half brothers in real life. If you guys heard this, I mean, it's just one of those crazy internet things that's completely far-fetched, and has no basis in reality."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.545607328414917,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-001",
+                "scene": "Scene-001",
+                "text": "Welcome everybody, welcome, welcome, welcome to the tonight show. This is it. The watching. We're guys tonight at the 2026 NFL season, officially kicked off with their running super..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-003",
+                "scene": "Scene-003",
+                "text": "Tonight it was a New England Patriots versus the Seattle Seahawks, or as it'll soon be called, the American Patriots versus the Seattle Americans. Taking place in America Stadium. You had the NFL season officially kicked off tonight with a Super Bowl rematch between the Seahawks and the Patriots, the players are fired up about the new season. Check out what they had to say. First up, Seahawks quarterback Sam Darnell said."
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5446559190750122,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-001",
+                "scene": "Scene-001",
+                "text": "Thank you very much. We're going to have fun tonight. Enjoy yourself. Welcome, everybody. Welcome. Welcome to the tonight show. This is it. Thank you for watching. And I just want to say quickly. If you laugh at all these jokes tonight, President Trump said he'll give everyone in the audience $5,000. Well, guys, the two-day Republican midterm convention just wrapped up and last night, President"
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-005-Window-003",
+                "scene": "Scene-005",
+                "text": "That's right, Trump promised to pay every American $5,000 for Republicans win the mid-terms as little confusing, but the White House just put out this video message to clarify. Watch this."
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.5429847240447998,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-124",
+                "scene": "Scene-124",
+                "text": "write the name of a person who..."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-008",
+                "scene": "Scene-008",
+                "text": "If you write the full name of a person in a dish,"
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.541222333908081,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-002",
+                "scene": "Scene-002",
+                "text": "Trump made a keynote address and spoke for nearly two."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-003-Window-002",
+                "scene": "Scene-003",
+                "text": "Two hours. That's not a speech, that's a residency. Now you know, Trump was standing for so long by the end of his speech, he was 90% cancels."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5386484861373901,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-003",
+                "scene": "Scene-097",
+                "text": "and Woody are in fact half brothers in real life. If you guys heard this, I mean, it's just one of those crazy internet things that's completely far-fetched, and has no basis in reality."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-113",
+                "scene": "Scene-113",
+                "text": "Oh, I wish it did. But the cosmic dance of the number nine ping-pongs back and forth between Woody and me in combinations that only the man upstairs can make sense of. For instance, Woody and I grew up in Texas. He grew up in Midland, Texas. I grew up in Longview, Texas."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5380754470825195,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-089",
+                "scene": "Scene-089",
+                "text": "No, no, no, no, I was not funny at all right there. I was very serious. Yeah. Were you parents?"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-091",
+                "scene": "Scene-091",
+                "text": "started doing stand-up, and while I was playing soccer, and then I told my mom about it, and she was like, yeah, I think that you crazy, and that could work for a comedy. And then I told my dad, I wanted to do comedy. And he was like, oh, no, I don't like that."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5368448495864868,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-027",
+                "scene": "Scene-027",
+                "text": "You want to do you want to go to the show or you want to be the show? Yeah."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-098",
+                "scene": "Scene-098",
+                "text": "wanted to go. It's like the way you commit to characters and like even the little things like we're looking at the Kenny Rogers you and Molly side."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5349323749542236,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-112",
+                "scene": "Scene-112",
+                "text": "on my own. So this is Marcelo and Jimmy tonight show number three."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5348490476608276,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-021",
+                "scene": "Scene-021",
+                "text": "and Brady Russell from the C-Hogs hit."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5338857769966125,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-048",
+                "scene": "Scene-048",
+                "text": "Yeah, she actually, you know, she feels like she's like coming to too many things. She's been telling me she's like, I think I'm like imposing a lot. So this time I didn't bring my mom. I actually, I brought my best friend, San Diago. Oh, San Diago is here. Where's-"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-132",
+                "scene": "Scene-132",
+                "text": "Wow, she's always listening to mom. Whatever she says, do you have any de-perchance? No, I think I do have-"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5316247940063477,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-104",
+                "scene": "Scene-104",
+                "text": "And what year did Woody's dad marry? What is mom?"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-106",
+                "scene": "Scene-106",
+                "text": "and how long were they married?"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5315243005752563,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-072",
+                "scene": "Scene-072",
+                "text": "full-fledged cast member now, Marcelo Hernandez, it's crazy. Come on, buddy, you're crashing it. It's nuts. You're crushing it and I will be watching you as as your mom was, as well, and Santiago, and we will be rooting for you, crushing this weekend. I love it when you come by. Thank you. Let's make it trist. Thank you, guys, thank you. Come back. They love you. We love you. Come on. We got a lot to talk about. Let's talk. Let's talk."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-083",
+                "scene": "Scene-083",
+                "text": "Did he stop playing trumpet? Yep. Marching band. That's right. You were? You get a letter for the marching band. Oh, yeah. That's what I got my letter in. Oh, here you are playing soccer, by the way. And Marcelo. Come on."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5303776264190674,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-079",
+                "scene": "Scene-079",
+                "text": "Some more political news Trump's trade war with Canada continues to heat up as-"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-080",
+                "scene": "Scene-080",
+                "text": "Canada just put tariffs on $20 billion worth of US goods. Thank you."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.52764493227005,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-124",
+                "scene": "Scene-124",
+                "text": "Oh shoot my bad, you know, try next door, see 109."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-126",
+                "scene": "Scene-126",
+                "text": "That was under seat 109."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.527541995048523,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-003",
+                "scene": "Scene-097",
+                "text": "and Woody are in fact half brothers in real life. If you guys heard this, I mean, it's just one of those crazy internet things that's completely far-fetched, and has no basis in reality."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-102",
+                "scene": "Scene-102",
+                "text": "That's right, Matthew McConaughey, nine. Now, let me ask you this, Matthew. How many years a partner you and Woody?"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5250979065895081,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-051",
+                "scene": "Scene-051",
+                "text": "Who's sitting next to it? Oh, I don't know. Yeah, who's that person? I have no idea. Oh my gosh, it's suspicious."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-086",
+                "scene": "Scene-086",
+                "text": "a little suspicious. If you look closely, I look suspicious. I'm looking at what's going on."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5220441818237305,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-097-Window-002",
+                "scene": "Scene-097",
+                "text": "He stars in the new show, Brothers with Woody Harrelson. But what's really interesting is that the show is based on a consumer."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-127",
+                "scene": "Scene-127",
+                "text": "This is Brother's starring Matthew McConaughey and Woody Harrelson with the very September 23rd on Apple TV. Thank you."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5214266180992126,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-111-Window-003",
+                "scene": "Scene-111",
+                "text": "It was always bring champagne for us. I do it to a big deal. This is a big show. Isn't it this show that he has? Yeah. This was the same year. So this is my third time doing your show."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-042-Window-002",
+                "scene": "Scene-042",
+                "text": "The Larry is only the best for you. The last time you came on the show, you brought me a bottle of champagne. Yes, and this one says, the first one said tonight show number, oh no. And this one says tonight show number of dose."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.5189021825790405,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-021",
+                "scene": "Scene-021",
+                "text": "and Brady Russell from the C-Hogs hit."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-027",
+                "scene": "Scene-027",
+                "text": "Then Grey Zable from the C-Hogs hit"
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5142252445220947,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-004",
+                "scene": "Scene-004",
+                "text": "Give every American adult $5,000."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-008",
+                "scene": "Scene-008",
+                "text": "We have $5,000 of Republicans when there's November."
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5110158920288086,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-002",
+                "scene": "Scene-002",
+                "text": "Trump made a keynote address and spoke for nearly two."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-003-Window-003",
+                "scene": "Scene-003",
+                "text": "Yeah, Trump's speech was up against the first NFL game of the season. Yeah, after both of them."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.5071420669555664,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-071",
+                "scene": "Scene-071",
+                "text": "Nice. Good boy. Nice headline, what?"
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-075",
+                "scene": "Scene-075",
+                "text": "Then you made. And finally this headline was..."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.5064030885696411,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-116",
+                "scene": "Scene-116",
+                "text": "I'm gonna be proud of you!"
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-119",
+                "scene": "Scene-119",
+                "text": "I want to congratulate you on..."
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.5054508447647095,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-027",
+                "scene": "Scene-027",
+                "text": "an AT&T outage in Texas that left thousands without internet, TBR phone."
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-028",
+                "scene": "Scene-028",
+                "text": "service. And that's the problem when you hack AT&T, no one can really tell. Everything's normal. Everything's...no bars, everything's normal. It's like claiming responsibility for the breaking the ice cream machine at McDonald's. It's like, yeah, it never worked. Never worked. Well listen to this, Elon Musk..."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.5045666098594666,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-036",
+                "scene": "Scene-036",
+                "text": "Ryan Ares denied reports that a passenger was partially sucked out of a plane window."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-037",
+                "scene": "Scene-037",
+                "text": "Saying he doesn't think any part of his body got out of the window. It's never good with an airline CUS used to phrase, we don't think any part of his body got out of the window. Finally, Oprah..."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.5043314695358276,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-008",
+                "scene": "Scene-008",
+                "text": "Concerns about AI have been exaggerated by very negative forces."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-010",
+                "scene": "Scene-010",
+                "text": "they want to put the brakes on reckless AI development."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.49947553873062134,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-059",
+                "scene": "Scene-059",
+                "text": "I said, I saw him, the guy is like, I know exactly what happened and I wish I could apologize."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-060",
+                "scene": "Scene-060",
+                "text": "Please, give me the opportunity to apologize. That's so funny. It's lovely James. Yeah, yeah. You also went to Paris for the Olympics. Oh, James, you have to go to Paris for the summer. No, no, no, no. You have to visit him. He's you and Mikey Day, really."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.49936193227767944,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-063",
+                "scene": "Scene-063",
+                "text": "I like to embrace the culture of James."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-134-Window-003",
+                "scene": "Scene-134",
+                "text": "to talk to me James. And I understood everything in the past. I was having the time of my life. I'm like, of course it's this. And it was one of those tests with complicated answers, like 0.79, 99, 97."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.498634397983551,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-060",
+                "scene": "Scene-060",
+                "text": "The original headline was Trump presents new economic plan. That headline can definitely be improved, because if you only looked at the photo, the headline could have been Grams entering minute nine of slowly sounding out every item on the Cracker Barrow menu."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-073",
+                "scene": "Scene-073",
+                "text": "Okay, but next headline was"
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.4980551600456238,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-002",
+                "scene": "Scene-002",
+                "text": "Marcelo and Jimmy tonight show numero uno. Oh! This is..."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-136-Window-002",
+                "scene": "Scene-136",
+                "text": "I didn't write my name. I didn't write my name. Congrats again on the special American boy, Marcelo's a big deal, but you know what I like to love all the bits on, go into it. You're doing something tonight."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.4972716271877289,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-013-Window-001",
+                "scene": "Scene-013",
+                "text": "Trump only watched the tournament, but out of habit he still claimed he won. Oh. Trump said Melania skipped the trip because it was a seven-hour flight."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-013-Window-002",
+                "scene": "Scene-013",
+                "text": "Yet Trump really wanted Melania to be there. He even tried bribing her with the check for $5,000. You"
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.49560898542404175,
+            "same_scene": true,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-005-Window-002",
+                "scene": "Scene-005",
+                "text": "But he... We're relying on Trump to beat AI. I don't even think Trump can beat wordle. You know what I'm saying? I don't think Trump's handling it, which means he's..."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-005-Window-004",
+                "scene": "Scene-005",
+                "text": "until we could go Trump thought AI stood for American Idol. So I was, I was muckin' with Ryan C. Correst and, with perfectly safe. Meanwhile, Trump also said he's not,"
+            }
+        },
+        {
+            "video_id": "GX-pNtRAj00",
+            "similarity": 0.49421465396881104,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "GX-pNtRAj00-Scene-001",
+                "scene": "Scene-001",
+                "text": "Thank you very much. We're going to have fun tonight. Enjoy yourself. Welcome, everybody. Welcome. Welcome to the tonight show. This is it. Thank you for watching. And I just want to say quickly. If you laugh at all these jokes tonight, President Trump said he'll give everyone in the audience $5,000. Well, guys, the two-day Republican midterm convention just wrapped up and last night, President"
+            },
+            "sample_b": {
+                "sample_id": "GX-pNtRAj00-Scene-008",
+                "scene": "Scene-008",
+                "text": "We have $5,000 of Republicans when there's November."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.49344614148139954,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-059",
+                "scene": "Scene-059",
+                "text": "For me, it's the best. Yeah, come on. Guys, if you were to a scene of photo in the news and think that headline could be better, yeah, it's time for news and improve. Here we go. Yeah. For example, check out this first photo here."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-060",
+                "scene": "Scene-060",
+                "text": "The original headline was Trump presents new economic plan. That headline can definitely be improved, because if you only looked at the photo, the headline could have been Grams entering minute nine of slowly sounding out every item on the Cracker Barrow menu."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.49326667189598083,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-023",
+                "scene": "Scene-023",
+                "text": "and hunter Henry from the Patriots said."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-025",
+                "scene": "Scene-025",
+                "text": "Then Abraham Lucas from the Seahawksid."
+            }
+        },
+        {
+            "video_id": "4_dGBVQ5gAc",
+            "similarity": 0.4905780851840973,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "4_dGBVQ5gAc-Scene-013-Window-003",
+                "scene": "Scene-013",
+                "text": "I try a Trump want to Ireland for a golf tournament and is at his private club at Trump really likes Ireland In fact, he just releases his own Irish jig. Oh, yeah, check this out."
+            },
+            "sample_b": {
+                "sample_id": "4_dGBVQ5gAc-Scene-018",
+                "scene": "Scene-018",
+                "text": "They love the Irish whiskey"
+            }
+        },
+        {
+            "video_id": "mtODX-055g8",
+            "similarity": 0.4889235496520996,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "mtODX-055g8-Scene-037",
+                "scene": "Scene-037",
+                "text": "Yeah, why don't you prove it? Write my name in there."
+            },
+            "sample_b": {
+                "sample_id": "mtODX-055g8-Scene-095",
+                "scene": "Scene-095",
+                "text": "But that doesn't make any sense. I wrote your whole name on here. Look!"
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.48838311433792114,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-035",
+                "scene": "Scene-035",
+                "text": "Guys, everyone's excited that football is back to so many great teams, but honestly it can be kind of hard to keep some of their logos straight"
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-062",
+                "scene": "Scene-062",
+                "text": "It's like three pointy things in a circle or something. Leave me alone. I don't know what their logo is."
+            }
+        },
+        {
+            "video_id": "m5voCGft51Q",
+            "similarity": 0.48817163705825806,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "m5voCGft51Q-Scene-007",
+                "scene": "Scene-007",
+                "text": "and Milton Williams from the Patriots said..."
+            },
+            "sample_b": {
+                "sample_id": "m5voCGft51Q-Scene-021",
+                "scene": "Scene-021",
+                "text": "and Brady Russell from the C-Hogs hit."
+            }
+        },
+        {
+            "video_id": "57_--62bZUQ",
+            "similarity": 0.4877271354198456,
+            "same_scene": false,
+            "sample_a": {
+                "sample_id": "57_--62bZUQ-Scene-028",
+                "scene": "Scene-028",
+                "text": "Before you got on the satellite, we were actually trying to book you for our show. I know. To do stand-up, it just happened too fast. I know, and I was so excited to do the song."
+            },
+            "sample_b": {
+                "sample_id": "57_--62bZUQ-Scene-030",
+                "scene": "Scene-030",
+                "text": "They have a little time left. Would you want to make your tonight's show, Dave Dewey? Yeah. And you stand up and stand up, Dave Dewey. It's the real right now. OK. We'll be back soon. We'll be back on with you. OK. All right, we'll be back."
+            }
+        }
+    ]
+}

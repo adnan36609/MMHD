@@ -1,17 +1,28 @@
 import multiprocessing
 import os
 import json
+import re
 import subprocess
-from faster_whisper import WhisperModel
 import time
 
+from faster_whisper import WhisperModel
 
 
 SAMPLE_DIR = "sample_clips"
 OUTPUT_NAME = "dataset.json"
-WHISPER_MODEL = "tiny"
+DIVERSITY_REJECTION_NAME = "diversity_rejections.json"
 
+WHISPER_MODEL = "tiny"
 whisper = None
+
+# Exact transcript diversity policy.
+# Short/common utterances are allowed because their multimodal
+# context may still be meaningful.
+MIN_EXACT_DUPLICATE_WORDS = 3
+
+COMMON_DUPLICATE_PHRASES = {
+    "thanks for watching",
+}
 
 
 # =========================================================
@@ -19,7 +30,6 @@ whisper = None
 # =========================================================
 
 def run_ffmpeg(command):
-
     return subprocess.run(
         command,
         stdout=subprocess.DEVNULL,
@@ -38,7 +48,6 @@ def extract_audio(
     start_seconds,
     duration_seconds
 ):
-
     os.makedirs(
         os.path.dirname(audio_path),
         exist_ok=True
@@ -86,7 +95,6 @@ def extract_images(
     start_seconds,
     duration
 ):
-
     os.makedirs(
         output_dir,
         exist_ok=True
@@ -109,7 +117,6 @@ def extract_images(
         timestamps,
         start=1
     ):
-
         image_path = os.path.join(
             output_dir,
             f"{sample_id}-image-{index}.jpg"
@@ -153,7 +160,6 @@ def extract_images(
 # =========================================================
 
 def transcribe(audio_path):
-
     if not os.path.exists(audio_path):
         return {
             "status": "failed",
@@ -161,13 +167,12 @@ def transcribe(audio_path):
         }
 
     try:
-
         segments, _ = whisper.transcribe(
-    audio_path,
-    beam_size=1,
-    vad_filter=True,
-    condition_on_previous_text=False
-)
+            audio_path,
+            beam_size=1,
+            vad_filter=True,
+            condition_on_previous_text=False
+        )
 
         text = " ".join(
             segment.text.strip()
@@ -187,7 +192,6 @@ def transcribe(audio_path):
         }
 
     except Exception as e:
-
         print(
             f"Transcription failed: {e}"
         )
@@ -206,7 +210,6 @@ def ocr_worker(
     request_queue,
     response_queue
 ):
-
     import easyocr
 
     print(
@@ -223,7 +226,6 @@ def ocr_worker(
     )
 
     while True:
-
         request = request_queue.get()
 
         if request is None:
@@ -245,15 +247,12 @@ def ocr_worker(
             ).strip()
 
             if text:
-
                 response_queue.put({
                     "sample_id": sample_id,
                     "status": "success",
                     "value": text
                 })
-
             else:
-
                 response_queue.put({
                     "sample_id": sample_id,
                     "status": "empty",
@@ -261,7 +260,6 @@ def ocr_worker(
                 })
 
         except Exception as e:
-
             print(
                 f"OCR failed for {sample_id}: {e}"
             )
@@ -274,7 +272,6 @@ def ocr_worker(
 
 
 def start_ocr_worker():
-
     request_queue = multiprocessing.Queue()
     response_queue = multiprocessing.Queue()
 
@@ -301,13 +298,11 @@ def extract_ocr(
     ocr_request_queue,
     ocr_response_queue
 ):
-
     ocr_request_queue.put(
         (sample_id, image_path)
     )
 
     while True:
-
         result = ocr_response_queue.get()
 
         if result.get("sample_id") != sample_id:
@@ -326,42 +321,31 @@ def extract_ocr(
 # =========================================================
 
 def extract_emoji(text):
-
     text_lower = text.lower()
 
     emoji_map = {
-
         "laugh": "😂",
         "funny": "😂",
         "haha": "😂",
         "lol": "😂",
-
         "hilarious": "🤣",
-
         "love": "❤️",
-
         "angry": "😡",
-
         "sad": "😢",
         "cry": "😭",
-
         "wow": "😮",
         "surprise": "😮",
-
         "shock": "😱"
     }
 
     found = []
 
     for keyword, emoji in emoji_map.items():
-
         if keyword in text_lower:
-
             if emoji not in found:
                 found.append(emoji)
 
     if found:
-
         return {
             "status": "success",
             "value": " ".join(found)
@@ -374,20 +358,122 @@ def extract_emoji(text):
 
 
 # =========================================================
+# DIVERSITY
+# =========================================================
+
+def normalize_text(text):
+    text = text.lower()
+
+    text = re.sub(
+        r"\s+",
+        " ",
+        text
+    )
+
+    text = re.sub(
+        r"[^\w\s]",
+        "",
+        text
+    )
+
+    return text.strip()
+
+
+def load_diversity_rejections(path):
+    if not os.path.exists(path):
+        return []
+
+    try:
+        with open(
+            path,
+            "r",
+            encoding="utf-8"
+        ) as f:
+            data = json.load(f)
+
+        if isinstance(data, list):
+            return data
+
+        return []
+
+    except Exception as e:
+        print(
+            f"Could not load diversity rejections: {e}"
+        )
+
+        return []
+
+
+def save_diversity_rejections(
+    path,
+    rejections
+):
+    with open(
+        path,
+        "w",
+        encoding="utf-8"
+    ) as f:
+        json.dump(
+            rejections,
+            f,
+            indent=2,
+            ensure_ascii=False
+        )
+
+
+def remove_extracted_files(result):
+    audio_path = (
+        result
+        .get("modalities", {})
+        .get("audio", {})
+        .get("path", "")
+    )
+
+    image_paths = (
+        result
+        .get("modalities", {})
+        .get("image", {})
+        .get("paths", [])
+    )
+
+    paths = []
+
+    if audio_path:
+        paths.append(audio_path)
+
+    paths.extend(image_paths)
+
+    for path in paths:
+        try:
+            if os.path.exists(path):
+                os.remove(path)
+
+        except Exception as e:
+            print(
+                f"Could not remove "
+                f"{path}: {e}"
+            )
+
+
+# =========================================================
 # PROCESS ONE CANDIDATE
 # =========================================================
+
 def process_candidate(
     video_folder,
     candidate,
     ocr_request_queue,
     ocr_response_queue
 ):
-
     start_time = time.time()
 
-    candidate_id = candidate["candidate_id"]
+    candidate_id = candidate[
+        "candidate_id"
+    ]
 
-    source_file = candidate["source_file"]
+    source_file = candidate[
+        "source_file"
+    ]
 
     start_seconds = candidate[
         "start_seconds"
@@ -457,13 +543,10 @@ def process_candidate(
     # -----------------------------------------------------
 
     if audio["status"] == "success":
-
         text = transcribe(
             audio["path"]
         )
-
     else:
-
         text = {
             "status": "failed",
             "value": ""
@@ -486,14 +569,12 @@ def process_candidate(
     # -----------------------------------------------------
 
     if image["status"] == "success":
-
         ocr_values = []
 
         for image_index, image_path in enumerate(
             image["paths"],
             start=1
         ):
-
             image_ocr = extract_ocr(
                 f"{sample_id}-image-{image_index}",
                 image_path,
@@ -502,7 +583,6 @@ def process_candidate(
             )
 
             if image_ocr["value"]:
-
                 ocr_values.append(
                     image_ocr["value"]
                 )
@@ -519,7 +599,6 @@ def process_candidate(
         }
 
     else:
-
         ocr = {
             "status": "failed",
             "value": ""
@@ -538,45 +617,34 @@ def process_candidate(
     # -----------------------------------------------------
 
     result = {
-
         "sample_id": sample_id,
 
         "source": {
-
             "video_id": os.path.basename(
                 video_folder
             ),
-
             "video_file": (
                 os.path.basename(
                     video_folder
                 ) + ".mp4"
             ),
-
             "source_scene": candidate[
                 "source_scene"
             ],
-
             "source_file": source_file
         },
 
         "timing": {
-
             "start_seconds": start_seconds,
-
             "end_seconds": end_seconds,
-
             "duration_seconds": duration_seconds
         },
 
         "modalities": {
-
             "text": text,
 
             "image": {
-
                 "status": image["status"],
-
                 "paths": image["paths"]
             },
 
@@ -588,7 +656,6 @@ def process_candidate(
         },
 
         "metadata": {
-
             "candidate_type": candidate.get(
                 "type",
                 ""
@@ -604,12 +671,12 @@ def process_candidate(
 
     return result
 
+
 # =========================================================
 # LOAD CANDIDATES
 # =========================================================
 
 def load_candidates(video_folder):
-
     candidate_path = os.path.join(
         video_folder,
         "candidate_report.json"
@@ -618,7 +685,6 @@ def load_candidates(video_folder):
     if not os.path.exists(
         candidate_path
     ):
-
         print(
             f"Candidate report missing: "
             f"{candidate_path}"
@@ -631,7 +697,6 @@ def load_candidates(video_folder):
         "r",
         encoding="utf-8"
     ) as f:
-
         report = json.load(f)
 
     return report.get(
@@ -645,21 +710,17 @@ def load_candidates(video_folder):
 # =========================================================
 
 def load_dataset(dataset_path):
-
     if not os.path.exists(
         dataset_path
     ):
-
         return []
 
     try:
-
         with open(
             dataset_path,
             "r",
             encoding="utf-8"
         ) as f:
-
             data = json.load(f)
 
         if isinstance(data, list):
@@ -668,7 +729,6 @@ def load_dataset(dataset_path):
         return []
 
     except Exception as e:
-
         print(
             f"Could not load dataset: {e}"
         )
@@ -676,12 +736,10 @@ def load_dataset(dataset_path):
         return []
 
 
-
 def candidate_matches_record(
     record,
     candidate
 ):
-
     timing = record.get(
         "timing",
         {}
@@ -737,17 +795,16 @@ def candidate_matches_record(
         )
     )
 
+
 def save_dataset(
     dataset_path,
     dataset
 ):
-
     with open(
         dataset_path,
         "w",
         encoding="utf-8"
     ) as f:
-
         json.dump(
             dataset,
             f,
@@ -768,7 +825,6 @@ def save_dataset(
 def extract_video_dataset(
     video_folder
 ):
-
     global whisper
 
     dataset_path = os.path.join(
@@ -781,7 +837,6 @@ def extract_video_dataset(
     )
 
     if not candidates:
-
         print(
             f"No candidates found for "
             f"{video_folder}"
@@ -794,13 +849,47 @@ def extract_video_dataset(
     )
 
     records_by_id = {
-
         item.get("sample_id"): item
-
         for item in dataset
-
         if item.get("sample_id")
     }
+
+    diversity_rejection_path = os.path.join(
+        video_folder,
+        DIVERSITY_REJECTION_NAME
+    )
+
+    diversity_rejections = (
+        load_diversity_rejections(
+            diversity_rejection_path
+        )
+    )
+
+    rejected_ids = {
+        item.get("sample_id")
+        for item in diversity_rejections
+        if item.get("sample_id")
+    }
+
+    accepted_texts = {}
+
+    for item in dataset:
+        text = (
+            item
+            .get("modalities", {})
+            .get("text", {})
+            .get("value", "")
+        )
+
+        normalized = normalize_text(
+            text
+        )
+
+        if normalized:
+            accepted_texts.setdefault(
+                normalized,
+                item.get("sample_id")
+            )
 
     print(
         f"\nProcessing "
@@ -816,12 +905,16 @@ def extract_video_dataset(
         f"{len(records_by_id)}"
     )
 
+    print(
+        f"Existing diversity rejections: "
+        f"{len(diversity_rejections)}"
+    )
+
     # -----------------------------------------------------
     # WHISPER
     # -----------------------------------------------------
 
     if whisper is None:
-
         print(
             "Loading Whisper..."
         )
@@ -847,14 +940,13 @@ def extract_video_dataset(
     ) = start_ocr_worker()
 
     total_processed = 0
+    total_rejected = 0
 
     try:
-
         for index, candidate in enumerate(
             candidates,
             start=1
         ):
-
             candidate_id = candidate[
                 "candidate_id"
             ]
@@ -864,12 +956,22 @@ def extract_video_dataset(
                 f"{candidate_id}"
             )
 
+            # -------------------------------------------------
+            # ALREADY REJECTED
+            # -------------------------------------------------
+
+            if sample_id in rejected_ids:
+                continue
+
+            # -------------------------------------------------
+            # CHECKPOINT / RESUME
+            # -------------------------------------------------
+
             existing_record = records_by_id.get(
                 sample_id
             )
 
             if existing_record is not None:
-
                 if candidate_matches_record(
                     existing_record,
                     candidate
@@ -906,6 +1008,82 @@ def extract_video_dataset(
                 ocr_response_queue
             )
 
+            # -------------------------------------------------
+            # EXACT TEXT DIVERSITY CHECK
+            # -------------------------------------------------
+
+            text = (
+                result
+                .get("modalities", {})
+                .get("text", {})
+                .get("value", "")
+            )
+
+            normalized_text = normalize_text(
+                text
+            )
+
+            duplicate_sample_id = None
+
+            if normalized_text:
+                word_count = len(
+                    normalized_text.split()
+                )
+
+                if word_count >= MIN_EXACT_DUPLICATE_WORDS:
+                    if (
+                        normalized_text
+                        not in COMMON_DUPLICATE_PHRASES
+                    ):
+                        duplicate_sample_id = (
+                            accepted_texts.get(
+                                normalized_text
+                            )
+                        )
+
+            if duplicate_sample_id is not None:
+                print(
+                    f"Duplicate transcript detected: "
+                    f"{sample_id} matches "
+                    f"{duplicate_sample_id}. "
+                    f"Rejecting candidate."
+                )
+
+                rejection = {
+                    "sample_id": sample_id,
+                    "candidate_id": candidate_id,
+                    "reason": "exact_text_duplicate",
+                    "matched_sample_id": (
+                        duplicate_sample_id
+                    ),
+                    "text": text
+                }
+
+                diversity_rejections.append(
+                    rejection
+                )
+
+                rejected_ids.add(
+                    sample_id
+                )
+
+                save_diversity_rejections(
+                    diversity_rejection_path,
+                    diversity_rejections
+                )
+
+                remove_extracted_files(
+                    result
+                )
+
+                total_rejected += 1
+
+                continue
+
+            # -------------------------------------------------
+            # ACCEPT SAMPLE
+            # -------------------------------------------------
+
             dataset.append(
                 result
             )
@@ -913,6 +1091,11 @@ def extract_video_dataset(
             records_by_id[
                 sample_id
             ] = result
+
+            if normalized_text:
+                accepted_texts[
+                    normalized_text
+                ] = sample_id
 
             save_dataset(
                 dataset_path,
@@ -922,19 +1105,16 @@ def extract_video_dataset(
             total_processed += 1
 
     except KeyboardInterrupt:
-
         print(
             "\nExtraction interrupted by user."
         )
 
     finally:
-
         # -------------------------------------------------
         # STOP OCR WORKER
         # -------------------------------------------------
 
         try:
-
             ocr_request_queue.put(
                 None
             )
@@ -943,20 +1123,22 @@ def extract_video_dataset(
             pass
 
         if ocr_process.is_alive():
-
             ocr_process.join(
                 timeout=10
             )
 
         if ocr_process.is_alive():
-
             ocr_process.terminate()
-
             ocr_process.join()
 
     print(
         f"\nCompleted this run: "
         f"{total_processed}"
+    )
+
+    print(
+        f"Rejected for exact-text duplication: "
+        f"{total_rejected}"
     )
 
     print(
@@ -968,17 +1150,20 @@ def extract_video_dataset(
         f"Dataset: {dataset_path}"
     )
 
+    print(
+        f"Diversity audit: "
+        f"{diversity_rejection_path}"
+    )
+
 
 # =========================================================
 # MAIN
 # =========================================================
 
 def main():
-
     if not os.path.exists(
         SAMPLE_DIR
     ):
-
         print(
             f"Sample directory not found: "
             f"{SAMPLE_DIR}"
@@ -991,7 +1176,6 @@ def main():
     for name in sorted(
         os.listdir(SAMPLE_DIR)
     ):
-
         path = os.path.join(
             SAMPLE_DIR,
             name
@@ -1008,13 +1192,11 @@ def main():
         if os.path.exists(
             candidate_report
         ):
-
             video_folders.append(
                 path
             )
 
     if not video_folders:
-
         print(
             "No video folders with "
             "candidate reports found."
@@ -1028,14 +1210,11 @@ def main():
     )
 
     for video_folder in video_folders:
-
         extract_video_dataset(
             video_folder
         )
 
 
 if __name__ == "__main__":
-
     multiprocessing.freeze_support()
-
     main()
