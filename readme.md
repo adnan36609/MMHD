@@ -12,7 +12,7 @@ The pipeline is designed to be **reproducible, resumable, and scalable**.
 
 ---
 
-## Pipeline
+# Pipeline
 
 ```text
 YouTube URL
@@ -36,13 +36,14 @@ dataset.json
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```text
 MMHD/
+
 ├── source_videos/          # Downloaded source videos (ignored by Git)
-├── sample_clips/           # Generated scenes, candidates and extracted data (ignored by Git)
-├── sample_data/            # Local/generated sample data (ignored where applicable)
+├── sample_clips/           # Generated scenes, candidates and extracted data
+├── sample_data/            # Local/generated sample data
 ├── src/
 │   ├── download.py         # YouTube video downloading
 │   ├── segment.py          # Scene detection and scene splitting
@@ -52,7 +53,7 @@ MMHD/
 │   └── analyze_scenes.py   # Scene analysis utility
 ├── requirements.txt
 ├── .gitignore
-└── readme.md
+└── README.md
 ```
 
 Generated videos, clips, extracted modalities, and other large local data should not be committed to Git.
@@ -70,12 +71,16 @@ Generated videos, clips, extracted modalities, and other large local data should
 
 ## Python Dependencies
 
+The main pipeline dependencies include:
+
 ```text
 faster-whisper==1.2.1
 easyocr
 yt-dlp
 scenedetect
 ```
+
+The complete environment can be reproduced from the exported environment configuration when required.
 
 ---
 
@@ -111,7 +116,7 @@ Verify Python:
 python --version
 ```
 
-The expected Python version is:
+Expected:
 
 ```text
 Python 3.12.x
@@ -135,7 +140,7 @@ Enter YouTube video URL:
 
 Enter one URL and press Enter.
 
-The pipeline then performs:
+The pipeline performs:
 
 ```text
 STEP 1: Download
@@ -151,7 +156,7 @@ The current pipeline accepts **one YouTube URL per execution**.
 
 To process another video, run the command again with the next URL.
 
-Already downloaded videos are skipped.
+Already downloaded videos are reused.
 
 ---
 
@@ -177,7 +182,7 @@ If the video has already been downloaded, the existing file is reused.
 
 ---
 
-## 2. Scene Detection
+# 2. Scene Detection
 
 `src/segment.py` uses **PySceneDetect ContentDetector** with the **PyAV backend** for FFmpeg-backed video decoding.
 
@@ -193,7 +198,7 @@ Detected scenes are split and stored under:
 sample_clips/<video_id>/
 ```
 
-A segmentation report is also generated:
+A segmentation report is generated:
 
 ```text
 sample_clips/<video_id>/segmentation_report.json
@@ -221,7 +226,7 @@ It does **not** determine whether a scene is humorous, hateful, sarcastic, ironi
 
 `src/candidate.py` converts detected scenes into dataset candidates.
 
-## Natural scenes
+## Natural Scenes
 
 Scenes with duration:
 
@@ -239,7 +244,7 @@ Scene-001
 
 The complete scene duration is used.
 
-## Long scenes
+## Long Scenes
 
 Scenes longer than:
 
@@ -289,11 +294,11 @@ OCR
 Emoji
 ```
 
+---
+
 ## Text
 
-Text is extracted using:
-
-**Faster-Whisper**
+Text is extracted using **Faster-Whisper**.
 
 Current transcription configuration uses:
 
@@ -346,7 +351,13 @@ OCR is applied to both extracted representative images.
 
 A persistent OCR worker is used so that EasyOCR does not need to be repeatedly initialized for every candidate.
 
-OCR uses `mag_ratio=0.75` to reduce CPU processing time while retaining useful text extraction quality.
+OCR uses:
+
+```text
+mag_ratio=0.75
+```
+
+to reduce CPU processing time while retaining useful text extraction quality.
 
 If no readable text is present in the sampled images, OCR may legitimately return:
 
@@ -399,45 +410,53 @@ A simplified sample looks like:
 
 ```json
 {
-  "sample_id": "57_--62bZUQ-Scene-001",
-  "source": {
-    "video_id": "57_--62bZUQ",
-    "video_file": "57_--62bZUQ.mp4",
-    "source_scene": "Scene-001",
-    "source_file": "57_--62bZUQ-Scene-001.mp4"
-  },
-  "timing": {
-    "start_seconds": 0.0,
-    "end_seconds": 7.774,
-    "duration_seconds": 7.774
-  },
-  "modalities": {
-    "text": {
-      "status": "success",
-      "value": "..."
+    "sample_id": "57_--62bZUQ-Scene-001",
+
+    "source": {
+        "video_id": "57_--62bZUQ",
+        "video_file": "57_--62bZUQ.mp4",
+        "source_scene": "Scene-001",
+        "source_file": "57_--62bZUQ-Scene-001.mp4"
     },
-    "image": {
-      "status": "success",
-      "paths": [
-        "..."
-      ]
+
+    "timing": {
+        "start_seconds": 0.0,
+        "end_seconds": 7.774,
+        "duration_seconds": 7.774
     },
-    "audio": {
-      "status": "success",
-      "path": "..."
+
+    "modalities": {
+        "text": {
+            "status": "success",
+            "value": "..."
+        },
+
+        "image": {
+            "status": "success",
+            "paths": [
+                "..."
+            ]
+        },
+
+        "audio": {
+            "status": "success",
+            "path": "..."
+        },
+
+        "ocr": {
+            "status": "empty",
+            "value": ""
+        },
+
+        "emoji": {
+            "status": "derived",
+            "value": "😂"
+        }
     },
-    "ocr": {
-      "status": "empty",
-      "value": ""
-    },
-    "emoji": {
-      "status": "derived",
-      "value": "😂"
+
+    "metadata": {
+        "candidate_type": "natural_scene"
     }
-  },
-  "metadata": {
-    "candidate_type": "natural_scene"
-  }
 }
 ```
 
@@ -503,36 +522,51 @@ This is particularly important when scaling the dataset.
 
 Dataset extraction is resumable.
 
-After candidates are processed, the dataset is saved locally.
+Before skipping an existing sample, the extraction pipeline verifies that the stored record matches the current candidate definition.
 
-When extraction is run again, existing sample IDs are detected and skipped.
+The checkpoint validation includes:
 
-Therefore, if processing is interrupted:
+* source scene
+* source file
+* start time
+* end time
+* candidate duration
+* candidate type
+
+If all values match, the candidate is skipped.
+
+If a sample ID exists but its stored metadata does not match the current candidate definition, the record is treated as **stale** and the candidate is reprocessed.
+
+This prevents stale dataset records from being incorrectly reused after candidate-generation changes.
+
+The resulting workflow is:
 
 ```text
 Run 1
-  ↓
+    ↓
 Some candidates completed
-  ↓
+    ↓
 Process interrupted
-  ↓
+    ↓
 Run pipeline again
-  ↓
-Completed candidates skipped
-  ↓
+    ↓
+Matching completed candidates skipped
+    ↓
 Remaining candidates processed
+    ↓
+Stale records reprocessed when detected
 ```
 
 This allows large datasets to be generated without restarting the entire extraction process after an interruption.
 
 ---
 
-# Scaling to 8K+
+# Scaling to 8K–10K Samples
 
 The intended dataset target is approximately:
 
 ```text
-8,000+ samples
+8,000–10,000 samples
 ```
 
 Candidate yield depends on the source videos and their scene structure, so there is no fixed samples-per-minute conversion.
@@ -590,6 +624,105 @@ The pipeline is intended to produce candidate samples for later dataset analysis
 
 ---
 
+# Validation
+
+The current Phase 1 pipeline has been validated on a pilot dataset.
+
+Validation checks include:
+
+* dataset integrity
+* unique sample IDs
+* physical file existence
+* image count validation
+* modality status validation
+* candidate boundary validation
+* candidate ↔ dataset consistency
+* temporal overlap detection
+* semantic redundancy inspection
+* checkpoint/resume behavior
+* multimodal extraction
+
+The validated dataset currently contains:
+
+```text
+Dataset samples:        629
+Unique sample IDs:      629
+Duplicate IDs:          0
+Missing candidates:     0
+Candidate mismatches:   0
+Missing audio:          0
+Missing images:         0
+Invalid image counts:   0
+Extraction errors:      0
+Temporal overlaps:     0
+```
+
+## Modality Validation
+
+The current validated dataset contains:
+
+```text
+Text:
+    success: 567
+    empty:    62
+
+Image:
+    success: 629
+
+Audio:
+    success: 629
+
+OCR:
+    success: 297
+    empty:   332
+
+Emoji:
+    success: 13
+    derived: 207
+    empty:   409
+```
+
+Empty and derived modality states are valid according to the dataset schema.
+
+---
+
+# Semantic Redundancy
+
+Semantic redundancy inspection is used as a **quality-control diagnostic**, not as an automatic production deduplication mechanism.
+
+Repeated text can legitimately occur across different scenes or source content.
+
+Therefore, semantic similarity flags must be manually interpreted before removing samples.
+
+The current validation identified a single repeated phrase across different scenes that was not caused by duplicate extraction.
+
+No automatic semantic deduplication is applied to the production pipeline.
+
+---
+
+# Baseline Status
+
+The currently validated pipeline represents the **CPU execution baseline**.
+
+The production candidate definitions, dataset schema, extraction semantics, and validation requirements are treated as the current baseline for subsequent optimization.
+
+GPU acceleration is being evaluated separately.
+
+GPU optimization should preserve:
+
+* candidate IDs
+* source scene/file references
+* candidate timing
+* candidate type
+* dataset schema
+* physical output requirements
+* checkpoint/resume behavior
+* extraction semantics
+
+GPU results should be benchmarked and validated against this baseline before large-scale processing.
+
+---
+
 # Important Rules
 
 1. **PySceneDetect does not detect humor.**
@@ -604,6 +737,8 @@ The pipeline is intended to produce candidate samples for later dataset analysis
 10. Keep generated videos, clips, audio, images, and datasets outside Git.
 11. Test pipeline changes on a small dataset before large-scale processing.
 12. Preserve checkpoint/resume behavior when modifying extraction logic.
+13. Do not change the dataset schema without revalidating the pipeline.
+14. Treat the current validated pipeline as the baseline for GPU optimization and future scaling.
 
 ---
 
@@ -634,40 +769,42 @@ Use focused Git commits for meaningful pipeline changes.
 
 ---
 
-# Current Validation Status
+# Handoff
 
-The current Phase 1 pipeline has been validated end-to-end on a pilot dataset.
+The intended operator workflow is:
 
-The validation covered:
+```powershell
+conda activate mmhd
 
-* YouTube downloading
-* scene detection
-* natural-scene candidates
-* long-scene candidate generation
-* distributed long-scene candidate selection
-* text extraction
-* image extraction
-* audio extraction
-* OCR
-* transcript-derived emoji
-* checkpointing
-* resume behavior
-* multimodal dataset generation
-
-The pilot produced:
-
-```text
-388 samples
-0 duplicate sample IDs
-0 pending candidates
-0 missing audio files
-0 missing image files
-0 extraction errors
+python src/pipeline.py
 ```
 
-Empty modalities were observed where the corresponding information was naturally absent.
+Provide the YouTube URL when prompted.
 
-The pipeline is therefore ready for **controlled scaling and handoff**.
+For interrupted processing, rerun the pipeline.
+
+Existing candidates whose stored records match the current candidate definition will be skipped. Stale records are reprocessed when a mismatch is detected.
+
+Before large-scale processing, verify:
+
+```text
+1. Python environment is active
+2. FFmpeg is installed
+3. Dependencies are installed
+4. Source video downloads correctly
+5. Scene segmentation completes
+6. Candidate report is generated
+7. dataset.json is generated
+8. Extracted audio/images exist
+9. Sample IDs are unique
+10. Candidate ↔ dataset consistency passes
+11. Empty modalities are interpreted correctly
+12. Checkpoint/resume behavior works
+```
+
+The pipeline should be treated as the **validated dataset-generation baseline**.
+
+Any future modification should first be tested on a small controlled sample and validated before being used for large-scale collection.
 
 ---
 
@@ -698,35 +835,3 @@ Final Dataset Labeling
 ```
 
 Those tasks belong to later stages of the project.
-
----
-
-# Handoff
-
-The intended operator workflow is:
-
-```powershell
-conda activate mmhd
-python src/pipeline.py
-```
-
-Provide the YouTube URL when prompted.
-
-For interrupted processing, rerun the pipeline. Existing completed candidates will be skipped during extraction.
-
-Before large-scale processing, verify:
-
-```text
-1. Python environment is active
-2. FFmpeg is installed
-3. Dependencies are installed
-4. Source video downloads correctly
-5. Scene segmentation completes
-6. Candidate report is generated
-7. dataset.json is generated
-8. Extracted audio/images exist
-9. Sample IDs are unique
-10. Empty modalities are interpreted correctly
-```
-
-The pipeline should be treated as the **validated dataset-generation baseline**. Any future modification should first be tested on a small controlled sample before being used for large-scale collection.
