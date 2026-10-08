@@ -5,6 +5,47 @@ import re
 import subprocess
 import time
 
+# Compatibility patch for PyAV 19+ (where metadata_errors was removed from av.open)
+try:
+    import av
+    _orig_av_open = av.open
+    def _compat_av_open(*args, **kwargs):
+        try:
+            return _orig_av_open(*args, **kwargs)
+        except TypeError as e:
+            err_msg = str(e)
+            if "metadata_errors" in err_msg or "metadata_encoding" in err_msg:
+                kwargs.pop("metadata_errors", None)
+                kwargs.pop("metadata_encoding", None)
+                return _orig_av_open(*args, **kwargs)
+            raise
+    av.open = _compat_av_open
+except Exception:
+    pass
+
+# Preload CUDA 12 libraries (libcublas.so.12, libcudnn) if available via pip packages in Linux
+import sys
+if sys.platform.startswith("linux"):
+    try:
+        import ctypes
+        import glob
+        _cuda_dirs = []
+        for _pkg in ["nvidia.cublas.lib", "nvidia.cudnn.lib"]:
+            try:
+                _mod = __import__(_pkg, fromlist=["__file__"])
+                _cuda_dirs.append(os.path.dirname(_mod.__file__))
+            except Exception:
+                pass
+        for _cd in _cuda_dirs:
+            _so_files = sorted(glob.glob(os.path.join(_cd, "*.so*")), key=lambda x: ("cublasLt" not in x, x))
+            for _so in _so_files:
+                try:
+                    ctypes.CDLL(_so, mode=ctypes.RTLD_GLOBAL)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
 from faster_whisper import WhisperModel
 
 
@@ -28,6 +69,30 @@ COMMON_DUPLICATE_PHRASES = {
 # =========================================================
 # BASIC HELPERS
 # =========================================================
+
+import shutil
+
+# Ensure ~/.local/bin is on PATH for non-root environments (e.g. AIKosh)
+_local_bin = os.path.expanduser("~/.local/bin")
+if os.path.isdir(_local_bin) and _local_bin not in os.environ.get("PATH", "").split(":"):
+    os.environ["PATH"] = f"{_local_bin}:{os.environ.get('PATH', '')}"
+
+# If ffmpeg is not found on PATH, look for imageio-ffmpeg
+if shutil.which("ffmpeg") is None:
+    try:
+        import imageio_ffmpeg
+        _ff_exe = imageio_ffmpeg.get_ffmpeg_exe()
+        _ff_dir = os.path.dirname(_ff_exe)
+        _target_link = os.path.join(_ff_dir, "ffmpeg")
+        if not os.path.exists(_target_link):
+            try:
+                os.symlink(_ff_exe, _target_link)
+            except Exception:
+                shutil.copy2(_ff_exe, _target_link)
+        if _ff_dir not in os.environ.get("PATH", "").split(":"):
+            os.environ["PATH"] = f"{_ff_dir}:{os.environ.get('PATH', '')}"
+    except Exception:
+        pass
 
 def run_ffmpeg(command):
     return subprocess.run(
@@ -216,13 +281,15 @@ def ocr_worker(
         "OCR worker: loading EasyOCR..."
     )
 
+    use_gpu = os.environ.get("MMHD_USE_GPU") == "1"
+
     reader = easyocr.Reader(
         ["en"],
-        gpu=False
+        gpu=use_gpu
     )
 
     print(
-        "OCR worker: ready."
+        f"OCR worker: ready (GPU={use_gpu})."
     )
 
     while True:
@@ -272,10 +339,11 @@ def ocr_worker(
 
 
 def start_ocr_worker():
-    request_queue = multiprocessing.Queue()
-    response_queue = multiprocessing.Queue()
+    ctx = multiprocessing.get_context("spawn")
+    request_queue = ctx.Queue()
+    response_queue = ctx.Queue()
 
-    process = multiprocessing.Process(
+    process = ctx.Process(
         target=ocr_worker,
         args=(
             request_queue,
@@ -740,6 +808,16 @@ def candidate_matches_record(
     record,
     candidate
 ):
+    modalities = record.get(
+        "modalities",
+        {}
+    )
+
+    # Reprocess records that previously encountered extraction failures
+    for mod in modalities.values():
+        if isinstance(mod, dict) and mod.get("status") == "failed":
+            return False
+
     timing = record.get(
         "timing",
         {}
@@ -919,14 +997,16 @@ def extract_video_dataset(
             "Loading Whisper..."
         )
 
+        use_gpu = os.environ.get("MMHD_USE_GPU") == "1"
+
         whisper = WhisperModel(
             WHISPER_MODEL,
-            device="cpu",
-            compute_type="int8"
+            device="cuda" if use_gpu else "cpu",
+            compute_type="float16" if use_gpu else "int8"
         )
 
         print(
-            "Whisper ready."
+            f"Whisper ready (device={'cuda' if use_gpu else 'cpu'})."
         )
 
     # -----------------------------------------------------
@@ -979,7 +1059,7 @@ def extract_video_dataset(
                     continue
 
                 print(
-                    f"Stale record detected for "
+                    f"Stale or previously failed record detected for "
                     f"{sample_id}. Reprocessing."
                 )
 
