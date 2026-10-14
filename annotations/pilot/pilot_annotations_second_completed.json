@@ -1,0 +1,962 @@
+[
+  {
+    "sample_id": "0drOTHHMwQk-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-045",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-089",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-133",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-178",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-221",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-265",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-309",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-353",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "0drOTHHMwQk-Scene-398",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-001",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-010",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-018",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-027",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-036",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-044",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-053",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-062",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-070",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "5n7Jgdb5nnY-Scene-079",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-015",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-029",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-044",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-058",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-072",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-086",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-101",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-115",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "75qGla8fZNw-Scene-129",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-028",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-055",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-083",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-111",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-140",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-167",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-195",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-225",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Cx1Ex6MU0c0-Scene-253",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-036",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-073",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-108",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-143",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-179",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-214",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-249",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-285",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "eFS5vxYlfY8-Scene-320",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-041",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-081",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-121",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-161",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-202",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-242",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-282",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-322",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "f6Ukgpag63w-Scene-362",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-012",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-024",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-035",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-046",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-058",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-067",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-078",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-090",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "gYgveD5B-V0-Scene-101",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-021",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-041",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-061",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-081",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-101",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-121",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-141",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-161",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "habPb3tBBro-Scene-181",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-029",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-057",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-084",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-112",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-140",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-168",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-195",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-223",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hFPn3WRE18w-Scene-251",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-048",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-098",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-149",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-199",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-250",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-300",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-351",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-396",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "hqtkWqFITtM-Scene-447",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-080",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-160",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-239",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-313",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-393",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-472",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-551",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-631",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "HUb7VzkHcVQ-Scene-710",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-1000",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-1139",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-029",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-168",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-306",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-445",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-583",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-722",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-860",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "JoGjIRVY9t4-Scene-999",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-001",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-020",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-040",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-059",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-078",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-098",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-117",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-136",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-156",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "l_4QL7g6jhI-Scene-175",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-001",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-023",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-045",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-066",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-088",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-110",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-132",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-154",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-176",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "LFXKZWk76Bg-Scene-198",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-024",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-046",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-069",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-091",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-115",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-137",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-161",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-184",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "libZUdRtrj4-Scene-207",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-047",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-089",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-135",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-182",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-228",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-275",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-322",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-369",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "mAFRIsw2geY-Scene-415",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-003",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-005",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-007",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-009",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-012",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-014",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-016",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-018",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "MPXCoTRToM4-Scene-020",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-001",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-025",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-050",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-074",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-099",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-123",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-148",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-172",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-197",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "NB9lsn5xPsk-Scene-221",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-001",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-007-Window-006",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-016-Window-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-024",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-039",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-056",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-070-Window-002",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-081-Window-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-096-Window-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Tj5AF_m3-4I-Scene-107-Window-003",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-001-Window-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-037",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-078",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-120",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-161",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-201",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-242",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-284",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-325",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "uBtwY7_Zzm8-Scene-367",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-028",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-055",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-081",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-108",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-135",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-162",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-188",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-215",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "vciPkp6Pqq0-Scene-242",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-011",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-022",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-032",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-043",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-053",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-064",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-074",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-085",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "w6XdCKjRMFw-Scene-095",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-001-Window-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-068",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-137",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-206",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-275",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-345",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-414",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-483",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-552",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "Whqws6PSgY0-Scene-621",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-001",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-031",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-050",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-063",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-082",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-091",
+    "humor_label": "humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-107",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-132",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-022",
+    "humor_label": "non_humorous"
+  },
+  {
+    "sample_id": "zQDzpqs7K7Q-Scene-142",
+    "humor_label": "non_humorous"
+  }
+]
