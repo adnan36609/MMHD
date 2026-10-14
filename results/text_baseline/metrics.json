@@ -1,0 +1,121 @@
+{
+  "experiment": "TF-IDF + Logistic Regression",
+  "task": "Binary text-based humor classification",
+  "positive_class": "humorous",
+  "dataset": {
+    "pilot_samples": 240,
+    "annotation_records": 240,
+    "samples_used": 191,
+    "samples_excluded_empty_text": 49,
+    "source_videos": 24,
+    "label_distribution": {
+      "humorous": 72,
+      "non_humorous": 119
+    }
+  },
+  "evaluation": {
+    "method": "5-fold GroupKFold grouped by video_id",
+    "metrics_are_out_of_fold": true,
+    "out_of_fold_metrics": {
+      "accuracy": 0.5392670157068062,
+      "balanced_accuracy": 0.4903711484593838,
+      "macro_f1": 0.486935286935287,
+      "precision_humorous": 0.3620689655172414,
+      "recall_humorous": 0.2916666666666667,
+      "f1_humorous": 0.3230769230769231,
+      "roc_auc_humorous": 0.498015873015873
+    },
+    "majority_class_baseline": {
+      "accuracy": 0.6230366492146597,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.38387096774193546
+    },
+    "classification_report": {
+      "non_humorous": {
+        "precision": 0.6165413533834586,
+        "recall": 0.6890756302521008,
+        "f1-score": 0.6507936507936508,
+        "support": 119.0
+      },
+      "humorous": {
+        "precision": 0.3620689655172414,
+        "recall": 0.2916666666666667,
+        "f1-score": 0.3230769230769231,
+        "support": 72.0
+      },
+      "accuracy": 0.5392670157068062,
+      "macro avg": {
+        "precision": 0.48930515945035,
+        "recall": 0.4903711484593838,
+        "f1-score": 0.486935286935287,
+        "support": 191.0
+      },
+      "weighted avg": {
+        "precision": 0.5206145893710626,
+        "recall": 0.5392670157068062,
+        "f1-score": 0.5272564550051461,
+        "support": 191.0
+      }
+    },
+    "confusion_matrix_label_order": [
+      "non_humorous",
+      "humorous"
+    ],
+    "confusion_matrix": [
+      [
+        82,
+        37
+      ],
+      [
+        51,
+        21
+      ]
+    ],
+    "folds": [
+      {
+        "fold": 1,
+        "training_samples": 150,
+        "validation_samples": 41,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.5121951219512195
+      },
+      {
+        "fold": 2,
+        "training_samples": 150,
+        "validation_samples": 41,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.4878048780487805
+      },
+      {
+        "fold": 3,
+        "training_samples": 152,
+        "validation_samples": 39,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.5641025641025641
+      },
+      {
+        "fold": 4,
+        "training_samples": 155,
+        "validation_samples": 36,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.6388888888888888
+      },
+      {
+        "fold": 5,
+        "training_samples": 157,
+        "validation_samples": 34,
+        "training_videos": 20,
+        "validation_videos": 4,
+        "accuracy": 0.5
+      }
+    ]
+  },
+  "software": {
+    "python": "3.11.17",
+    "scikit_learn": "1.9.1"
+  }
+}

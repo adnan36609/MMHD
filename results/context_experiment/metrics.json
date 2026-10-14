@@ -1,0 +1,172 @@
+{
+  "experiment": "Neighboring-scene context augmentation for humor recognition",
+  "context_definition": "Text from the nearest available preceding and following scene indices in the per-video dataset.json files. This is a scene-order proxy, not verified conversational turn data.",
+  "evaluation_method": "Five-fold GroupKFold by video_id. Both classifiers use the same labeled samples and the same folds.",
+  "dataset": {
+    "pilot_samples": 240,
+    "annotation_records": 240,
+    "samples_with_text": 191,
+    "source_videos": 24,
+    "video_dataset_files_loaded": 24,
+    "videos_missing_dataset_file": [],
+    "samples_with_previous_text": 159,
+    "samples_with_next_text": 171,
+    "samples_with_either_context": 184,
+    "samples_with_both_contexts": 146,
+    "label_distribution": {
+      "humorous": 72,
+      "non_humorous": 119
+    }
+  },
+  "majority_class_baseline": {
+    "accuracy": 0.6230366492146597,
+    "balanced_accuracy": 0.5,
+    "macro_f1": 0.38387096774193546
+  },
+  "models": {
+    "Target text only": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.5392670157068062,
+        "balanced_accuracy": 0.4903711484593838,
+        "macro_f1": 0.486935286935287,
+        "precision_humorous": 0.3620689655172414,
+        "recall_humorous": 0.2916666666666667,
+        "f1_humorous": 0.3230769230769231,
+        "roc_auc_humorous": 0.498015873015873
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          82,
+          37
+        ],
+        [
+          51,
+          21
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 150,
+          "validation_samples": 41,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5121951219512195
+        },
+        {
+          "fold": 2,
+          "training_samples": 150,
+          "validation_samples": 41,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.4878048780487805
+        },
+        {
+          "fold": 3,
+          "training_samples": 152,
+          "validation_samples": 39,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5641025641025641
+        },
+        {
+          "fold": 4,
+          "training_samples": 155,
+          "validation_samples": 36,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6388888888888888
+        },
+        {
+          "fold": 5,
+          "training_samples": 157,
+          "validation_samples": 34,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.5
+        }
+      ]
+    },
+    "Target + neighboring-scene text": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.5706806282722513,
+        "balanced_accuracy": 0.4936391223155929,
+        "macro_f1": 0.47073533387402,
+        "precision_humorous": 0.3611111111111111,
+        "recall_humorous": 0.18055555555555555,
+        "f1_humorous": 0.24074074074074073,
+        "roc_auc_humorous": 0.4627684407096172
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          96,
+          23
+        ],
+        [
+          59,
+          13
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 150,
+          "validation_samples": 41,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5609756097560976
+        },
+        {
+          "fold": 2,
+          "training_samples": 150,
+          "validation_samples": 41,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.4878048780487805
+        },
+        {
+          "fold": 3,
+          "training_samples": 152,
+          "validation_samples": 39,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5641025641025641
+        },
+        {
+          "fold": 4,
+          "training_samples": 155,
+          "validation_samples": 36,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6111111111111112
+        },
+        {
+          "fold": 5,
+          "training_samples": 157,
+          "validation_samples": 34,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.6470588235294118
+        }
+      ]
+    }
+  },
+  "software": {
+    "python": "3.11.17",
+    "scikit_learn": "1.9.1",
+    "numpy": "1.26.4"
+  },
+  "limitations": [
+    "Neighboring scene order is only a proxy for conversational context.",
+    "Adjacent scenes may not be semantically related.",
+    "The labeled pilot contains 240 samples, with fewer usable text samples."
+  ]
+}

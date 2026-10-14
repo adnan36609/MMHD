@@ -1,0 +1,291 @@
+{
+  "corpus": {
+    "dataset_files": 24,
+    "samples": 7289,
+    "unique_sample_ids": 7289
+  },
+  "modalities": {
+    "text": {
+      "samples_with_actual_content_or_file": 5674,
+      "samples_without_usable_content_or_file": 1615,
+      "status_counts": {
+        "empty": 616,
+        "success": 5674,
+        "failed": 999
+      }
+    },
+    "audio": {
+      "samples_with_actual_content_or_file": 6290,
+      "samples_without_usable_content_or_file": 999,
+      "status_counts": {
+        "success": 6290,
+        "failed": 999
+      }
+    },
+    "visual": {
+      "samples_with_actual_content_or_file": 6159,
+      "samples_without_usable_content_or_file": 1130,
+      "status_counts": {
+        "success": 6159,
+        "failed": 1130
+      }
+    },
+    "ocr": {
+      "samples_with_actual_content_or_file": 3865,
+      "samples_without_usable_content_or_file": 3424,
+      "status_counts": {
+        "empty": 2294,
+        "success": 3865,
+        "failed": 1130
+      }
+    },
+    "emoji": {
+      "samples_with_actual_content_or_file": 273,
+      "samples_without_usable_content_or_file": 7016,
+      "status_counts": {
+        "empty": 7016,
+        "success": 273
+      }
+    }
+  },
+  "pairwise_and_joint_availability": {
+    "text + audio": 5674,
+    "text + visual": 5574,
+    "text + ocr": 3478,
+    "text + emoji": 273,
+    "audio + visual": 6159,
+    "audio + ocr": 3865,
+    "audio + emoji": 273,
+    "visual + ocr": 3865,
+    "visual + emoji": 271,
+    "ocr + emoji": 192,
+    "text + audio + visual": 5574,
+    "text + audio + ocr": 3478,
+    "text + audio + emoji": 273,
+    "text + visual + ocr": 3478,
+    "text + visual + emoji": 271,
+    "text + ocr + emoji": 192,
+    "audio + visual + ocr": 3865,
+    "audio + visual + emoji": 271,
+    "audio + ocr + emoji": 192,
+    "visual + ocr + emoji": 192,
+    "text + audio + visual + ocr": 3478,
+    "text + audio + visual + emoji": 271,
+    "text + audio + ocr + emoji": 192,
+    "text + visual + ocr + emoji": 192,
+    "audio + visual + ocr + emoji": 192,
+    "text + audio + visual + ocr + emoji": 192
+  },
+  "per_video": {
+    "0drOTHHMwQk": {
+      "samples": 396,
+      "text": 344,
+      "audio": 396,
+      "visual": 396,
+      "ocr": 59,
+      "emoji": 7
+    },
+    "5n7Jgdb5nnY": {
+      "samples": 79,
+      "text": 71,
+      "audio": 79,
+      "visual": 78,
+      "ocr": 77,
+      "emoji": 1
+    },
+    "75qGla8fZNw": {
+      "samples": 129,
+      "text": 117,
+      "audio": 129,
+      "visual": 129,
+      "ocr": 129,
+      "emoji": 7
+    },
+    "Cx1Ex6MU0c0": {
+      "samples": 246,
+      "text": 177,
+      "audio": 246,
+      "visual": 205,
+      "ocr": 162,
+      "emoji": 3
+    },
+    "eFS5vxYlfY8": {
+      "samples": 319,
+      "text": 283,
+      "audio": 319,
+      "visual": 319,
+      "ocr": 315,
+      "emoji": 13
+    },
+    "f6Ukgpag63w": {
+      "samples": 362,
+      "text": 326,
+      "audio": 362,
+      "visual": 362,
+      "ocr": 43,
+      "emoji": 18
+    },
+    "gYgveD5B-V0": {
+      "samples": 103,
+      "text": 93,
+      "audio": 103,
+      "visual": 103,
+      "ocr": 70,
+      "emoji": 1
+    },
+    "habPb3tBBro": {
+      "samples": 181,
+      "text": 168,
+      "audio": 181,
+      "visual": 181,
+      "ocr": 176,
+      "emoji": 1
+    },
+    "hFPn3WRE18w": {
+      "samples": 251,
+      "text": 250,
+      "audio": 251,
+      "visual": 251,
+      "ocr": 251,
+      "emoji": 30
+    },
+    "hqtkWqFITtM": {
+      "samples": 456,
+      "text": 412,
+      "audio": 456,
+      "visual": 421,
+      "ocr": 421,
+      "emoji": 23
+    },
+    "HUb7VzkHcVQ": {
+      "samples": 715,
+      "text": 663,
+      "audio": 715,
+      "visual": 715,
+      "ocr": 715,
+      "emoji": 48
+    },
+    "JoGjIRVY9t4": {
+      "samples": 1248,
+      "text": 229,
+      "audio": 249,
+      "visual": 249,
+      "ocr": 94,
+      "emoji": 9
+    },
+    "l_4QL7g6jhI": {
+      "samples": 175,
+      "text": 170,
+      "audio": 175,
+      "visual": 175,
+      "ocr": 32,
+      "emoji": 12
+    },
+    "LFXKZWk76Bg": {
+      "samples": 197,
+      "text": 130,
+      "audio": 197,
+      "visual": 162,
+      "ocr": 46,
+      "emoji": 1
+    },
+    "libZUdRtrj4": {
+      "samples": 204,
+      "text": 187,
+      "audio": 204,
+      "visual": 204,
+      "ocr": 20,
+      "emoji": 16
+    },
+    "mAFRIsw2geY": {
+      "samples": 419,
+      "text": 403,
+      "audio": 419,
+      "visual": 419,
+      "ocr": 82,
+      "emoji": 7
+    },
+    "MPXCoTRToM4": {
+      "samples": 20,
+      "text": 14,
+      "audio": 20,
+      "visual": 14,
+      "ocr": 11,
+      "emoji": 0
+    },
+    "NB9lsn5xPsk": {
+      "samples": 221,
+      "text": 216,
+      "audio": 221,
+      "visual": 221,
+      "ocr": 221,
+      "emoji": 24
+    },
+    "Tj5AF_m3-4I": {
+      "samples": 152,
+      "text": 146,
+      "audio": 152,
+      "visual": 152,
+      "ocr": 29,
+      "emoji": 3
+    },
+    "uBtwY7_Zzm8": {
+      "samples": 369,
+      "text": 353,
+      "audio": 369,
+      "visual": 369,
+      "ocr": 131,
+      "emoji": 10
+    },
+    "vciPkp6Pqq0": {
+      "samples": 242,
+      "text": 210,
+      "audio": 242,
+      "visual": 242,
+      "ocr": 29,
+      "emoji": 5
+    },
+    "w6XdCKjRMFw": {
+      "samples": 95,
+      "text": 93,
+      "audio": 95,
+      "visual": 95,
+      "ocr": 95,
+      "emoji": 21
+    },
+    "Whqws6PSgY0": {
+      "samples": 623,
+      "text": 539,
+      "audio": 623,
+      "visual": 623,
+      "ocr": 622,
+      "emoji": 10
+    },
+    "zQDzpqs7K7Q": {
+      "samples": 87,
+      "text": 80,
+      "audio": 87,
+      "visual": 74,
+      "ocr": 35,
+      "emoji": 3
+    }
+  },
+  "labeled_pilot": {
+    "annotation_records": 240,
+    "matched_to_corpus": 240,
+    "unmatched_ids": 0,
+    "label_distribution": {
+      "non_humorous": 158,
+      "humorous": 82
+    },
+    "modality_availability": {
+      "text": 191,
+      "audio": 232,
+      "visual": 224,
+      "ocr": 145,
+      "emoji": 13
+    }
+  },
+  "examples_file": "results\\modality_examples.csv",
+  "examples_written": 3946
+}

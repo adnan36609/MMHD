@@ -1,0 +1,39 @@
+{
+  "method": "Coefficient-based interpretation of the fitted audio Logistic Regression classifier",
+  "model": "results\\audio_baseline\\model.joblib",
+  "sample_count": 232,
+  "feature_count": 13,
+  "top_absolute_coefficients": [
+    {
+      "feature": "spectral_centroid_mean",
+      "coefficient_toward_humorous": 0.6848540890376703,
+      "interpretation": "Higher values push toward humorous"
+    },
+    {
+      "feature": "spectral_flatness_mean",
+      "coefficient_toward_humorous": -0.5435977931539134,
+      "interpretation": "Higher values push away from humorous"
+    },
+    {
+      "feature": "spectral_bandwidth_mean",
+      "coefficient_toward_humorous": 0.4586854154347771,
+      "interpretation": "Higher values push toward humorous"
+    },
+    {
+      "feature": "silence_frame_ratio",
+      "coefficient_toward_humorous": -0.3291504367916969,
+      "interpretation": "Higher values push away from humorous"
+    },
+    {
+      "feature": "spectral_flatness_std",
+      "coefficient_toward_humorous": 0.22432500285110607,
+      "interpretation": "Higher values push toward humorous"
+    }
+  ],
+  "limitations": [
+    "Feature contributions explain the fitted classifier, not the true cause of humor.",
+    "The acoustic features are low-level signal statistics.",
+    "Per-sample predictions are from the final model fitted on the complete audio pilot and are not held-out evaluation predictions.",
+    "This analysis does not provide commonsense reasoning or natural-language explanations."
+  ]
+}
