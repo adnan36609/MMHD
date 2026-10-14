@@ -32,3 +32,9 @@ results/dataset_validation.log
 results/**/*.csv
 results/**/*.png
 results/**/*.joblib
+
+# Unfinished annotation drafts and detailed prediction output
+annotations/pilot/pilot_annotations.json
+annotations/pilot/pilot_annotations_annotator1.json
+annotations/pilot/pilot_annotations_second.json
+results/text_baseline/comparison_predictions.json
