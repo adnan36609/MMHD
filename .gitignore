@@ -23,3 +23,12 @@ sample_data/master_dataset.json
 # Local/tool directories
 src/cls/
 src/yt-dlp/
+# Generated MMHD research artifacts
+sample_clips_old/
+MMHD_Annotation_Pack/
+MMHD_Annotation_Pack.zip
+annotations/round2_300/*.zip
+results/dataset_validation.log
+results/**/*.csv
+results/**/*.png
+results/**/*.joblib
