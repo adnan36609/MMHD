@@ -558,130 +558,94 @@ The pipeline is intended to produce candidate samples for later dataset analysis
 
 # Validation
 
-The current Phase 1 pipeline has been validated on a pilot dataset.
-
-Validation checks include:
-
-- dataset integrity
-- unique sample IDs
-- physical file existence
-- image count validation
-- modality status validation
-- candidate boundary validation
-- candidate ↔ dataset consistency
-- temporal overlap detection
-- exact transcript diversity
-- semantic redundancy inspection
-- checkpoint/resume behavior
-- multimodal extraction
+The latest full-corpus validation covers 7,289 accepted samples and 7,368 candidates.
 
 Run validation with:
 
     python validate_dataset.py
 
-The latest validated state is:
+## Current Structural Validation
 
-    Dataset samples:                  628
-    Candidates:                       629
-    Accepted:                         628
-    Diversity rejected:                 1
-    Unique sample IDs:                628
-    Duplicate IDs:                      0
-    Missing candidates:                 0
-    Candidate mismatches:               0
-    Missing audio:                      0
-    Missing images:                     0
-    Invalid image counts:               0
-    Extraction errors:                  0
-    Temporal overlaps:                  0
-    Exact transcript duplicate groups:  0
+| Check | Result |
+|---|---:|
+| Dataset samples | 7,289 |
+| Unique sample IDs | 7,289 |
+| Duplicate sample IDs | 0 |
+| Candidates checked | 7,368 |
+| Accepted samples | 7,289 |
+| Diversity rejections | 79 |
+| Candidate accounting problems | 0 |
+| Candidate boundary problems | 0 |
+| Candidate/dataset contract problems | 0 |
+| Missing audio files | 0 |
+| Missing images | 0 |
+| Invalid image counts | 0 |
+| Temporal overlaps detected | 0 |
 
-Accounting:
+Candidate accounting:
 
-    628 accepted + 1 diversity rejection = 629 candidates
+    7,289 accepted + 79 diversity rejections = 7,368 candidates
 
-**All validation checks passed.**
+The structural, file-integrity, candidate-boundary, candidate-contract, and temporal-overlap checks passed in the latest validation run.
+
+The exact-transcript-diversity audit reports a separate warning, documented below. Therefore, the final validation message should not be interpreted as proof that every quality check is warning-free.
 
 ---
 
 # Modality Validation
 
-The latest validated dataset contains:
+Current full-corpus modality-status counts:
 
-    Text:
-        success: 566
-        empty:    62
+| Modality | Success | Empty | Failed |
+|---|---:|---:|---:|
+| Text | 5,674 | 616 | 999 |
+| Image | 6,159 | 0 | 1,130 |
+| Audio | 6,290 | 0 | 999 |
+| OCR | 3,865 | 2,294 | 1,130 |
+| Emoji | 273 | 7,016 | 0 |
 
-    Image:
-        success: 628
+The image and audio tables use zero for the empty status because the current audit reports those modalities as success or failed. These counts describe extraction status; they do not necessarily measure semantic usefulness.
 
-    Audio:
-        success: 628
+Emoji values are currently derived heuristically from transcripts rather than detected directly from video pixels.
 
-    OCR:
-        success: 296
-        empty:   332
-
-    Emoji:
-        success: 13
-        derived: 207
-        empty:   408
-
-Empty and derived modality states are valid according to the dataset schema.
+An empty modality is not equivalent to an extraction failure. For example, OCR can complete successfully and return no readable text.
 
 ---
 
 # Redundancy and Diversity
 
-Redundancy is handled at two levels.
-
 ## Exact Transcript Diversity
 
-The production extraction pipeline applies an exact transcript duplicate constraint.
+The production pipeline applies an exact-text diversity constraint when accepting candidates. However, the latest full-corpus validation still found repeated normalized transcripts among accepted samples.
 
-For candidates with usable transcripts, normalized transcript text is checked against already accepted samples.
+    Samples with usable text: 5,674
+    Exact duplicate groups: 8
+    Samples in duplicate groups: 26
+    Candidates rejected for diversity: 79
 
-Candidates violating the configured exact-text diversity rule are rejected.
+Examples of repeated phrases include "oh my god", "no no no", and "thank you very much".
 
-Rejected candidates are recorded in:
+The 79 diversity rejections count candidates rejected during production extraction. They do not imply that the accepted corpus has zero repeated transcripts.
 
-    diversity_rejections.json
-
-Their extracted files are removed after rejection.
-
-This is an **exact-text constraint**, not semantic similarity detection.
-
-The latest validation found:
-
-    Usable text samples:           566
-    Exact duplicate groups:          0
-    Samples in duplicate groups:    0
-    Diversity rejections:            1
-
-The diversity rejection count refers to candidates rejected during production extraction, while the validation result confirms that no exact duplicate transcript remains among the accepted dataset samples.
+The current validator reports the duplicate groups as a warning. Investigate these remaining repetitions before claiming that the full corpus is free of exact transcript duplicates.
 
 ## Semantic Redundancy QC
 
-Semantic redundancy inspection is used as a **quality-control diagnostic**, not as an automatic production deduplication mechanism.
+Semantic redundancy inspection remains a quality-control diagnostic rather than an automatic production deduplication mechanism.
 
-Semantically similar samples may be legitimate because different scenes can contain related dialogue, visual context, or recurring phrases.
+Semantically similar samples may still contain different audio, visual context, or dialogue and should not automatically be removed.
 
-Therefore, semantic similarity flags are manually interpreted before removing samples.
+An earlier semantic-QC snapshot examined a smaller subset:
 
-The semantic redundancy QC tooling is provided separately:
+    Samples with usable text: 433
+    Exact duplicate groups reported by that run: 0
+
+This is a historical result from a different subset, not a current full-corpus result. It should not be used to override the latest audit of 5,674 samples with usable text.
+
+The semantic redundancy tooling and calibration remain available in:
 
     semantic_redundancy_qc.py
     semantic_redundancy_calibration.json
-
-The production pipeline does not automatically remove samples solely because they are semantically similar.
-
-The latest semantic redundancy QC was run separately on the subset of samples with usable text for that diagnostic:
-
-    Samples with usable text:       433
-    Exact duplicate groups:           0
-    Samples in duplicate groups:      0
-
-The semantic QC is a separate diagnostic from the production exact-transcript diversity validation and therefore may operate on a different usable-text count.
 
 ---
 
@@ -902,3 +866,34 @@ Phase 1 is responsible for:
     Structured Dataset
 
 Phase 1 does **not** perform Humor Classification.
+
+---
+
+# Humor Classification Experiments (Separate Research Stage)
+
+Phase 1 remains responsible for dataset generation and multimodal extraction. The following experiments were conducted separately using the annotated pilot; they do not change the scope of the Phase 1 pipeline.
+
+## Pilot and Evaluation Subsets
+
+The initial completed pilot contains 240 manually labeled samples:
+
+    Humorous:      82
+    Non-humorous: 158
+
+Different experiments used different modality-eligible subsets. The main subsets included 191 samples for text experiments, 232 for the audio baseline, 185 for the text/audio/visual comparison, and 145 for OCR-related comparisons.
+
+The reported experiments used five-fold GroupKFold evaluation by source video. Scores from different subsets should not be treated as a single directly comparable ranking.
+
+## Main Findings
+
+- In the 185-sample text/audio/visual comparison, audio-only achieved 58.09% balanced accuracy and 57.18% macro F1. Its accuracy was 57.84%, below the 61.62% majority-class baseline.
+- On the 145-sample OCR-eligible subset, raw OCR-only achieved 67.59% accuracy, 58.93% balanced accuracy, and 59.12% macro F1. Its accuracy was only 0.69 percentage points above the majority baseline.
+- Removing selected branding and promotional phrases reduced OCR-only macro F1 from 59.12% to 42.13%. This indicates sensitivity to the removed text, but does not prove that branding alone explains the original performance.
+- Simple multimodal fusion did not consistently outperform the strongest individual modality.
+- The neighboring-scene context experiment used nearby scene transcripts as a proxy, not verified conversational turns, and did not demonstrate a meaningful improvement.
+- Emoji coverage was too sparse to establish the value of emoji as a supervised modality in the current pilot.
+- These are exploratory binary humor-recognition experiments. They do not constitute a completed hate-speech classifier or a demonstrated reliable humor-understanding system.
+
+The full experimental tables, evaluation details, and limitations are documented in [Research Results](docs/research_results.md).
+
+A second annotation round has been prepared with 300 new samples and a 100-sample independent review subset. Its results remain pending until the annotation files are returned and validated.
