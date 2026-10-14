@@ -1,0 +1,52 @@
+{
+  "batch": "primary_annotator_300",
+  "sample_count": 300,
+  "source_video_count": 24,
+  "samples_per_video": {
+    "0drOTHHMwQk": 13,
+    "5n7Jgdb5nnY": 12,
+    "75qGla8fZNw": 12,
+    "Cx1Ex6MU0c0": 13,
+    "HUb7VzkHcVQ": 13,
+    "JoGjIRVY9t4": 13,
+    "LFXKZWk76Bg": 13,
+    "MPXCoTRToM4": 8,
+    "NB9lsn5xPsk": 13,
+    "Tj5AF_m3-4I": 13,
+    "Whqws6PSgY0": 12,
+    "eFS5vxYlfY8": 13,
+    "f6Ukgpag63w": 12,
+    "gYgveD5B-V0": 13,
+    "hFPn3WRE18w": 13,
+    "habPb3tBBro": 13,
+    "hqtkWqFITtM": 13,
+    "l_4QL7g6jhI": 12,
+    "libZUdRtrj4": 13,
+    "mAFRIsw2geY": 13,
+    "uBtwY7_Zzm8": 12,
+    "vciPkp6Pqq0": 13,
+    "w6XdCKjRMFw": 12,
+    "zQDzpqs7K7Q": 13
+  },
+  "modality_pattern_counts": {
+    "A+V": 34,
+    "A+V+O": 60,
+    "T+A+V": 43,
+    "T+A+V+E": 25,
+    "T+A+V+O": 86,
+    "T+A+V+O+E": 52
+  },
+  "modality_availability_counts": {
+    "text": 206,
+    "audio": 300,
+    "visual": 300,
+    "ocr": 198,
+    "emoji": 77
+  },
+  "selection_method": "Selected without using humor labels; approximately balanced across source videos, then spread across available modality patterns. This is not a prevalence-proportional sample.",
+  "random_seed": 20261015,
+  "corpus_sample_count": 7289,
+  "completed_pilot_annotations_excluded": 240,
+  "double_annotation_overlap_count": 100,
+  "review_format": "Extracted WAV + two representative images + transcript/OCR context; original candidate MP4 clips were not retained."
+}
