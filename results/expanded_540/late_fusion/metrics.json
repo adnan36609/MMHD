@@ -1,0 +1,111 @@
+{
+  "experiment": "Fixed equal-weight text-audio late fusion",
+  "evaluation_method": "Deterministic 50:50 average of text-only and audio-only out-of-fold humorous-class probabilities from the existing five-fold GroupKFold-by-source-video evaluation. Fusion weights were not tuned on evaluation labels.",
+  "positive_class": "humorous",
+  "decision_threshold": 0.5,
+  "samples": 391,
+  "distinct_source_videos": 24,
+  "label_distribution": {
+    "humorous": 179,
+    "non_humorous": 212
+  },
+  "models": {
+    "Text-only": {
+      "accuracy": 0.5498721227621484,
+      "balanced_accuracy": 0.5544692737430168,
+      "macro_f1": 0.5498456224815531,
+      "precision_humorous": 0.5069767441860465,
+      "recall_humorous": 0.6089385474860335,
+      "f1_humorous": 0.5532994923857868,
+      "roc_auc_humorous": 0.5481975334668494,
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          106,
+          106
+        ],
+        [
+          70,
+          109
+        ]
+      ]
+    },
+    "Audio-only": {
+      "accuracy": 0.6265984654731458,
+      "balanced_accuracy": 0.6252239907241488,
+      "macro_f1": 0.6248094011251906,
+      "precision_humorous": 0.5891891891891892,
+      "recall_humorous": 0.6089385474860335,
+      "f1_humorous": 0.5989010989010989,
+      "roc_auc_humorous": 0.6595604511436703,
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          136,
+          76
+        ],
+        [
+          70,
+          109
+        ]
+      ]
+    },
+    "Feature-level Text + Audio": {
+      "accuracy": 0.618925831202046,
+      "balanced_accuracy": 0.6151048803626014,
+      "macro_f1": 0.6152921677000998,
+      "precision_humorous": 0.5862068965517241,
+      "recall_humorous": 0.5698324022346368,
+      "f1_humorous": 0.5779036827195467,
+      "roc_auc_humorous": 0.6438283967534522,
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          140,
+          72
+        ],
+        [
+          77,
+          102
+        ]
+      ]
+    },
+    "Equal-weight Late Fusion (Text + Audio)": {
+      "accuracy": 0.6317135549872123,
+      "balanced_accuracy": 0.6316801939496153,
+      "macro_f1": 0.6306481238520074,
+      "precision_humorous": 0.5916230366492147,
+      "recall_humorous": 0.6312849162011173,
+      "f1_humorous": 0.6108108108108108,
+      "roc_auc_humorous": 0.6506798777274164,
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          134,
+          78
+        ],
+        [
+          66,
+          113
+        ]
+      ]
+    }
+  },
+  "limitations": [
+    "This is a fixed-weight fusion experiment, not a learned fusion model.",
+    "Input probabilities have not been calibrated.",
+    "Results apply to this common subset and these cross-validation folds."
+  ]
+}

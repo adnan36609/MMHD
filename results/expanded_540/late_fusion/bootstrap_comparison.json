@@ -1,0 +1,34 @@
+{
+  "method": "Paired cluster bootstrap resampling source videos",
+  "source_videos": 24,
+  "samples": 391,
+  "bootstrap_replicates": 5000,
+  "seed": 20261018,
+  "comparisons": {
+    "accuracy": {
+      "observed_late_minus_audio": 0.005115089514066473,
+      "cluster_bootstrap_95_ci": [
+        -0.02864770316579638,
+        0.038961038961038974
+      ],
+      "bootstrap_fraction_delta_above_zero": 0.6028
+    },
+    "balanced_accuracy": {
+      "observed_late_minus_audio": 0.0064562032254664725,
+      "cluster_bootstrap_95_ci": [
+        -0.026344397854932516,
+        0.03919975896613989
+      ],
+      "bootstrap_fraction_delta_above_zero": 0.6706
+    },
+    "macro_f1": {
+      "observed_late_minus_audio": 0.005838722726816847,
+      "cluster_bootstrap_95_ci": [
+        -0.027046573979687658,
+        0.039012815277007756
+      ],
+      "bootstrap_fraction_delta_above_zero": 0.6532
+    }
+  },
+  "limitation": "Exploratory uncertainty estimate on the existing cross-validation OOF predictions; not an independent external test."
+}
