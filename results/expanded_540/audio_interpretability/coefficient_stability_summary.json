@@ -1,0 +1,76 @@
+{
+  "method": "Five-fold GroupKFold coefficient stability analysis using source-video groups",
+  "sample_count": 532,
+  "source_video_count": 24,
+  "fold_count": 5,
+  "feature_count": 13,
+  "model": "StandardScaler + LogisticRegression (class_weight=balanced, max_iter=3000)",
+  "top_features_by_mean_absolute_coefficient": [
+    {
+      "feature": "spectral_centroid_mean",
+      "mean_coefficient": 1.0299471878134068,
+      "std_coefficient": 0.20075343849988556,
+      "mean_absolute_coefficient": 1.0299471878134068,
+      "positive_folds": 5,
+      "negative_folds": 0,
+      "near_zero_folds": 0,
+      "direction_consistency": 1.0,
+      "mean_absolute_rank": 1.0,
+      "dominant_direction": "toward humorous"
+    },
+    {
+      "feature": "spectral_flatness_mean",
+      "mean_coefficient": -0.49325999017001887,
+      "std_coefficient": 0.14237824322147533,
+      "mean_absolute_coefficient": 0.49325999017001887,
+      "positive_folds": 0,
+      "negative_folds": 5,
+      "near_zero_folds": 0,
+      "direction_consistency": 1.0,
+      "mean_absolute_rank": 3.0,
+      "dominant_direction": "away from humorous"
+    },
+    {
+      "feature": "duration_seconds",
+      "mean_coefficient": 0.44330530897632475,
+      "std_coefficient": 0.08482669934656192,
+      "mean_absolute_coefficient": 0.44330530897632475,
+      "positive_folds": 5,
+      "negative_folds": 0,
+      "near_zero_folds": 0,
+      "direction_consistency": 1.0,
+      "mean_absolute_rank": 3.2,
+      "dominant_direction": "toward humorous"
+    },
+    {
+      "feature": "silence_frame_ratio",
+      "mean_coefficient": -0.3757436325674456,
+      "std_coefficient": 0.008224904502431872,
+      "mean_absolute_coefficient": 0.3757436325674456,
+      "positive_folds": 0,
+      "negative_folds": 5,
+      "near_zero_folds": 0,
+      "direction_consistency": 1.0,
+      "mean_absolute_rank": 4.2,
+      "dominant_direction": "away from humorous"
+    },
+    {
+      "feature": "zero_crossing_mean",
+      "mean_coefficient": -0.22974423253236803,
+      "std_coefficient": 0.1618413774621746,
+      "mean_absolute_coefficient": 0.24158268533155844,
+      "positive_folds": 1,
+      "negative_folds": 4,
+      "near_zero_folds": 0,
+      "direction_consistency": 0.8,
+      "mean_absolute_rank": 7.4,
+      "dominant_direction": "away from humorous"
+    }
+  ],
+  "limitations": [
+    "Five folds provide only a preliminary stability assessment.",
+    "Coefficients describe model associations, not causal effects.",
+    "Correlated acoustic features can influence coefficient signs and magnitudes.",
+    "Consistent coefficients do not establish generalization to unseen datasets or source domains."
+  ]
+}

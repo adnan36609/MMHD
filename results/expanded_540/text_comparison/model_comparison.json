@@ -1,0 +1,24 @@
+{
+  "evaluation_method": "5-fold GroupKFold grouped by video_id; out-of-fold predictions",
+  "samples": 397,
+  "source_videos": 24,
+  "label_distribution": {
+    "humorous": 180,
+    "non_humorous": 217
+  },
+  "scikit_learn_version": "1.9.1",
+  "results": {
+    "TF-IDF + Logistic Regression": {
+      "accuracy": 0.5415617128463476,
+      "balanced_accuracy": 0.5465437788018432,
+      "macro_f1": 0.5415588041216182,
+      "humorous_f1": 0.542713567839196
+    },
+    "Word + Character TF-IDF + Linear SVC": {
+      "accuracy": 0.5239294710327456,
+      "balanced_accuracy": 0.519521249359959,
+      "macro_f1": 0.5195274229180674,
+      "humorous_f1": 0.4735376044568245
+    }
+  }
+}

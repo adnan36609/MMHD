@@ -38,3 +38,12 @@ annotations/pilot/pilot_annotations.json
 annotations/pilot/pilot_annotations_annotator1.json
 annotations/pilot/pilot_annotations_second.json
 results/text_baseline/comparison_predictions.json
+
+# Raw annotation returns and adjudication review media (local only)
+annotations/round2_returns/
+
+# Detailed prediction export; regenerate from experiment scripts
+results/expanded_540/text_comparison/comparison_predictions.json
+
+# Detailed annotation ledger (local only)
+annotations/master_humor_annotations_540.csv

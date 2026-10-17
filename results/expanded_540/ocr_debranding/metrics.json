@@ -1,0 +1,383 @@
+{
+  "experiment": "Raw versus de-branded OCR for humor classification",
+  "sample_count": 343,
+  "source_video_count": 24,
+  "label_distribution": {
+    "non_humorous": 205,
+    "humorous": 138
+  },
+  "samples_with_nonempty_spoken_text": 254,
+  "samples_with_empty_ocr_after_cleaning": 31,
+  "evaluation_method": "Five-fold GroupKFold by source video. Every comparison uses identical samples and folds.",
+  "debranding_patterns": [
+    "\\bJ?\\s*DRY\\s*BAR(?:\\s+COMEDY)?\\b",
+    "\\bCONAN\\s+O['’]?\\s*BRIEN\\s+NEEDS\\s+A\\s+FRIEND\\b",
+    "\\bCONAN\\b",
+    "\\bCLUELESS\\s+GAMER\\b",
+    "\\bCASSIE\\s+CAGE\\b",
+    "\\bNBNBC\\b",
+    "\\bPASSWORD\\b",
+    "\\bWATCH\\s+MORE\\b",
+    "\\bSUBSCRIBE(?:\\s+NOW)?\\b",
+    "\\bWATCH\\s+(?:FULL\\s+)?EPISODES?\\b",
+    "\\bLIKE\\s+FOLLOW\\b",
+    "\\bMORECLIPS\\b",
+    "\\bDOWNLOAD\\s+ON\\s+THE\\b",
+    "\\bGET\\s+IT\\s+ON\\b",
+    "\\bAPP\\s+STORE\\b",
+    "\\bGOOGLE\\s+PLAY\\b"
+  ],
+  "majority_class_baseline": {
+    "accuracy": 0.597667638483965,
+    "balanced_accuracy": 0.5,
+    "macro_f1": 0.3740875912408759
+  },
+  "models": {
+    "Text-only": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.5918367346938775,
+        "balanced_accuracy": 0.5969600565570873,
+        "macro_f1": 0.5884752502399562,
+        "precision_humorous": 0.4942528735632184,
+        "recall_humorous": 0.6231884057971014,
+        "f1_humorous": 0.5512820512820513,
+        "roc_auc_humorous": 0.6364262990455992
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          117,
+          88
+        ],
+        [
+          52,
+          86
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6571428571428571
+        },
+        {
+          "fold": 2,
+          "training_samples": 279,
+          "validation_samples": 64,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.578125
+        },
+        {
+          "fold": 3,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.4857142857142857
+        },
+        {
+          "fold": 4,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6
+        },
+        {
+          "fold": 5,
+          "training_samples": 274,
+          "validation_samples": 69,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6376811594202898
+        }
+      ]
+    },
+    "Raw OCR-only": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.6180758017492711,
+        "balanced_accuracy": 0.5549664192294097,
+        "macro_f1": 0.5307013421066374,
+        "precision_humorous": 0.5614035087719298,
+        "recall_humorous": 0.2318840579710145,
+        "f1_humorous": 0.3282051282051282,
+        "roc_auc_humorous": 0.57039589961117
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          180,
+          25
+        ],
+        [
+          106,
+          32
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6714285714285714
+        },
+        {
+          "fold": 2,
+          "training_samples": 279,
+          "validation_samples": 64,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.625
+        },
+        {
+          "fold": 3,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6428571428571429
+        },
+        {
+          "fold": 4,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5714285714285714
+        },
+        {
+          "fold": 5,
+          "training_samples": 274,
+          "validation_samples": 69,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5797101449275363
+        }
+      ]
+    },
+    "De-branded OCR-only": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.5743440233236151,
+        "balanced_accuracy": 0.4946977730646872,
+        "macro_f1": 0.42911536707706344,
+        "precision_humorous": 0.375,
+        "recall_humorous": 0.08695652173913043,
+        "f1_humorous": 0.1411764705882353,
+        "roc_auc_humorous": 0.5024743725698126
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          185,
+          20
+        ],
+        [
+          126,
+          12
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5142857142857142
+        },
+        {
+          "fold": 2,
+          "training_samples": 279,
+          "validation_samples": 64,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.625
+        },
+        {
+          "fold": 3,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6571428571428571
+        },
+        {
+          "fold": 4,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5714285714285714
+        },
+        {
+          "fold": 5,
+          "training_samples": 274,
+          "validation_samples": 69,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5072463768115942
+        }
+      ]
+    },
+    "Text + raw OCR": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.6239067055393586,
+        "balanced_accuracy": 0.5752386002120891,
+        "macro_f1": 0.5673638203631457,
+        "precision_humorous": 0.5555555555555556,
+        "recall_humorous": 0.32608695652173914,
+        "f1_humorous": 0.410958904109589,
+        "roc_auc_humorous": 0.6129727819017321
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          169,
+          36
+        ],
+        [
+          93,
+          45
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.7
+        },
+        {
+          "fold": 2,
+          "training_samples": 279,
+          "validation_samples": 64,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.5625
+        },
+        {
+          "fold": 3,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.7142857142857143
+        },
+        {
+          "fold": 4,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5428571428571428
+        },
+        {
+          "fold": 5,
+          "training_samples": 274,
+          "validation_samples": 69,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5942028985507246
+        }
+      ]
+    },
+    "Text + de-branded OCR": {
+      "out_of_fold_metrics": {
+        "accuracy": 0.577259475218659,
+        "balanced_accuracy": 0.5492400141392718,
+        "macro_f1": 0.5489011636871559,
+        "precision_humorous": 0.47058823529411764,
+        "recall_humorous": 0.4057971014492754,
+        "f1_humorous": 0.4357976653696498,
+        "roc_auc_humorous": 0.614704842700601
+      },
+      "confusion_matrix_label_order": [
+        "non_humorous",
+        "humorous"
+      ],
+      "confusion_matrix": [
+        [
+          142,
+          63
+        ],
+        [
+          82,
+          56
+        ]
+      ],
+      "folds": [
+        {
+          "fold": 1,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6285714285714286
+        },
+        {
+          "fold": 2,
+          "training_samples": 279,
+          "validation_samples": 64,
+          "training_videos": 20,
+          "validation_videos": 4,
+          "accuracy": 0.59375
+        },
+        {
+          "fold": 3,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.6
+        },
+        {
+          "fold": 4,
+          "training_samples": 273,
+          "validation_samples": 70,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5142857142857142
+        },
+        {
+          "fold": 5,
+          "training_samples": 274,
+          "validation_samples": 69,
+          "training_videos": 19,
+          "validation_videos": 5,
+          "accuracy": 0.5507246376811594
+        }
+      ]
+    }
+  },
+  "software": {
+    "python": "3.11.17",
+    "scikit_learn": "1.9.1",
+    "numpy": "1.26.4"
+  },
+  "limitations": [
+    "This is a small labeled pilot, not the full corpus.",
+    "The de-branding rules are manually predefined and may remove some legitimate words as well as overlays.",
+    "Removing observed branding does not eliminate all possible source-related shortcuts.",
+    "Results measure classification performance, not proof of semantic humor understanding."
+  ]
+}

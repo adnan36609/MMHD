@@ -1,0 +1,130 @@
+{
+  "experiment": "Audio-only acoustic feature baseline",
+  "method": "13 hand-engineered audio features; StandardScaler + Logistic Regression",
+  "dataset": {
+    "annotations": 540,
+    "usable_audio_samples": 532,
+    "missing_audio": [
+      "JoGjIRVY9t4-Scene-029",
+      "JoGjIRVY9t4-Scene-168",
+      "JoGjIRVY9t4-Scene-306",
+      "JoGjIRVY9t4-Scene-445",
+      "JoGjIRVY9t4-Scene-583",
+      "JoGjIRVY9t4-Scene-722",
+      "JoGjIRVY9t4-Scene-860",
+      "JoGjIRVY9t4-Scene-999"
+    ],
+    "failed_audio": [],
+    "source_videos": 24,
+    "label_distribution": {
+      "non_humorous": 323,
+      "humorous": 209
+    }
+  },
+  "evaluation": {
+    "method": "5-fold GroupKFold by video_id",
+    "out_of_fold_metrics": {
+      "accuracy": 0.6203007518796992,
+      "balanced_accuracy": 0.6214466647903181,
+      "macro_f1": 0.6139942528735632,
+      "precision_humorous": 0.5137254901960784,
+      "recall_humorous": 0.6267942583732058,
+      "f1_humorous": 0.5646551724137931,
+      "roc_auc_humorous": 0.6709822685054884
+    },
+    "majority_class_baseline": {
+      "accuracy": 0.6071428571428571,
+      "balanced_accuracy": 0.5,
+      "macro_f1": 0.37777777777777777
+    },
+    "classification_report": {
+      "non_humorous": {
+        "precision": 0.7184115523465704,
+        "recall": 0.6160990712074303,
+        "f1-score": 0.6633333333333333,
+        "support": 323.0
+      },
+      "humorous": {
+        "precision": 0.5137254901960784,
+        "recall": 0.6267942583732058,
+        "f1-score": 0.5646551724137931,
+        "support": 209.0
+      },
+      "accuracy": 0.6203007518796992,
+      "macro avg": {
+        "precision": 0.6160685212713244,
+        "recall": 0.6214466647903181,
+        "f1-score": 0.6139942528735632,
+        "support": 532.0
+      },
+      "weighted avg": {
+        "precision": 0.6379991707874485,
+        "recall": 0.6203007518796992,
+        "f1-score": 0.6245669129720854,
+        "support": 532.0
+      }
+    },
+    "confusion_matrix_label_order": [
+      "non_humorous",
+      "humorous"
+    ],
+    "confusion_matrix": [
+      [
+        199,
+        124
+      ],
+      [
+        78,
+        131
+      ]
+    ],
+    "folds": [
+      {
+        "fold": 1,
+        "training_samples": 419,
+        "validation_samples": 113,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.5575221238938053
+      },
+      {
+        "fold": 2,
+        "training_samples": 419,
+        "validation_samples": 113,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.6194690265486725
+      },
+      {
+        "fold": 3,
+        "training_samples": 423,
+        "validation_samples": 109,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.6788990825688074
+      },
+      {
+        "fold": 4,
+        "training_samples": 426,
+        "validation_samples": 106,
+        "training_videos": 19,
+        "validation_videos": 5,
+        "accuracy": 0.6132075471698113
+      },
+      {
+        "fold": 5,
+        "training_samples": 441,
+        "validation_samples": 91,
+        "training_videos": 20,
+        "validation_videos": 4,
+        "accuracy": 0.6373626373626373
+      }
+    ]
+  },
+  "software": {
+    "python": "3.11.17",
+    "numpy": "1.26.4",
+    "scipy": "1.17.1",
+    "scikit_learn": "1.9.1"
+  }
+}
