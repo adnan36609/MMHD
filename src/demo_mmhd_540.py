@@ -166,6 +166,13 @@ def main():
     cv_metrics = metrics.get("evaluation", {}).get(
         "out_of_fold_metrics", {}
     )
+    late_fusion_metrics_path = (
+        ROOT / "results" / "expanded_540" / "late_fusion" / "metrics.json"
+    )
+    late_fusion_metrics = read_json(late_fusion_metrics_path)
+    late_fusion_cv_metrics = late_fusion_metrics["models"][
+        "Equal-weight Late Fusion (Text + Audio)"
+    ]
 
     print("\n========== MMHD DEMONSTRATION ==========")
     print(f"Sample ID: {sample_id}")
@@ -182,7 +189,7 @@ def main():
           f"{modality.get('ocr') or '[No OCR text]'}")
     print(f"Emoji ({modality.get('emoji_status', 'not indexed')}): "
           f"{modality.get('emoji') or '[No emoji recorded]'}")
-    print("\nText and audio predictions use separate classifiers; no fused multimodal prediction is produced.")
+    print("\nText and audio probabilities are combined using a fixed 50:50 late-fusion average when both are available.")
 
     print("\n--- Separate model predictions ---")
     print("Audio-only classifier:")
@@ -194,6 +201,23 @@ def main():
         print(f"  Humorous probability: {text_probability:.1%}")
     else:
         print("  Not run: no transcript available.")
+
+    if text_probability is not None:
+        late_fusion_probability = (
+            humorous_probability + text_probability
+        ) / 2.0
+        late_fusion_prediction = (
+            "humorous"
+            if late_fusion_probability >= 0.5
+            else "non_humorous"
+        )
+        print("\n--- Equal-weight text-audio late fusion ---")
+        print(f"  Predicted label: {late_fusion_prediction}")
+        print(f"  Humorous probability: {late_fusion_probability:.1%}")
+        print("  This is an in-sample demo prediction, not a held-out result.")
+    else:
+        print("\nLate fusion not run: transcript unavailable.")
+
     print(f"\nExisting annotation: {true_label}")
 
     print("\n--- Features pushing toward humorous ---")
@@ -204,7 +228,7 @@ def main():
     for name, value in opposing:
         print(f"{name}: {value:+.3f}")
 
-    print("\n--- Cross-validation results ---")
+    print("\n--- Audio-only cross-validation results ---")
     for name in [
         "accuracy",
         "balanced_accuracy",
@@ -214,6 +238,17 @@ def main():
     ]:
         if name in cv_metrics:
             print(f"{name}: {cv_metrics[name]:.4f}")
+
+    print("\n--- Late-fusion cross-validation results ---")
+    for name in [
+        "accuracy",
+        "balanced_accuracy",
+        "macro_f1",
+        "f1_humorous",
+        "roc_auc_humorous",
+    ]:
+        if name in late_fusion_cv_metrics:
+            print(f"{name}: {late_fusion_cv_metrics[name]:.4f}")
 
     print("\n--- Interpretation limits ---")
     print(
