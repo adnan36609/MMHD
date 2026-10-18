@@ -1,0 +1,53 @@
+{
+  "experiment": "Exploratory visual probability contribution to late fusion",
+  "samples": 391,
+  "visual_configuration": "absolute_frame_difference",
+  "visual_weights": [
+    0.1,
+    0.2,
+    0.3,
+    0.5
+  ],
+  "threshold": 0.5,
+  "baseline_and_visual_samples_aligned": true,
+  "limitations": [
+    "Uses existing out-of-fold predictions; no independent test set.",
+    "The visual configuration was selected after inspecting its results.",
+    "Trying several weights introduces selection bias if the best score is chosen.",
+    "A promising result requires a properly grouped nested evaluation.",
+    "Probability averaging is late fusion, not learned cross-modal reasoning."
+  ],
+  "results": {
+    "text_audio_late_fusion_baseline": {
+      "macro_f1": 0.6306481238520074,
+      "accuracy": 0.6317135549872123,
+      "balanced_accuracy": 0.6316801939496153,
+      "roc_auc": 0.6506798777274164
+    },
+    "visual_weight_0.10": {
+      "macro_f1": 0.6033124275324128,
+      "accuracy": 0.6061381074168798,
+      "balanced_accuracy": 0.6033124275324128,
+      "roc_auc": 0.6351322862864973
+    },
+    "visual_weight_0.20": {
+      "macro_f1": 0.582331065041937,
+      "accuracy": 0.5856777493606138,
+      "balanced_accuracy": 0.5822704753873722,
+      "roc_auc": 0.6070148624433435
+    },
+    "visual_weight_0.30": {
+      "macro_f1": 0.5617054386242549,
+      "accuracy": 0.5652173913043478,
+      "balanced_accuracy": 0.5616633287656794,
+      "roc_auc": 0.5788974386001897
+    },
+    "visual_weight_0.50": {
+      "macro_f1": 0.5195163847780127,
+      "accuracy": 0.5242966751918159,
+      "balanced_accuracy": 0.5195794244755982,
+      "roc_auc": 0.5349952566670181
+    }
+  },
+  "predictions_file": "results\\expanded_540\\visual_late_fusion\\oof_predictions.csv"
+}
