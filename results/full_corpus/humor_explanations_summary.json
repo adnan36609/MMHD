@@ -1,0 +1,13 @@
+{
+  "records": 7289,
+  "records_with_predictions": 6290,
+  "records_with_text_evidence": 5456,
+  "records_with_audio_evidence": 6290,
+  "records_with_audio_explanation_errors": 0,
+  "near_threshold": 2159,
+  "text_audio_disagreement": 661,
+  "confidence_note": "Decision strength is a heuristic based on distance from 0.5. It is not calibrated confidence.",
+  "target_note": "Target identification is not implemented in this stage. Every target is marked unknown.",
+  "runtime_seconds": 126.83,
+  "output": "results\\full_corpus\\humor_explanations.csv"
+}
