@@ -1,0 +1,15 @@
+{
+  "model": "cardiffnlp/twitter-roberta-base-emoji",
+  "device": "cpu",
+  "samples": 391,
+  "hidden_size": 768,
+  "max_sequence_length": 64,
+  "batch_size": 4,
+  "truncated_transcripts": 20,
+  "original_token_count_max": 225,
+  "empty_transcripts": 0,
+  "padding_mask_saved": true,
+  "embedding_dtype": "float16",
+  "elapsed_seconds": 23.72,
+  "output_file": "results\\expanded_540\\cross_modal_reasoning\\text_token_embeddings.npz"
+}
