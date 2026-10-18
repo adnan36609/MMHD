@@ -15,7 +15,22 @@ ANNOTATIONS_FILE = DATA_DIR / "annotations_540.json"
 MODALITY_FILE = ROOT / "results" / "modality_examples.csv"
 FUSION_PREDICTIONS_FILE = RESULTS_DIR / "late_fusion" / "oof_predictions.csv"
 FUSION_METRICS_FILE = RESULTS_DIR / "late_fusion" / "metrics.json"
+FIVE_STREAM_METRICS_FILE = RESULTS_DIR / "five_stream_comparison" / "metrics.json"
+FIVE_STREAM_PREDICTIONS_FILE = (
+    RESULTS_DIR / "five_stream_comparison" / "oof_predictions.csv"
+)
 BOOTSTRAP_FILE = RESULTS_DIR / "late_fusion" / "bootstrap_comparison.json"
+STRUCTURED_OUTPUT_FILE = (
+    ROOT / "results" / "full_corpus" / "humor_structured_output.csv"
+)
+CONTEXT_ENRICHED_FILE = ROOT / "results" / "full_corpus" / "humor_context_enriched.csv"
+CROSS_MODAL_ATTENTION_PREDICTIONS_FILE = (
+    ROOT / "results" / "expanded_540" / "cross_modal_reasoning" / "oof_predictions.csv"
+)
+
+CROSS_MODAL_ATTENTION_METRICS_FILE = (
+    ROOT / "results" / "expanded_540" / "cross_modal_reasoning" / "metrics.json"
+)
 
 st.set_page_config(
     page_title="MMHD | Multimodal Humor Detection",
@@ -24,7 +39,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-st.markdown("""
+st.markdown(
+    """
 <style>
     .stApp {
         background: linear-gradient(180deg, #0b1020 0%, #10172a 100%);
@@ -95,7 +111,9 @@ st.markdown("""
         border-radius: 12px;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 @st.cache_data
@@ -109,6 +127,7 @@ def load_csv(path):
     with path.open("r", newline="", encoding="utf-8-sig") as f:
         return list(csv.DictReader(f))
 
+
 @st.cache_data
 def load_full_corpus():
     """Load metadata for all accepted samples across source videos."""
@@ -116,9 +135,7 @@ def load_full_corpus():
     manifest_files = sorted(SAMPLE_ROOT.glob("*/dataset.json"))
 
     if not manifest_files:
-        raise FileNotFoundError(
-            f"No dataset manifests found under {SAMPLE_ROOT}"
-        )
+        raise FileNotFoundError(f"No dataset manifests found under {SAMPLE_ROOT}")
 
     seen_ids = set()
 
@@ -127,9 +144,7 @@ def load_full_corpus():
             manifest = json.load(file)
 
         if not isinstance(manifest, list):
-            raise ValueError(
-                f"Unexpected manifest format: {manifest_path}"
-            )
+            raise ValueError(f"Unexpected manifest format: {manifest_path}")
 
         for raw in manifest:
             sample_id = str(raw.get("sample_id") or "").strip()
@@ -138,9 +153,7 @@ def load_full_corpus():
                 continue
 
             if sample_id in seen_ids:
-                raise ValueError(
-                    f"Duplicate corpus sample ID: {sample_id}"
-                )
+                raise ValueError(f"Duplicate corpus sample ID: {sample_id}")
 
             seen_ids.add(sample_id)
 
@@ -164,49 +177,37 @@ def load_full_corpus():
             if isinstance(image_paths, str):
                 image_paths = [image_paths]
 
-            image_paths = [
-                str(path)
-                for path in image_paths
-                if path
-            ]
+            image_paths = [str(path) for path in image_paths if path]
 
             audio_path = audio_data.get("path")
 
-            records.append({
-                "sample_id": sample_id,
-                "video_id": str(source.get("video_id") or ""),
-                "source_scene": str(
-                    source.get("source_scene") or ""
-                ),
-                "source_file": str(
-                    source.get("source_file") or ""
-                ),
-                "start_seconds": timing.get("start_seconds"),
-                "end_seconds": timing.get("end_seconds"),
-                "duration_seconds": timing.get(
-                    "duration_seconds"
-                ),
-                "candidate_type": str(
-                    metadata.get("candidate_type") or "unknown"
-                ),
-                "text": text,
-                "ocr": ocr,
-                "emoji": emoji,
-                "audio_path": str(audio_path) if audio_path else "",
-                "image_paths": image_paths,
-                "image_count": len(image_paths),
-                "has_text": bool(text),
-                "has_audio": bool(
-                    audio_path
-                    and audio_data.get("status") == "success"
-                ),
-                "has_image": bool(
-                    image_paths
-                    and image_data.get("status") == "success"
-                ),
-                "has_ocr": bool(ocr),
-                "has_emoji": bool(emoji),
-            })
+            records.append(
+                {
+                    "sample_id": sample_id,
+                    "video_id": str(source.get("video_id") or ""),
+                    "source_scene": str(source.get("source_scene") or ""),
+                    "source_file": str(source.get("source_file") or ""),
+                    "start_seconds": timing.get("start_seconds"),
+                    "end_seconds": timing.get("end_seconds"),
+                    "duration_seconds": timing.get("duration_seconds"),
+                    "candidate_type": str(metadata.get("candidate_type") or "unknown"),
+                    "text": text,
+                    "ocr": ocr,
+                    "emoji": emoji,
+                    "audio_path": str(audio_path) if audio_path else "",
+                    "image_paths": image_paths,
+                    "image_count": len(image_paths),
+                    "has_text": bool(text),
+                    "has_audio": bool(
+                        audio_path and audio_data.get("status") == "success"
+                    ),
+                    "has_image": bool(
+                        image_paths and image_data.get("status") == "success"
+                    ),
+                    "has_ocr": bool(ocr),
+                    "has_emoji": bool(emoji),
+                }
+            )
 
     return records
 
@@ -216,10 +217,14 @@ def resolve_asset(value):
         return None
 
     candidate = Path(str(value))
-    options = [candidate] if candidate.is_absolute() else [
-        ROOT / candidate,
-        ROOT / "sample_clips" / candidate,
-    ]
+    options = (
+        [candidate]
+        if candidate.is_absolute()
+        else [
+            ROOT / candidate,
+            ROOT / "sample_clips" / candidate,
+        ]
+    )
 
     for path in options:
         if path.is_file():
@@ -235,6 +240,13 @@ try:
     predictions = load_csv(FUSION_PREDICTIONS_FILE)
     fusion_metrics = load_json(FUSION_METRICS_FILE)
     bootstrap = load_json(BOOTSTRAP_FILE)
+
+    five_stream_metrics = load_json(FIVE_STREAM_METRICS_FILE)
+    five_stream_predictions = load_csv(FIVE_STREAM_PREDICTIONS_FILE)
+    structured_outputs = load_csv(STRUCTURED_OUTPUT_FILE)
+    context_enriched = load_csv(CONTEXT_ENRICHED_FILE)
+    cross_modal_predictions = load_csv(CROSS_MODAL_ATTENTION_PREDICTIONS_FILE)
+    cross_modal_metrics = load_json(CROSS_MODAL_ATTENTION_METRICS_FILE)
 except Exception as exc:
     st.error(f"Could not load MMHD data: {exc}")
     st.info(
@@ -247,23 +259,23 @@ sample_by_id = {row["sample_id"]: row for row in samples}
 annotation_by_id = {row["sample_id"]: row for row in annotations}
 modality_by_id = {row["sample_id"]: row for row in modalities}
 prediction_by_id = {row["sample_id"]: row for row in predictions}
+structured_by_id = {row["sample_id"]: row for row in structured_outputs}
+context_by_id = {row["sample_id"]: row for row in context_enriched}
+cross_modal_by_id = {row["sample_id"]: row for row in cross_modal_predictions}
 
 corpus_records = [
     {
         **row,
-        "human_label": annotation_by_id.get(
-            row["sample_id"], {}
-        ).get("humor_label", "Not annotated"),
+        "human_label": annotation_by_id.get(row["sample_id"], {}).get(
+            "humor_label", "Not annotated"
+        ),
     }
     for row in corpus_records
 ]
 
 corpus_df = pd.DataFrame(corpus_records)
 
-corpus_by_id = {
-    row["sample_id"]: row
-    for row in corpus_records
-}
+corpus_by_id = {row["sample_id"]: row for row in corpus_records}
 
 if not predictions:
     st.error("No out-of-fold late-fusion predictions are available.")
@@ -291,7 +303,8 @@ selected_id = st.sidebar.selectbox(
 )
 
 st.sidebar.caption(
-    "Selection is restricted to samples with saved out-of-fold predictions."
+    "Evaluated Samples is restricted to records with saved out-of-fold "
+    "predictions. Full Corpus Explorer includes all accepted records."
 )
 st.sidebar.divider()
 st.sidebar.markdown("**Research setup**")
@@ -305,7 +318,8 @@ st.sidebar.caption("Local research prototype · Not a production detector")
 
 
 # Header
-st.markdown("""
+st.markdown(
+    """
 <div class="hero">
   <div class="hero-kicker">Research Prototype · MMHD</div>
   <h1>Multimodal Humor Detection</h1>
@@ -316,7 +330,9 @@ st.markdown("""
     the current feature-fusion approach.
   </div>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 st.markdown(
     '<span class="modality-chip">TEXT</span>'
@@ -327,9 +343,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-late_model = fusion_metrics["models"][
-    "Equal-weight Late Fusion (Text + Audio)"
-]
+late_model = fusion_metrics["models"]["Equal-weight Late Fusion (Text + Audio)"]
 audio_model = fusion_metrics["models"]["Audio-only"]
 text_model = fusion_metrics["models"]["Text-only"]
 
@@ -370,12 +384,14 @@ st.divider()
 
 
 # Tabs
-tab_corpus, tab_sample, tab_results, tab_architecture = st.tabs([
-    "🌐 Full Corpus Explorer",
-    "🔎 Evaluated Samples",
-    "📊 Experiments & Findings",
-    "🧩 Architecture Status",
-])
+tab_corpus, tab_sample, tab_results, tab_architecture = st.tabs(
+    [
+        "🌐 Full Corpus Explorer",
+        "🔎 Evaluated Samples",
+        "📊 Experiments & Findings",
+        "🧩 Architecture Status",
+    ]
+)
 
 with tab_sample:
     sample = sample_by_id.get(selected_id, {})
@@ -383,18 +399,10 @@ with tab_sample:
     prediction = prediction_by_id[selected_id]
 
     actual = prediction["true_label"]
-    late_probability = float(
-        prediction["late_fusion_humorous_probability"]
-    )
-    audio_probability = float(
-        prediction["audio_humorous_probability"]
-    )
-    text_probability = float(
-        prediction["text_humorous_probability"]
-    )
-    feature_probability = float(
-        prediction["feature_fusion_humorous_probability"]
-    )
+    late_probability = float(prediction["late_fusion_humorous_probability"])
+    audio_probability = float(prediction["audio_humorous_probability"])
+    text_probability = float(prediction["text_humorous_probability"])
+    feature_probability = float(prediction["feature_fusion_humorous_probability"])
 
     st.subheader("Selected sample")
     st.caption(
@@ -455,15 +463,9 @@ with tab_sample:
             st.caption("No keyframe images could be loaded.")
 
         st.markdown("#### Modality availability")
-        st.write(
-            f"Text: **{modality.get('text_status', 'not indexed')}**"
-        )
-        st.write(
-            f"OCR: **{modality.get('ocr_status', 'not indexed')}**"
-        )
-        st.write(
-            f"Emoji: **{modality.get('emoji_status', 'not indexed')}**"
-        )
+        st.write(f"Text: **{modality.get('text_status', 'not indexed')}**")
+        st.write(f"OCR: **{modality.get('ocr_status', 'not indexed')}**")
+        st.write(f"Emoji: **{modality.get('emoji_status', 'not indexed')}**")
 
     st.divider()
     st.subheader("Out-of-fold predictions")
@@ -530,24 +532,28 @@ with tab_results:
     comparison_rows = []
     for name in model_names:
         metrics = fusion_metrics["models"][name]
-        comparison_rows.append({
-            "Model": name,
-            "Accuracy": metrics["accuracy"],
-            "Balanced accuracy": metrics["balanced_accuracy"],
-            "Macro F1": metrics["macro_f1"],
-            "Humor F1": metrics["f1_humorous"],
-            "ROC-AUC": metrics["roc_auc_humorous"],
-        })
+        comparison_rows.append(
+            {
+                "Model": name,
+                "Accuracy": metrics["accuracy"],
+                "Balanced accuracy": metrics["balanced_accuracy"],
+                "Macro F1": metrics["macro_f1"],
+                "Humor F1": metrics["f1_humorous"],
+                "ROC-AUC": metrics["roc_auc_humorous"],
+            }
+        )
 
     comparison_df = pd.DataFrame(comparison_rows)
     st.dataframe(
-        comparison_df.style.format({
-            "Accuracy": "{:.4f}",
-            "Balanced accuracy": "{:.4f}",
-            "Macro F1": "{:.4f}",
-            "Humor F1": "{:.4f}",
-            "ROC-AUC": "{:.4f}",
-        }),
+        comparison_df.style.format(
+            {
+                "Accuracy": "{:.4f}",
+                "Balanced accuracy": "{:.4f}",
+                "Macro F1": "{:.4f}",
+                "Humor F1": "{:.4f}",
+                "ROC-AUC": "{:.4f}",
+            }
+        ),
         use_container_width=True,
         hide_index=True,
     )
@@ -604,10 +610,12 @@ with tab_results:
 
     st.markdown("#### Error transitions")
     st.dataframe(
-        pd.DataFrame([
-            {"Outcome": label, "Samples": count}
-            for label, count in transitions.items()
-        ]),
+        pd.DataFrame(
+            [
+                {"Outcome": label, "Samples": count}
+                for label, count in transitions.items()
+            ]
+        ),
         hide_index=True,
         use_container_width=True,
     )
@@ -619,53 +627,296 @@ with tab_results:
         "No external test set has been evaluated."
     )
 
+    st.divider()
+    st.subheader("Five-stream multimodal ablation")
+
+    five_dataset = five_stream_metrics.get("dataset", {})
+    five_sample_count = five_dataset.get(
+        "usable_complete_cases",
+        len(five_stream_predictions),
+    )
+
+    st.write(
+        "Compare 11 configurations using text, audio, visual features, "
+        "OCR, emoji, and their combinations."
+    )
+
+    st.info(
+        f"This experiment evaluates {five_sample_count} complete-case "
+        f"samples from the 540 annotated records. "
+        f"{five_dataset.get('excluded_no_ocr', 0)} records were excluded "
+        "because OCR data was unavailable. These results use a different "
+        "subset from the primary 391-sample late-fusion evaluation."
+    )
+
+    ablation_rows = []
+
+    for name, details in five_stream_metrics["models"].items():
+        metrics = details.get("out_of_fold_metrics", {})
+
+        ablation_rows.append(
+            {
+                "Configuration": name,
+                "Macro F1": metrics.get("macro_f1"),
+                "Accuracy": metrics.get("accuracy"),
+                "Balanced accuracy": metrics.get("balanced_accuracy"),
+                "ROC-AUC": metrics.get("roc_auc_humorous"),
+            }
+        )
+
+    ablation_df = pd.DataFrame(ablation_rows)
+
+    st.dataframe(
+        ablation_df.style.format(
+            {
+                "Macro F1": "{:.4f}",
+                "Accuracy": "{:.4f}",
+                "Balanced accuracy": "{:.4f}",
+                "ROC-AUC": "{:.4f}",
+            },
+            na_rep="N/A",
+        ),
+        use_container_width=True,
+        hide_index=True,
+    )
+
+    st.markdown("#### Macro-F1 comparison across configurations")
+
+    st.bar_chart(ablation_df.set_index("Configuration")[["Macro F1"]])
+
+    st.caption(
+        "All configurations use the same 343 complete-case samples and "
+        "five-fold source-video-grouped evaluation. Results are preliminary "
+        "and should not be compared directly with metrics from a different "
+        "evaluation subset."
+    )
+
+    st.divider()
+    st.markdown("#### Inspect a sample across all configurations")
+
+    five_stream_df = pd.DataFrame(five_stream_predictions)
+
+    five_sample_ids = five_stream_df["sample_id"].astype(str).tolist()
+
+    selected_five_id = st.selectbox(
+        "Select an evaluated sample",
+        five_sample_ids,
+        key="five_stream_sample_inspector",
+    )
+
+    five_row = five_stream_df.loc[
+        five_stream_df["sample_id"].astype(str) == selected_five_id
+    ].iloc[0]
+
+    st.write("**Sample ID:**", selected_five_id)
+    st.write("**Source video:**", five_row["video_id"])
+    st.write("**Human annotation:**", five_row["true_label"])
+
+    if pd.notna(five_row["text"]) and str(five_row["text"]).strip():
+        st.write("**Transcript:**", five_row["text"])
+    else:
+        st.write("**Transcript:** No text available.")
+
+    if pd.notna(five_row["ocr"]) and str(five_row["ocr"]).strip():
+        st.write("**OCR:**", five_row["ocr"])
+    else:
+        st.write("**OCR:** No OCR text available.")
+
+    if pd.notna(five_row["emoji"]) and str(five_row["emoji"]).strip():
+        st.write("**Emoji:**", five_row["emoji"])
+    else:
+        st.write("**Emoji:** No emoji recorded.")
+
+    configuration_columns = [
+        ("Text-only", "text_only_prediction", "text_only_humorous_probability"),
+        ("Audio-only", "audio_only_prediction", "audio_only_humorous_probability"),
+        ("Visual-only", "visual_only_prediction", "visual_only_humorous_probability"),
+        ("OCR-only", "ocr_only_prediction", "ocr_only_humorous_probability"),
+        ("Text + OCR", "text_ocr_prediction", "text_ocr_humorous_probability"),
+        ("Text + Audio", "text_audio_prediction", "text_audio_humorous_probability"),
+        ("Audio + OCR", "audio_ocr_prediction", "audio_ocr_humorous_probability"),
+        (
+            "Text + Audio + Visual",
+            "text_audio_visual_prediction",
+            "text_audio_visual_humorous_probability",
+        ),
+        (
+            "Text + Audio + OCR",
+            "text_audio_ocr_prediction",
+            "text_audio_ocr_humorous_probability",
+        ),
+        (
+            "Text + Audio + Visual + OCR",
+            "text_audio_visual_ocr_prediction",
+            "text_audio_visual_ocr_humorous_probability",
+        ),
+        (
+            "All five streams",
+            "all_five_streams_prediction",
+            "all_five_streams_humorous_probability",
+        ),
+    ]
+
+    sample_comparison_rows = []
+
+    for name, prediction_col, probability_col in configuration_columns:
+        probability = pd.to_numeric(
+            five_row[probability_col],
+            errors="coerce",
+        )
+
+        sample_comparison_rows.append(
+            {
+                "Configuration": name,
+                "Predicted label": five_row[prediction_col],
+                "Humorous probability": probability,
+            }
+        )
+
+    sample_comparison_df = pd.DataFrame(sample_comparison_rows)
+
+    st.dataframe(
+        sample_comparison_df.style.format(
+            {
+                "Humorous probability": "{:.3f}",
+            },
+            na_rep="N/A",
+        ),
+        use_container_width=True,
+        hide_index=True,
+    )
 
 with tab_architecture:
     st.subheader("Implemented vs proposed architecture")
+    st.caption(
+        "Implementation status reflects the current repository and saved "
+        "experiments. Experimental components are not automatically part "
+        "of the full-corpus prediction pipeline."
+    )
+
+    st.markdown("#### 1. Implemented and experimentally evaluated")
 
     st.success(
-        "**Implemented:** transcript TF-IDF baseline, acoustic-feature baseline, "
-        "keyframe descriptors, OCR and emoji experiments, feature-level fusion, "
-        "fixed-weight text–audio late fusion, context-text experiment, "
-        "out-of-fold evaluation, and acoustic feature contributions."
+        "**Dataset and modality processing**\n\n"
+        "- 7,289 accepted scene records across 24 source videos.\n"
+        "- Transcript and audio feature pipelines.\n"
+        "- Visual keyframe descriptors, OCR text, and emoji metadata.\n"
+        "- Human annotations for 540 samples."
+    )
+
+    st.success(
+        "**Model experiments**\n\n"
+        "- Text-only and audio-only humor baselines.\n"
+        "- Visual-only and OCR-only experiments, plus emoji metadata "
+        "in multimodal comparisons.\n"
+        "- Feature-level fusion and multimodal ablation experiments.\n"
+        "- Fixed 50:50 text–audio late fusion.\n"
+        "- Context-text experiment and acoustic feature analysis."
+    )
+
+    st.success(
+        "**Evaluation and inspection**\n\n"
+        "- Source-video-grouped out-of-fold evaluation to reduce "
+        "train/test leakage between scenes from the same video.\n"
+        "- A primary comparison on 391 complete-case samples.\n"
+        "- An 11-configuration five-stream ablation on 343 complete-case "
+        "samples.\n"
+        "- Saved full-corpus predictions, structured outputs, and "
+        "evidence-based heuristic explanations."
+    )
+
+    st.divider()
+    st.markdown("#### 2. Full-corpus prediction pipeline")
+
+    st.info(
+        "**Current inference path:** transcript model + audio model "
+        "→ fixed-weight late fusion when both predictions are available "
+        "→ audio-only fallback when text predictions are unavailable."
+    )
+
+    pipeline_left, pipeline_right = st.columns(2)
+
+    pipeline_left.metric("Text–audio fusion", "5,674 records")
+    pipeline_left.metric("Audio-only fallback", "616 records")
+
+    pipeline_right.metric("No available model", "999 records")
+    pipeline_right.metric("Total corpus", "7,289 records")
+
+    st.warning(
+        "The full-corpus prediction branch does not use all five streams "
+        "for every prediction. Visual, OCR, and emoji features have "
+        "separate experiments; their availability or experimental "
+        "evaluation does not imply integrated five-stream inference."
+    )
+
+    st.divider()
+    st.markdown("#### 3. Important limitations")
+
+    st.warning(
+        "**Small annotated evaluation set:** the primary evaluation uses "
+        "391 complete cases from 540 annotated records. The five-stream "
+        "experiment uses a different 343-sample subset because OCR data "
+        "is unavailable for 197 records. Their metrics should not be "
+        "compared as if they came from the same evaluation set."
     )
 
     st.warning(
-        "**Partial:** modality-specific feature extraction and association by "
-        "sample ID are implemented, but they do not constitute learned semantic "
-        "or temporal multimodal alignment. Neighbouring-scene text is a basic "
-        "context proxy rather than a persistent conversation-memory module."
+        "**Fusion improvement remains uncertain:** primary late fusion "
+        "has a macro-F1 of 0.6306. Its observed improvement over audio-only "
+        "is +0.0058, with a cluster-bootstrap 95% interval from -0.0270 "
+        "to +0.0390. The interval includes zero, so a reliable improvement "
+        "has not been established."
     )
 
-    st.info(
-        "**Proposed future work:** learned multimodal encoders and alignment, "
-        "cross-image semantic reasoning, persistent conversation memory, "
-        "speaker–listener graphs, cultural retrieval-augmented generation (RAG), "
-        "MLLM integration, natural-language explanations, and calibrated confidence."
+    st.warning(
+        "**Explanations and target candidates are heuristic:** structured "
+        "evidence and target-candidate rules do not establish causal "
+        "explanations or validated humor-target identification. Confidence "
+        "is not calibrated, and these outputs should not be presented as "
+        "ground-truth reasoning."
     )
 
+    st.warning(
+        "**Research validity:** independently double-annotated samples "
+        "showed weak agreement (Cohen's kappa = 0.2383). Evaluation is "
+        "grouped by source video, but no external test set has been "
+        "evaluated."
+    )
+
+    st.divider()
+    st.markdown("#### 4. Proposed future architecture")
+
     st.info(
-        "**Not currently implemented as evaluated tasks:** sarcasm, irony, "
-        "hate-speech detection, and humor-target identification. These require "
-        "suitable labels, training pipelines, and task-specific evaluation."
+        "**Not yet implemented as an integrated, validated system:**\n\n"
+        "- Learned semantic alignment across text, audio, images, and OCR.\n"
+        "- Cross-image and temporal scene reasoning.\n"
+        "- Persistent conversation memory and speaker–listener graphs.\n"
+        "- Cultural retrieval-augmented generation (RAG) and MLLM integration.\n"
+        "- Validated humor-target identification and task-specific "
+        "sarcasm or irony detection.\n"
+        "- Calibrated confidence and external evaluation."
     )
 
     st.markdown("#### Current experimental conclusion")
+
     st.write(
-        "Audio-only is a strong baseline. Equal-weight text–audio late fusion "
-        "has a slightly higher macro-F1 point estimate, but its bootstrap "
-        "interval includes zero. Adding more modalities does not consistently "
-        "improve results with the current feature representations."
+        "Audio is a strong baseline in the current experiments. Equal-weight "
+        "text–audio late fusion has a slightly higher macro-F1 point estimate "
+        "on the primary evaluation, but the uncertainty interval includes "
+        "zero. The five-stream ablation does not demonstrate a consistent "
+        "macro-F1 improvement from adding more modalities with the current "
+        "feature representations. These findings motivate further research; "
+        "they do not establish that more complex fusion is inherently better."
     )
 
 
 st.divider()
 st.markdown(
     '<div class="small-note">'
-    'MMHD research prototype · Local assets are loaded from the repository. '
-    'Predictions are experimental outputs, not guarantees. '
-    'Do not interpret feature contributions as causal explanations.'
-    '</div>',
+    "MMHD research prototype · Local assets are loaded from the repository. "
+    "Predictions are experimental outputs, not guarantees. "
+    "Do not interpret feature contributions as causal explanations."
+    "</div>",
     unsafe_allow_html=True,
 )
 
@@ -696,9 +947,7 @@ with tab_corpus:
     m3.metric(
         "Records with transcripts",
         f"{int(corpus_df['has_text'].sum()):,}",
-        delta=(
-            f"{100 * corpus_df['has_text'].mean():.1f}% coverage"
-        ),
+        delta=(f"{100 * corpus_df['has_text'].mean():.1f}% coverage"),
     )
 
     m4, m5, m6 = st.columns(3)
@@ -739,13 +988,13 @@ with tab_corpus:
     for modality_name, column_name in modality_definitions:
         count = int(corpus_df[column_name].sum())
 
-        coverage_rows.append({
-            "Modality": modality_name,
-            "Available records": count,
-            "Coverage (%)": round(
-                100 * count / total_records, 1
-            ),
-        })
+        coverage_rows.append(
+            {
+                "Modality": modality_name,
+                "Available records": count,
+                "Coverage (%)": round(100 * count / total_records, 1),
+            }
+        )
 
     st.dataframe(
         pd.DataFrame(coverage_rows),
@@ -756,17 +1005,11 @@ with tab_corpus:
     st.divider()
     st.markdown("#### Search and filter records")
 
-    filter_left, filter_middle, filter_right = st.columns(
-        [1, 1, 2]
-    )
+    filter_left, filter_middle, filter_right = st.columns([1, 1, 2])
 
     video_options = [
         "All videos",
-        *sorted(
-            video
-            for video in corpus_df["video_id"].unique()
-            if video
-        ),
+        *sorted(video for video in corpus_df["video_id"].unique() if video),
     ]
 
     with filter_left:
@@ -803,18 +1046,12 @@ with tab_corpus:
     filtered = corpus_df.copy()
 
     if selected_video != "All videos":
-        filtered = filtered[
-            filtered["video_id"] == selected_video
-        ]
+        filtered = filtered[filtered["video_id"] == selected_video]
 
     if annotation_filter == "Human-labelled only":
-        filtered = filtered[
-            filtered["human_label"] != "Not annotated"
-        ]
+        filtered = filtered[filtered["human_label"] != "Not annotated"]
     elif annotation_filter == "Unlabelled only":
-        filtered = filtered[
-            filtered["human_label"] == "Not annotated"
-        ]
+        filtered = filtered[filtered["human_label"] == "Not annotated"]
 
     if search_query.strip():
         query = re.escape(search_query.strip())
@@ -850,8 +1087,7 @@ with tab_corpus:
     st.markdown("#### Matching records")
 
     st.caption(
-        f"{len(filtered):,} matching records out of "
-        f"{total_records:,} accepted records."
+        f"{len(filtered):,} matching records out of {total_records:,} accepted records."
     )
 
     display_columns = [
@@ -877,8 +1113,7 @@ with tab_corpus:
 
     if filtered.empty:
         st.info(
-            "No records match these filters. "
-            "Change the search or filters to continue."
+            "No records match these filters. Change the search or filters to continue."
         )
     else:
         st.divider()
@@ -890,13 +1125,13 @@ with tab_corpus:
             "Select a corpus sample",
             options=filtered_ids,
             format_func=lambda sample_id: (
-                f"{sample_id} · "
-                f"{corpus_by_id[sample_id]['video_id']}"
+                f"{sample_id} · {corpus_by_id[sample_id]['video_id']}"
             ),
             key="corpus_selected_sample",
         )
 
         record = corpus_by_id[selected_corpus_id]
+        context_record = context_by_id.get(selected_corpus_id, {})
 
         st.caption(
             f"Sample: `{record['sample_id']}` · "
@@ -917,6 +1152,47 @@ with tab_corpus:
             else:
                 st.caption("No transcript available.")
 
+            st.divider()
+            st.markdown("##### Neighboring-scene context")
+
+            context_status = context_record.get(
+                "context_availability",
+                "unavailable",
+            )
+            st.caption(f"Context availability: {context_status}")
+
+            previous_text = str(context_record.get("previous_scene_text", "")).strip()
+            previous_scene_id = context_record.get("previous_scene_id", "")
+
+            next_text = str(context_record.get("next_scene_text", "")).strip()
+            next_scene_id = context_record.get("next_scene_id", "")
+
+            with st.expander(
+                "Previous scene",
+                expanded=bool(previous_text),
+            ):
+                if previous_text:
+                    st.caption(f"Scene ID: {previous_scene_id}")
+                    st.write(previous_text)
+                else:
+                    st.caption("No neighboring transcript is available.")
+
+            with st.expander(
+                "Next scene",
+                expanded=bool(next_text),
+            ):
+                if next_text:
+                    st.caption(f"Scene ID: {next_scene_id}")
+                    st.write(next_text)
+                else:
+                    st.caption("No neighboring transcript is available.")
+
+            st.caption(
+                "Context comes from the nearest available scenes in the "
+                "same video's scene order. It is not verified conversational "
+                "dialogue and does not alter the humor prediction."
+            )
+
             st.markdown("##### On-screen OCR")
 
             if record["ocr"]:
@@ -934,22 +1210,20 @@ with tab_corpus:
             st.markdown("##### Human annotation")
 
             if record["human_label"] != "Not annotated":
-                st.success(
-                    f"Recorded label: {record['human_label']}"
-                )
+                st.success(f"Recorded label: {record['human_label']}")
             else:
-                st.warning(
-                    "This sample has no human-verified humor label."
-                )
+                st.warning("This sample has no human-verified humor label.")
 
             st.markdown("##### Timing and metadata")
 
-            st.write({
-                "Start (seconds)": record["start_seconds"],
-                "End (seconds)": record["end_seconds"],
-                "Duration (seconds)": record["duration_seconds"],
-                "Candidate type": record["candidate_type"],
-            })
+            st.write(
+                {
+                    "Start (seconds)": record["start_seconds"],
+                    "End (seconds)": record["end_seconds"],
+                    "Duration (seconds)": record["duration_seconds"],
+                    "Candidate type": record["candidate_type"],
+                }
+            )
 
         with detail_right:
             st.markdown("##### Audio")
@@ -989,6 +1263,340 @@ with tab_corpus:
             )
         else:
             st.caption(
-                "No saved out-of-fold prediction is shown for this "
-                "sample. This explorer does not generate a new prediction."
+                "No saved out-of-fold evaluation prediction is available for "
+                "this scene. The structured analysis below shows the separate "
+                "full-corpus inference result, not an evaluation score or "
+                "human-verified conclusion."
             )
+    st.divider()
+    st.markdown("#### Structured humor analysis")
+
+    structured_record = structured_by_id.get(selected_corpus_id)
+
+    def parse_structured_value(value):
+        import json
+
+        if value is None:
+            return []
+
+        if isinstance(value, (list, dict)):
+            return value
+
+        text = str(value).strip()
+
+        if not text or text.lower() in {"nan", "none", "null"}:
+            return []
+
+        try:
+            return json.loads(text)
+        except (json.JSONDecodeError, TypeError):
+            return [text]
+
+    def display_evidence(value, label):
+        items = parse_structured_value(value)
+
+        st.markdown(f"**{label}**")
+
+        if not items:
+            st.caption("No evidence recorded.")
+            return
+
+        if isinstance(items, dict):
+            items = [items]
+
+        if isinstance(items, list):
+            for item in items:
+                if isinstance(item, dict):
+                    feature = item.get(
+                        "feature",
+                        item.get("term", item.get("name", "Unknown feature")),
+                    )
+                    contribution = item.get("contribution")
+
+                    if contribution is not None:
+                        try:
+                            st.write(
+                                f"- `{feature}` — contribution: "
+                                f"`{float(contribution):+.4f}`"
+                            )
+                        except (ValueError, TypeError):
+                            st.write(f"- `{feature}`: {contribution}")
+                    else:
+                        st.write(f"- `{feature}`")
+                else:
+                    st.write(f"- {item}")
+        else:
+            st.write(items)
+
+    def display_value_list(value, label):
+        items = parse_structured_value(value)
+
+        st.markdown(f"**{label}**")
+
+        if not items:
+            st.caption("None recorded.")
+        elif isinstance(items, list):
+            for item in items:
+                st.write(f"- {item}")
+        elif isinstance(items, dict):
+            for key, item in items.items():
+                st.write(f"- **{key}:** {item}")
+        else:
+            st.write(items)
+
+    def display_probability(value, label):
+        try:
+            probability = float(value)
+            if not 0.0 <= probability <= 1.0:
+                raise ValueError("Probability outside [0, 1].")
+
+            st.metric(label, f"{probability:.1%}")
+            st.progress(probability)
+        except (ValueError, TypeError):
+            st.metric(label, "N/A")
+
+    if structured_record is None:
+        st.caption("No structured analysis is available for this sample.")
+    else:
+        interpretation_status = str(structured_record.get("interpretation_status", ""))
+
+        if interpretation_status == (
+            "annotated_sample_direct_inference_not_evaluation"
+        ):
+            st.warning(
+                "This is the full-corpus direct-inference result for an "
+                "annotated scene, not its out-of-fold evaluation prediction. "
+                "The model may have been fit using this sample. Use the "
+                "Evaluated Samples tab and saved out-of-fold predictions "
+                "for performance evaluation."
+            )
+        else:
+            st.caption(
+                "Experimental full-corpus inference. Predictions and "
+                "explanations are not human-verified conclusions."
+            )
+
+        st.markdown("##### Humor predictions")
+
+        prediction_left, prediction_right = st.columns(2)
+
+        with prediction_left:
+            display_probability(
+                structured_record.get("text_humorous_probability"),
+                "Text humor score",
+            )
+
+        with prediction_right:
+            display_probability(
+                structured_record.get("audio_humorous_probability"),
+                "Audio humor score",
+            )
+
+        display_probability(
+            structured_record.get("humor_probability"),
+            "Overall humor score",
+        )
+
+        st.write(
+            "**Predicted label:**",
+            structured_record.get("humor_prediction", "N/A"),
+        )
+
+        st.write(
+            "**Prediction method:**",
+            structured_record.get("prediction_method", "N/A"),
+        )
+
+        st.write(
+            "**Interpretation status:**",
+            structured_record.get("interpretation_status", "N/A"),
+        )
+
+        st.divider()
+        st.markdown("##### Cross-modal attention experiment")
+
+        experiment_results = cross_modal_metrics.get("metrics", {})
+        baseline_metrics = experiment_results.get("text_audio_late_fusion", {})
+        attention_metrics = experiment_results.get(
+            "text_visual_cross_modal_attention", {}
+        )
+
+        if baseline_metrics and attention_metrics:
+            metric_left, metric_right = st.columns(2)
+
+            baseline_macro_f1 = float(baseline_metrics["macro_f1"])
+            attention_macro_f1 = float(attention_metrics["macro_f1"])
+
+            metric_left.metric(
+                "Text–audio macro F1",
+                f"{baseline_macro_f1:.4f}",
+            )
+
+            metric_right.metric(
+                "Text–visual attention macro F1",
+                f"{attention_macro_f1:.4f}",
+                delta=(f"{attention_macro_f1 - baseline_macro_f1:+.4f}"),
+                delta_description="versus text–audio baseline",
+            )
+
+            baseline_roc_auc = float(baseline_metrics["roc_auc_humorous"])
+            attention_roc_auc = float(attention_metrics["roc_auc_humorous"])
+
+            st.caption(
+                f"ROC-AUC — text–audio: {baseline_roc_auc:.4f}; "
+                f"text–visual attention: {attention_roc_auc:.4f}."
+            )
+
+        evaluation_record = prediction_by_id.get(selected_corpus_id)
+        attention_record = cross_modal_by_id.get(selected_corpus_id)
+
+        if evaluation_record and attention_record:
+            baseline_probability = float(
+                evaluation_record["late_fusion_humorous_probability"]
+            )
+            attention_probability = float(attention_record["cross_modal_probability"])
+
+            st.markdown("###### Selected sample: out-of-fold scores")
+
+            score_left, score_middle, score_right = st.columns(3)
+
+            score_left.metric(
+                "Text–audio probability",
+                f"{baseline_probability:.1%}",
+            )
+
+            score_middle.metric(
+                "Text–visual probability",
+                f"{attention_probability:.1%}",
+            )
+
+            score_right.metric(
+                "Probability difference",
+                f"{(attention_probability - baseline_probability) * 100:+.1f} pp",
+            )
+
+            st.write(
+                "**Text–audio prediction:**",
+                evaluation_record.get("late_fusion_prediction", "N/A"),
+            )
+
+            st.write(
+                "**Text–visual attention prediction:**",
+                attention_record.get("cross_modal_prediction", "N/A"),
+            )
+
+        else:
+            st.info(
+                "This scene is outside the shared 391-sample evaluation "
+                "subset, or a saved cross-modal prediction is unavailable. "
+                "No out-of-fold comparison is displayed for this scene."
+            )
+
+        st.caption(
+            "The cross-modal attention model is experimental and does not "
+            "replace the primary text–audio classifier. Its probabilities "
+            "are not calibrated, and a difference in one sample's score "
+            "does not establish a performance improvement. Both models' "
+            "aggregate results are evaluated on the saved 391-sample set."
+        )
+
+        st.markdown("##### Explanation")
+
+        explanation = structured_record.get("explanation")
+
+        if explanation and str(explanation).strip():
+            st.write(explanation)
+        else:
+            st.caption("No explanation available.")
+
+        st.markdown("##### Supporting and opposing evidence")
+
+        evidence_left, evidence_right = st.columns(2)
+
+        with evidence_left:
+            display_evidence(
+                structured_record.get("text_supporting_terms"),
+                "Text evidence supporting humor",
+            )
+            display_evidence(
+                structured_record.get("text_opposing_terms"),
+                "Text evidence opposing humor",
+            )
+
+        with evidence_right:
+            display_evidence(
+                structured_record.get("audio_supporting_features"),
+                "Audio evidence supporting humor",
+            )
+            display_evidence(
+                structured_record.get("audio_opposing_features"),
+                "Audio evidence opposing humor",
+            )
+
+        st.markdown("##### Uncertainty and confidence")
+
+        confidence_left, confidence_right = st.columns(2)
+
+        with confidence_left:
+            st.metric(
+                "Heuristic confidence",
+                str(structured_record.get("confidence_level_heuristic", "N/A")).upper(),
+            )
+
+        with confidence_right:
+            calibrated = (
+                str(structured_record.get("confidence_calibrated", "")).strip().lower()
+            )
+
+            calibration_label = {
+                "true": "Calibrated",
+                "false": "Not calibrated",
+                "1": "Calibrated",
+                "0": "Not calibrated",
+            }.get(calibrated, "Unknown")
+
+            st.metric("Calibration status", calibration_label)
+
+        try:
+            margin = float(structured_record.get("decision_boundary_margin"))
+            st.metric("Decision boundary margin", f"{margin:.4f}")
+        except (ValueError, TypeError):
+            st.caption("Decision boundary margin unavailable.")
+
+        display_value_list(
+            structured_record.get("uncertainty_flags"),
+            "Uncertainty flags",
+        )
+
+        st.caption(
+            "Heuristic confidence is not a calibrated probability. "
+            "Decision margins and feature contributions are model "
+            "diagnostics, not guarantees or causal explanations."
+        )
+
+        st.markdown("##### Humor target analysis")
+
+        st.write(
+            "**Proposed target:**",
+            structured_record.get("target_of_humor", "Unknown"),
+        )
+
+        st.write(
+            "**Target status:**",
+            structured_record.get("target_status", "N/A"),
+        )
+
+        display_value_list(
+            structured_record.get("target_candidates"),
+            "Unverified target candidates",
+        )
+
+        display_value_list(
+            structured_record.get("target_evidence"),
+            "Target evidence",
+        )
+
+        st.caption(
+            "Target candidates are unverified model-generated phrases. "
+            "They must not be interpreted as confirmed humor targets."
+        )
