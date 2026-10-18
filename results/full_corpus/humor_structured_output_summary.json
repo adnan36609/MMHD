@@ -1,0 +1,26 @@
+{
+  "records_processed": 7289,
+  "target_status_counts": {
+    "not_applicable_predicted_non_humorous": 2120,
+    "uncertain_humor_prediction": 2159,
+    "unknown_insufficient_target_evidence": 1997,
+    "candidate_found_needs_validation": 14,
+    "no_humor_prediction": 999
+  },
+  "context_entity_counts": {
+    "GPE": 224,
+    "PERSON": 678,
+    "ORG": 294,
+    "FAC": 25,
+    "NORP": 80,
+    "PRODUCT": 13,
+    "WORK_OF_ART": 27,
+    "EVENT": 2
+  },
+  "records_with_candidate_target": 14,
+  "records_with_humor_prediction": 6290,
+  "target_method": "Conservative lexical-cue heuristic plus spaCy named-entity recognition. Candidate targets are not independently verified.",
+  "confidence_note": "The existing decision-strength score is not calibrated.",
+  "output": "results\\full_corpus\\humor_structured_output.csv",
+  "runtime_seconds": 26.08
+}
