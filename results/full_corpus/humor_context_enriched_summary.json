@@ -1,0 +1,16 @@
+{
+  "records": 7289,
+  "unique_sample_ids": 7289,
+  "source_videos": 24,
+  "video_dataset_files_loaded": 24,
+  "videos_missing_dataset_file": [],
+  "context_availability_counts": {
+    "no_neighbor_text": 1173,
+    "next_only": 457,
+    "both_available": 5193,
+    "previous_only": 466
+  },
+  "context_definition": "Nearest available preceding/following scene text from the same video dataset. This is a scene-order proxy, not verified conversation context.",
+  "prediction_policy": "Original humor predictions, probabilities, labels and explanations are preserved. Context does not modify them.",
+  "output_file": "results\\full_corpus\\humor_context_enriched.csv"
+}
