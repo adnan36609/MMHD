@@ -1,0 +1,64 @@
+{
+  "experiment": "Frozen ViT single-frame versus cross-frame features",
+  "inspiration": "Cross-image reasoning direction from MMSD3.0; not a CIRM reproduction.",
+  "samples": 391,
+  "source_videos": 24,
+  "class_counts": {
+    "humorous": 179,
+    "non_humorous": 212
+  },
+  "embedding_model": "google/vit-base-patch16-224-in21k",
+  "embedding_dimensions": 768,
+  "folds": 5,
+  "split_method": "GroupKFold grouped by source video",
+  "folds_share_no_source_videos": true,
+  "classifier": "StandardScaler + balanced LogisticRegression",
+  "regularization_C": 0.1,
+  "threshold": 0.5,
+  "hyperparameter_tuning": false,
+  "results": {
+    "frame_1_only": {
+      "macro_f1": 0.4575130890052356,
+      "accuracy": 0.4578005115089514,
+      "balanced_accuracy": 0.45912828080531254,
+      "roc_auc_humorous": 0.4677716875724676,
+      "feature_dimensions": 768
+    },
+    "frame_2_only": {
+      "macro_f1": 0.4749605055292259,
+      "accuracy": 0.4782608695652174,
+      "balanced_accuracy": 0.47495256667018027,
+      "roc_auc_humorous": 0.47599346474122484,
+      "feature_dimensions": 768
+    },
+    "mean_pooled_frames": {
+      "macro_f1": 0.47482391482391484,
+      "accuracy": 0.47570332480818417,
+      "balanced_accuracy": 0.47563771476757666,
+      "roc_auc_humorous": 0.44687467060187624,
+      "feature_dimensions": 768
+    },
+    "absolute_frame_difference": {
+      "macro_f1": 0.5218500670936865,
+      "accuracy": 0.5268542199488491,
+      "balanced_accuracy": 0.5219379150416359,
+      "roc_auc_humorous": 0.48476863075787924,
+      "feature_dimensions": 768
+    },
+    "ordered_frame_pair": {
+      "macro_f1": 0.4931800685612017,
+      "accuracy": 0.4961636828644501,
+      "balanced_accuracy": 0.49320122272583533,
+      "roc_auc_humorous": 0.48721935279856643,
+      "feature_dimensions": 1536
+    },
+    "cross_frame_relations": {
+      "macro_f1": 0.4855263157894737,
+      "accuracy": 0.4936061381074169,
+      "balanced_accuracy": 0.48649467692632026,
+      "roc_auc_humorous": 0.4708285021608517,
+      "feature_dimensions": 2304
+    }
+  },
+  "interpretation_warning": "Exploratory experiment on a small labeled subset. Cross-frame feature engineering is not learned cross-image attention. Results do not establish causal reasoning or reproduce the MMSD3.0 CIRM architecture."
+}
