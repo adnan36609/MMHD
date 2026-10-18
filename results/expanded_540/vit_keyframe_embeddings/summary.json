@@ -1,0 +1,17 @@
+{
+  "model": "google/vit-base-patch16-224-in21k",
+  "device": "cpu",
+  "num_annotated_scenes": 540,
+  "expected_keyframe_records": 1080,
+  "embedding_dimensions": 768,
+  "batch_size": 4,
+  "status_counts": {
+    "ok": 1048,
+    "missing_path": 32
+  },
+  "successful_embeddings": 1048,
+  "new_embeddings_this_run": 1048,
+  "output_file": "results\\expanded_540\\vit_keyframe_embeddings\\embeddings.csv",
+  "elapsed_seconds_this_run": 329.22,
+  "preprocessing": "RGB resize to model image size; pixel range [0,1]; channel-wise normalization with mean and std 0.5."
+}
