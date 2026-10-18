@@ -47,3 +47,6 @@ results/expanded_540/text_comparison/comparison_predictions.json
 
 # Detailed annotation ledger (local only)
 annotations/master_humor_annotations_540.csv
+
+# Generated cross-modal embedding cache
+results/expanded_540/cross_modal_reasoning/text_token_embeddings.npz
