@@ -1,0 +1,23 @@
+{
+  "experiment": "Full-corpus humor inference",
+  "corpus_records": 7289,
+  "records_with_text": 5674,
+  "audio_paths_attempted": 6290,
+  "usable_audio_predictions": 6290,
+  "usable_text_predictions": 5674,
+  "prediction_method_counts": {
+    "text_audio_late_fusion": 5674,
+    "text_only_fallback": 0,
+    "audio_only_fallback": 616,
+    "no_available_model": 999
+  },
+  "annotated_records": 540,
+  "audio_processing_errors": 0,
+  "audio_error_examples": {},
+  "fusion_rule": "Equal-weight average of text and audio humorous probabilities when both exist; otherwise use the available model.",
+  "decision_threshold": 0.5,
+  "confidence_note": "Model probabilities are not necessarily calibrated. decision_boundary_margin is not a calibrated confidence score.",
+  "evaluation_note": "These batch predictions are not out-of-fold evaluation results. Predictions for annotated samples may be in-sample. Use saved out-of-fold results for reported predictive performance.",
+  "runtime_seconds": 145.85,
+  "prediction_file": "results\\full_corpus\\humor_predictions.csv"
+}
