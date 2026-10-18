@@ -1,0 +1,117 @@
+{
+  "experiment": "Trainable text-visual cross-modal attention",
+  "inspiration": "MMSD3.0 cross-image reasoning and bridging concepts; not an exact CIRM reproduction.",
+  "samples": 391,
+  "source_videos": 24,
+  "folds": 5,
+  "outer_split": "GroupKFold by source video",
+  "inner_validation": "GroupShuffleSplit by source video",
+  "frozen_encoders": [
+    "cardiffnlp/twitter-roberta-base-emoji",
+    "google/vit-base-patch16-224-in21k"
+  ],
+  "trainable_components": [
+    "frame self-attention",
+    "bidirectional text-visual cross-attention",
+    "gated cross-modal refinement",
+    "learned frame relevance weighting",
+    "humor classifier"
+  ],
+  "hidden_size": 96,
+  "attention_heads": 4,
+  "max_epochs": 60,
+  "early_stopping_patience": 9,
+  "threshold": 0.5,
+  "metrics": {
+    "text_visual_cross_modal_attention": {
+      "macro_f1": 0.5425758452074241,
+      "accuracy": 0.5447570332480819,
+      "balanced_accuracy": 0.5427954042373775,
+      "roc_auc_humorous": 0.5574206809318014
+    },
+    "existing_text_audio_late_fusion": {
+      "macro_f1": 0.6306481238520074,
+      "accuracy": 0.6317135549872123,
+      "balanced_accuracy": 0.6316801939496153,
+      "roc_auc_humorous": 0.6506798777274164
+    },
+    "frozen_visual_difference_baseline": {
+      "macro_f1": 0.5218500670936865,
+      "accuracy": 0.5268542199488491,
+      "balanced_accuracy": 0.5219379150416359,
+      "roc_auc_humorous": 0.48476863075787924
+    }
+  },
+  "fold_details": [
+    {
+      "fold": 1,
+      "outer_train_samples": 309,
+      "outer_test_samples": 82,
+      "inner_train_samples": 230,
+      "inner_validation_samples": 79,
+      "outer_train_source_videos": 19,
+      "inner_validation_source_videos": 5,
+      "best_epoch": 2,
+      "epochs_run": 11,
+      "best_validation_loss": 0.6777316927909851
+    },
+    {
+      "fold": 2,
+      "outer_train_samples": 311,
+      "outer_test_samples": 80,
+      "inner_train_samples": 232,
+      "inner_validation_samples": 79,
+      "outer_train_source_videos": 19,
+      "inner_validation_source_videos": 5,
+      "best_epoch": 3,
+      "epochs_run": 12,
+      "best_validation_loss": 0.6683509349822998
+    },
+    {
+      "fold": 3,
+      "outer_train_samples": 312,
+      "outer_test_samples": 79,
+      "inner_train_samples": 231,
+      "inner_validation_samples": 81,
+      "outer_train_source_videos": 19,
+      "inner_validation_source_videos": 5,
+      "best_epoch": 3,
+      "epochs_run": 12,
+      "best_validation_loss": 0.6710642576217651
+    },
+    {
+      "fold": 4,
+      "outer_train_samples": 322,
+      "outer_test_samples": 69,
+      "inner_train_samples": 244,
+      "inner_validation_samples": 78,
+      "outer_train_source_videos": 20,
+      "inner_validation_source_videos": 5,
+      "best_epoch": 1,
+      "epochs_run": 10,
+      "best_validation_loss": 0.7093974351882935
+    },
+    {
+      "fold": 5,
+      "outer_train_samples": 310,
+      "outer_test_samples": 81,
+      "inner_train_samples": 227,
+      "inner_validation_samples": 83,
+      "outer_train_source_videos": 19,
+      "inner_validation_source_videos": 5,
+      "best_epoch": 3,
+      "epochs_run": 12,
+      "best_validation_loss": 0.6559993624687195
+    }
+  ],
+  "limitations": [
+    "Small 391-sample labeled evaluation subset.",
+    "The frozen visual vectors are global ViT representations, not patch tokens.",
+    "Only two frames per scene are modeled.",
+    "No validated target or explanation labels are available.",
+    "The model is CIRM-inspired, not a faithful reproduction.",
+    "The comparison is exploratory and does not establish generalization to unseen datasets."
+  ],
+  "elapsed_seconds": 28.14,
+  "predictions_file": "results\\expanded_540\\cross_modal_reasoning\\oof_predictions.csv"
+}
