@@ -1,899 +1,382 @@
-# MMHD Phase 1
-
-Dataset-generation pipeline for **Multimodal Humor & Hate Speech Detection (MMHD)**.
-
-Phase 1 converts source videos into structured multimodal samples containing:
-
-**Text | Image | Audio | OCR | Emoji**
-
-The pipeline is designed to be **reproducible, resumable, and scalable**.
-
-> Phase 1 generates the dataset. It does not perform final humor, sarcasm, irony, or hate-speech classification.
-
----
-
-# Pipeline
-
-    YouTube URL
-         ↓
-    yt-dlp
-         ↓
-    Source Video
-         ↓
-    PySceneDetect
-         ↓
-    Scene Segmentation
-         ↓
-    Candidate Formation
-         ↓
-    Multimodal Extraction
-         ↓
-    Text + Image + Audio + OCR + Emoji
-         ↓
-    dataset.json
-
----
-
-# Repository Structure
-
-    MMHD/
-
-    ├── source_videos/                 # Downloaded source videos (ignored by Git)
-    ├── sample_clips/                  # Generated scenes, candidates and extracted data
-    │
-    ├── src/
-    │   ├── download.py                # YouTube video downloading
-    │   ├── segment.py                 # Scene detection and scene splitting
-    │   ├── candidate.py               # Candidate generation
-    │   ├── extract.py                 # Multimodal extraction
-    │   ├── pipeline.py                # Main end-to-end pipeline
-    │   └── analyze_scenes.py          # Scene analysis utility
-    │
-    ├── benchmark_cpu.py               # CPU performance benchmark
-    ├── cleanup_duplicate.py           # Dataset cleanup utility
-    ├── validate_dataset.py            # Dataset integrity and contract validation
-    ├── semantic_redundancy_qc.py      # Semantic redundancy QC utility
-    ├── semantic_redundancy_calibration.json
-    │                                  # Calibration data for redundancy QC
-    ├── cpu_environment.yml            # Exported CPU environment configuration
-    ├── requirements.txt
-    ├── .gitignore
-    └── readme.md
-
-Generated videos, clips, extracted modalities, and other large local data should not be committed to Git.
-
----
-
-# Requirements
-
-## Software
-
-- Python 3.12
-- FFmpeg
-- Git
-- Conda recommended
-
-## Python Dependencies
-
-The main pipeline dependencies include:
-
-    faster-whisper==1.2.1
-    av<19
-    easyocr
-    yt-dlp
-    scenedetect
-
-The complete CPU environment can also be reproduced from:
-
-    cpu_environment.yml
-
----
-
-# Setup
-
-Create the Conda environment:
-
-    conda create -n mmhd python=3.12
-
-Activate it:
-
-    conda activate mmhd
-
-Install Python dependencies:
-
-    pip install -r requirements.txt
-
-Verify FFmpeg:
-
-    ffmpeg -version
-
-Verify Python:
-
-    python --version
-
-Expected:
-
-    Python 3.12.x
-
----
-
-# Running the Pipeline
-
-The main entry point is:
-
-    python src/pipeline.py
-
-The program asks for a YouTube URL:
-
-    Enter YouTube video URL:
-
-Enter one URL and press Enter.
-
-The pipeline performs:
-
-    STEP 1: Download
-            ↓
-    STEP 2: Scene Detection
-            ↓
-    STEP 3: Candidate Formation
-            ↓
-    STEP 4: Multimodal Extraction
-
-The current pipeline accepts **one YouTube URL per execution**.
-
-To process another video, run the command again with the next URL.
-
-Already downloaded videos are reused.
-
----
-
-# Pipeline Stages
-
-## 1. Download
-
-`src/download.py` uses **yt-dlp** to download the supplied YouTube video.
-
-Downloaded videos are stored in:
-
-    source_videos/
-
-The filename is based on the YouTube video ID:
-
-    source_videos/<video_id>.mp4
-
-If the video has already been downloaded, the existing file is reused.
-
----
-
-# 2. Scene Detection
-
-`src/segment.py` uses **PySceneDetect ContentDetector** with the **PyAV backend** for FFmpeg-backed video decoding.
-
-Current configuration:
-
-    ContentDetector threshold = 27.0
-
-Detected scenes are split and stored under:
-
-    sample_clips/<video_id>/
-
-A segmentation report is generated:
-
-    sample_clips/<video_id>/segmentation_report.json
-
-The report contains:
-
-- scene count
-- scene durations
-- average scene duration
-- minimum scene duration
-- maximum scene duration
-- detection time
-- threshold
-
-### Important
-
-PySceneDetect is only a **scene/candidate generation mechanism**.
-
-It does **not** determine whether a scene is humorous, hateful, sarcastic, ironic, or otherwise meaningful.
-
----
-
-# 3. Candidate Formation
-
-`src/candidate.py` converts detected scenes into dataset candidates.
-
-## Natural Scenes
-
-Scenes with duration:
-
-    ≤ 30 seconds
-
-are retained as a single natural-scene candidate.
-
-Example:
-
-    Scene-001
-
-The complete scene duration is used.
-
-## Long Scenes
-
-Scenes longer than:
-
-    30 seconds
-
-are represented using multiple **10-second windows** distributed across the full scene.
-
-Current configuration:
-
-    Window duration: 10 seconds
-    Minimum candidates: 2
-    Maximum candidates: 6
-
-The windows are distributed across the long scene rather than being generated as a fixed sequence of overlapping windows.
-
-This provides candidate coverage across different portions of a long scene while reducing unnecessary overlap.
-
-Candidate metadata is stored in:
-
-    sample_clips/<video_id>/candidate_report.json
-
-### Important
-
-Candidate generation is not humor classification.
-
-A candidate is simply a unit that will later be represented by multimodal features.
-
----
-
-# 4. Multimodal Extraction
-
-`src/extract.py` extracts the available modalities for every candidate.
-
-Each candidate can contain:
-
-    Text
-    Image
-    Audio
-    OCR
-    Emoji
-
----
-
-## Text
-
-Text is extracted using **Faster-Whisper**.
-
-The transcription configuration uses:
-
-- VAD filtering
-- `beam_size=1`
-- `condition_on_previous_text=False`
-
-The resulting transcript is stored in the sample's `text` modality.
-
----
-
-## Image
-
-Two representative frames are extracted from each candidate.
-
-The frames are sampled approximately at:
-
-    1/3 of candidate duration
-    2/3 of candidate duration
-
-The images are stored under the generated extraction directories.
-
-The purpose is to provide visual information from different points within the candidate rather than relying on a single frame.
-
-Every accepted dataset sample is required to contain two successfully extracted images.
-
----
-
-## Audio
-
-Audio is extracted using **FFmpeg**.
-
-Current audio format:
-
-    Mono
-    16 kHz
-    WAV
-
-Audio is stored as a candidate-specific file.
-
----
-
-## OCR
-
-OCR is performed using **EasyOCR**.
-
-OCR is applied to both extracted representative images.
-
-A persistent OCR worker is used so that EasyOCR does not need to be repeatedly initialized for every candidate.
-
-OCR uses:
-
-    mag_ratio=0.75
-
-to reduce CPU processing time while retaining useful text extraction quality.
-
-If no readable text is present in the sampled images, OCR may legitimately return:
-
-    status: empty
-
-This is not considered an extraction failure.
-
----
-
-## Emoji
-
-The current emoji field is **not visual emoji detection**.
-
-Instead, it is derived heuristically from the transcript.
-
-For example, transcript keywords related to:
-
-    laugh / funny / haha / lol
-    love
-    angry
-    sad / cry
-    wow / surprise
-    shock
-
-can produce corresponding emoji values.
-
-Therefore:
-
-    emoji.status = "derived"
-
-means that the value was generated indirectly from extracted text.
-
----
-
-# Dataset Output
-
-For each processed video, the dataset is stored at:
-
-    sample_clips/<video_id>/dataset.json
-
-A simplified sample looks like:
-
-    {
-        "sample_id": "57_--62bZUQ-Scene-001",
-        "source": {
-            "video_id": "57_--62bZUQ",
-            "video_file": "57_--62bZUQ.mp4",
-            "source_scene": "Scene-001",
-            "source_file": "57_--62bZUQ-Scene-001.mp4"
-        },
-        "timing": {
-            "start_seconds": 0.0,
-            "end_seconds": 7.774,
-            "duration_seconds": 7.774
-        },
-        "modalities": {
-            "text": {
-                "status": "success",
-                "value": "..."
-            },
-            "image": {
-                "status": "success",
-                "paths": [
-                    "..."
-                ]
-            },
-            "audio": {
-                "status": "success",
-                "path": "..."
-            },
-            "ocr": {
-                "status": "empty",
-                "value": ""
-            },
-            "emoji": {
-                "status": "derived",
-                "value": "😂"
-            }
-        },
-        "metadata": {
-            "candidate_type": "natural_scene"
-        }
-    }
-
-The exact extracted paths depend on the local dataset structure.
-
----
-
-# Modality Status
-
-Each modality can have a status describing its result.
-
-### `success`
-
-Extraction completed and useful data was found.
-
-### `empty`
-
-Extraction completed successfully, but the modality was naturally absent.
-
-For example:
-
-    OCR = empty
-
-can simply mean that there was no readable text in the sampled frames.
-
-### `failed`
-
-The extraction process encountered an actual processing failure.
-
-### `derived`
-
-The value was generated indirectly rather than directly detected.
-
-Currently this applies to the transcript-derived emoji field.
-
----
-
-# Missing Modalities Are Allowed
-
-A sample does **not** need all five modalities to contain meaningful information.
-
-For example:
-
-    Text   → success
-    Image  → success
-    Audio  → success
-    OCR    → empty
-    Emoji  → derived
-
-is a valid sample.
-
-Do not convert naturally empty modalities into artificial values just to make every sample complete.
-
-This is particularly important when scaling the dataset.
-
----
-
-# Checkpointing and Resume
-
-Dataset extraction is resumable.
-
-Before skipping an existing sample, the extraction pipeline verifies that the stored record matches the current candidate definition.
-
-The checkpoint validation includes:
-
-- source scene
-- source file
-- start time
-- end time
-- candidate duration
-- candidate type
-
-If all values match, the candidate is skipped.
-
-If a sample ID exists but its stored metadata does not match the current candidate definition, the record is treated as **stale** and the candidate is reprocessed.
-
-This prevents stale dataset records from being incorrectly reused after candidate-generation changes.
-
-The resulting workflow is:
-
-    Run 1
-        ↓
-    Some candidates completed
-        ↓
-    Process interrupted
-        ↓
-    Run pipeline again
-        ↓
-    Matching completed candidates skipped
-        ↓
-    Remaining candidates processed
-        ↓
-    Stale records reprocessed when detected
-
-This allows large datasets to be generated without restarting the entire extraction process after an interruption.
-
----
-
-# Scaling to 8K–10K Samples
-
-The intended dataset target is approximately:
-
-    8,000–10,000 samples
-
-Candidate yield depends on the source videos and their scene structure, so there is no fixed samples-per-minute conversion.
-
-The general scaling relationship is:
-
-    More source videos
-            ↓
-    More detected scenes
-            ↓
-    More candidates
-            ↓
-    More multimodal samples
-
-For large-scale collection, monitor:
-
-- number of source videos
-- scene count
-- candidate count
-- completed samples
-- diversity rejections
-- failed extractions
-- empty modalities
-- missing files
-- disk usage
-- processing time
-- sample quality
-
-The pipeline should first be tested on a small batch before scaling substantially.
-
----
-
-# Recommended Scaling Workflow
-
-For a new batch:
-
-    1. Add/process source video
-            ↓
-    2. Run pipeline
-            ↓
-    3. Inspect candidate count
-            ↓
-    4. Inspect dataset.json
-            ↓
-    5. Run validation
-            ↓
-    6. Continue scaling
-
-Do not immediately modify segmentation or candidate-generation parameters simply because individual samples look imperfect.
-
-The pipeline is intended to produce candidate samples for later dataset analysis and labeling.
-
----
-
-# Validation
-
-The latest full-corpus validation covers 7,289 accepted samples and 7,368 candidates.
-
-Run validation with:
-
-    python validate_dataset.py
-
-## Current Structural Validation
+# MMHD: Multimodal Humor Detection
+
+MMHD is a research prototype for **scene-level binary humor detection** using information extracted from video scenes: text, images, audio, OCR, and transcript-derived emoji features. The project combines a reproducible dataset-generation pipeline with supervised baseline evaluation, exploratory multimodal experiments, full-corpus inference, model-evidence explanations, uncertainty indicators, and a Streamlit dashboard.
+
+**Task scope:** the prediction target is humor only (`humorous` / `non_humorous`). The project does not implement separate classifiers for other content categories.
+
+> MMHD is an ongoing research prototype. The implemented baseline and experimental branches are distinguished below from the proposed full architecture. Experimental components should not be described as validated or integrated into the primary inference path unless stated explicitly.
+
+## At a glance
+
+| Item | Current status |
+|---|---:|
+| Candidate records generated | 7,368 |
+| Accepted scene-level records | **7,289** |
+| Source videos | 24 |
+| Human-annotation records available | 540 |
+| Primary source-video-grouped evaluation | 391 samples |
+| Five-stream ablation evaluation | 343 samples |
+| Full-corpus prediction rows | 7,289 |
+| Records with a primary inference prediction | 6,290 |
+| Records marked unavailable by the primary inference pipeline | 999 |
+
+The accepted dataset accounting is `7,289 accepted + 79 diversity rejections = 7,368 candidates`. The corpus is not fully human-labeled: full-corpus inference is not the same as supervised training or held-out evaluation.
+
+## 1. Project workflow
+
+### Dataset-generation pipeline
+
+```text
+Source video / YouTube URL
+          |
+          v
+        yt-dlp
+          |
+          v
+   Scene segmentation
+      PySceneDetect
+          |
+          v
+    Candidate formation
+          |
+          v
+   Multimodal extraction
+   +------+------+------+------+------+
+   |      |      |      |      |      |
+ Text  Images  Audio  OCR   Emoji-derived
+          |
+          v
+   Per-video dataset.json
+          |
+          v
+   Dataset validation
+```
+
+### Implemented primary inference path
+
+```text
+Validated scene corpus
+          |
+          v
+Modality availability check
+          |
+          +---------------------------+
+          |                           |
+          v                           v
+     Text model                  Audio model
+          |                           |
+          +-------------+-------------+
+                        |
+                        v
+       Fixed 50:50 text-audio probability fusion
+              when both outputs are available
+                        |
+             +----------+----------+
+             |                     |
+             v                     v
+       Text + audio             Audio-only
+          fusion                 fallback
+             |                     |
+             +----------+----------+
+                        |
+                        v
+                Humor prediction
+                        |
+                        v
+     Model evidence and uncertainty indicators
+                        |
+                        v
+       Structured output and dashboard
+
+No supported model input -> explicit unavailable status
+```
+
+The primary full-corpus inference path uses text and audio, with an audio-only fallback. OCR, emoji, visual, context, ViT, and cross-modal-attention work exists in separate experiments; these experimental branches are **not all integrated into the primary full-corpus inference pipeline**.
+
+## 2. Five input modalities
+
+| Modality | Extraction / representation | Current corpus coverage |
+|---|---|---:|
+| Text | Speech transcripts generated with Faster-Whisper | 5,674 / 7,289 (77.8%) |
+| Images | Two representative keyframes from each candidate | 6,159 / 7,289 (84.5%) |
+| Audio | Mono 16 kHz WAV extracted with FFmpeg | 6,290 / 7,289 (86.3%) |
+| OCR | EasyOCR applied to representative frames | 3,865 / 7,289 (53.0%) |
+| Emoji | Heuristic information derived from transcripts | 273 / 7,289 (3.7%) |
+
+The modality counts overlap and must not be added together. The emoji field is **transcript-derived**; it is not visual emoji detection. A modality can be naturally empty, unavailable, or failed. Missing modalities must not be replaced with fabricated content.
+
+### Dataset schema and local assets
+
+Each processed video has a `sample_clips/<video_id>/dataset.json` file. Records include a stable sample ID, source video and scene references, timing, candidate metadata, modality status, transcript/OCR values, and paths to extracted images/audio.
+
+Typical local directories:
+
+```text
+MMHD/
+├── source_videos/       # Downloaded source videos; ignored by Git
+├── sample_clips/        # Dataset JSON and extracted media; ignored by Git
+├── src/                 # Extraction, inference, experiments, and dashboard code
+├── annotations/         # Local annotation files; some are not tracked by Git
+├── results/             # Metrics and generated experiment artifacts
+├── docs/
+│   └── research_results.md
+├── MMHD_TECHNICAL_HANDOFF.md
+├── requirements.txt
+├── cpu_environment.yml
+├── validate_dataset.py
+├── benchmark_cpu.py
+└── readme.md
+```
+
+Generated media, large result CSVs, trained model files, and embedding caches may be excluded from Git. A fresh clone may therefore **not** contain everything required to reproduce the current outputs or launch every dashboard panel. See [MMHD Technical Handoff](MMHD_TECHNICAL_HANDOFF.md) for the artifact checklist and verified results.
+
+## 3. Dataset validation and quality notes
+
+The latest documented full-corpus structural validation reported:
 
 | Check | Result |
 |---|---:|
-| Dataset samples | 7,289 |
 | Unique sample IDs | 7,289 |
 | Duplicate sample IDs | 0 |
-| Candidates checked | 7,368 |
-| Accepted samples | 7,289 |
-| Diversity rejections | 79 |
 | Candidate accounting problems | 0 |
 | Candidate boundary problems | 0 |
-| Candidate/dataset contract problems | 0 |
-| Missing audio files | 0 |
-| Missing images | 0 |
-| Invalid image counts | 0 |
-| Temporal overlaps detected | 0 |
+| Dataset-contract problems | 0 |
+| Temporal-overlap pairs detected | 0 |
+| Diversity rejections | 79 |
 
-Candidate accounting:
+The audit also reported **eight exact-transcript duplicate groups involving 26 accepted samples**. This remains a warning; do not describe the accepted corpus as having zero repeated transcripts or automatically remove repeated phrases without reviewing their scene context.
 
-    7,289 accepted + 79 diversity rejections = 7,368 candidates
+Structural validity does not guarantee semantic quality. Transcripts may be noisy, OCR may capture channel branding or promotional text, and a present modality may not contain useful humor-related evidence.
 
-The structural, file-integrity, candidate-boundary, candidate-contract, and temporal-overlap checks passed in the latest validation run.
+## 4. Supervised evaluation results
 
-The exact-transcript-diversity audit reports a separate warning, documented below. Therefore, the final validation message should not be interpreted as proof that every quality check is warning-free.
+The results below are from source-video-grouped evaluation. Evaluation subsets differ in size and composition; do not rank values from different subsets as if they were a single, directly comparable experiment.
 
----
+### Primary expanded comparison
 
-# Modality Validation
+The primary complete-case evaluation used **391 annotated samples** from 24 source videos (179 humorous and 212 non-humorous).
 
-Current full-corpus modality-status counts:
-
-| Modality | Success | Empty | Failed |
+| Configuration | Accuracy | Macro F1 | Balanced accuracy |
 |---|---:|---:|---:|
-| Text | 5,674 | 616 | 999 |
-| Image | 6,159 | 0 | 1,130 |
-| Audio | 6,290 | 0 | 999 |
-| OCR | 3,865 | 2,294 | 1,130 |
-| Emoji | 273 | 7,016 | 0 |
+| Text-only | 54.99% | 54.98% | — |
+| Audio-only | 62.66% | 62.48% | — |
+| Feature-level text + audio | 61.89% | 61.53% | — |
+| Equal-weight text-audio late fusion | **63.17%** | **63.06%** | **63.17%** |
 
-The image and audio tables use zero for the empty status because the current audit reports those modalities as success or failed. These counts describe extraction status; they do not necessarily measure semantic usefulness.
+Late fusion was the highest-scoring configuration in this comparison. Its Macro F1 advantage over audio-only is small (about 0.00584); the saved video-cluster bootstrap 95% interval for the difference includes zero. This result does **not** establish a reliable improvement. Fusion weights are fixed at 50:50 and the model probabilities are not calibrated.
 
-Emoji values are currently derived heuristically from transcripts rather than detected directly from video pixels.
+### Five-stream ablation
 
-An empty modality is not equivalent to an extraction failure. For example, OCR can complete successfully and return no readable text.
+The separate five-stream comparison evaluated **343 of the 540 annotation records** on a shared complete-case subset. Records lacking OCR were excluded from this particular comparison.
 
----
+It evaluated text-only, audio-only, visual-only, OCR-only, and combinations of available streams, including a configuration using all five streams.
 
-# Redundancy and Diversity
+| Configuration | Macro F1 | Accuracy | Balanced accuracy |
+|---|---:|---:|---:|
+| Audio-only | **60.47%** | 60.93% | **61.16%** |
+| Text + audio | 60.45% | 61.22% | 60.81% |
+| All five streams | 52.53% | 53.94% | 52.58% |
 
-## Exact Transcript Diversity
+With the current representations and fusion approaches, adding more streams did not consistently improve results. This does not establish that those modalities are inherently unhelpful; it describes the evaluated implementations and subsets.
 
-The production pipeline applies an exact-text diversity constraint when accepting candidates. However, the latest full-corpus validation still found repeated normalized transcripts among accepted samples.
+Full metric tables and interpretation notes are in [Research Results](docs/research_results.md) and [MMHD Technical Handoff](MMHD_TECHNICAL_HANDOFF.md).
 
-    Samples with usable text: 5,674
-    Exact duplicate groups: 8
-    Samples in duplicate groups: 26
-    Candidates rejected for diversity: 79
+## 5. Full-corpus inference and outputs
 
-Examples of repeated phrases include "oh my god", "no no no", and "thank you very much".
+The existing inference output contains 7,289 rows with unique sample IDs:
 
-The 79 diversity rejections count candidates rejected during production extraction. They do not imply that the accepted corpus has zero repeated transcripts.
+| Inference method/status | Records |
+|---|---:|
+| Text-audio late fusion | 5,674 |
+| Audio-only fallback | 616 |
+| No applicable model; marked unavailable | 999 |
+| **Total records** | **7,289** |
 
-The current validator reports the duplicate groups as a warning. Investigate these remaining repetitions before claiming that the full corpus is free of exact transcript duplicates.
+The 6,290 scored rows are inference outputs, not human-verified labels and not out-of-fold evaluation predictions. No model score is fabricated for the 999 unavailable rows.
 
-## Semantic Redundancy QC
+The project also has structured prediction outputs and explanation/evidence artifacts. Humor-target extraction is experimental and heuristic-based; candidate targets are not independently verified. Explanation text describes model evidence/associations, not necessarily the actual reason a human finds a scene funny. Decision-boundary and confidence labels are heuristic, and probabilities are not calibrated.
 
-Semantic redundancy inspection remains a quality-control diagnostic rather than an automatic production deduplication mechanism.
+## 6. Additional research experiments
 
-Semantically similar samples may still contain different audio, visual context, or dialogue and should not automatically be removed.
+These are separate experimental branches. They do not replace or feed into the primary full-corpus inference pipeline.
 
-An earlier semantic-QC snapshot examined a smaller subset:
+### Neighboring-scene context
 
-    Samples with usable text: 433
-    Exact duplicate groups reported by that run: 0
+A context-enrichment artifact covers all **7,289 scene records** across 24 videos. At least one neighboring scene had text for 6,116 records (83.9%). This is context derived from chronological scene order, not verified dialogue turns.
 
-This is a historical result from a different subset, not a current full-corpus result. It should not be used to override the latest audit of 5,674 samples with usable text.
+The contextual model evaluated on the 391-sample set reported Macro F1 **0.5471**, compared with **0.6306** for the primary text-audio baseline. The context model did not outperform the baseline. Saved fold assignments may differ, so this comparison carries that qualification. Context remains exploratory and does not alter primary predictions.
 
-The semantic redundancy tooling and calibration remain available in:
+### ViT keyframe and cross-frame experiments
 
-    semantic_redundancy_qc.py
-    semantic_redundancy_calibration.json
+Frozen ViT features were extracted for annotated-scene keyframes: 1,048 of 1,080 frame records had successful embeddings; 524 scenes had both frames available. Cross-frame representations were tested with visual-only classifiers. The strongest listed visual-only representation by Macro F1 was the absolute difference between frame embeddings (0.5219), which did not outperform the primary text-audio baseline.
 
----
+A visual late-fusion experiment also tested multiple visual probability weights. None of the tested weights improved on the text-audio baseline. These experiments are exploratory and are not integrated into primary full-corpus inference. They are not a reproduction of CIRM.
 
-# Baseline and Performance
+### Text-visual cross-modal attention
 
-The currently validated CPU pipeline represents the **CPU execution baseline**.
+A lightweight experiment used frozen text-token representations, image embeddings, and trainable text-visual cross-attention. It evaluated 391 samples using five-fold source-video-grouped out-of-fold predictions:
 
-The production candidate definitions, dataset schema, extraction semantics, and validation requirements are treated as the baseline for GPU execution and future optimization.
+| Metric | Text-visual attention |
+|---|---:|
+| Macro F1 | 54.26% |
+| Accuracy | 54.48% |
+| Balanced accuracy | 54.28% |
+| ROC-AUC | 0.5574 |
 
-## CPU Benchmark
+This experiment did not outperform the primary text-audio baseline and is not integrated into the primary inference path. The probabilities are not calibrated. These experiments are adaptations informed by multimodal research themes, not faithful reproductions of the referenced papers.
 
-The current CPU benchmark measured approximately:
+## 7. Dashboard
 
-    34.10 seconds/sample
+The Streamlit dashboard (`src/mmhd_dashboard.py`) provides access to the documented experiments and saved outputs, including:
 
-Approximate CPU-only processing time at this measured rate:
+- **Full Corpus Explorer:** inspect scene records, available inputs, neighboring-scene context, and experimental scores when present.
+- **Evaluated Samples:** inspect saved out-of-fold evaluation predictions; this view is restricted to records with evaluation predictions.
+- **Experiments & Findings:** compare the five-stream ablation configurations and inspect individual-sample results.
+- **Architecture Status:** distinguish the primary inference path, experimental branches, limitations, and proposed future work.
 
-    8,000 samples  → ~3.16 days
-    10,000 samples → ~3.95 days
+The dashboard's key interface behavior and Python syntax checks were verified in the project workflow on 19 October 2026. Run it again in the actual presentation environment to confirm that required data, models, dependencies, and saved artifacts are available. A successful syntax check alone does not guarantee runtime readiness.
 
-These are baseline estimates. Actual processing time can vary depending on hardware, video characteristics, scene structure, and modality workload.
+## 8. Research inspiration and roadmap
 
-The CPU benchmark can be run with:
+The mentor's intended architecture is:
 
-    python benchmark_cpu.py
+1. Text, images, audio, OCR, and emoji input
+2. Encoder
+3. Multimodal alignment
+4. Cross-image reasoning
+5. Conversation memory
+6. Speaker-listener graph
+7. Cultural retrieval-augmented context
+8. Multimodal large language model (MLLM)
+9. Humor target
+10. Explanation generator
+11. Confidence
+12. Final output
 
----
+Current implementation status:
 
-# GPU Support
+| Stage | Status |
+|---|---|
+| 1. Input modalities | Extraction and experiments exist; coverage varies by modality |
+| 2. Encoder | Modality-specific features/models exist; a unified five-modality encoder pipeline is not established |
+| 3. Multimodal alignment | Fixed-weight text-audio late fusion exists; learned alignment remains future work |
+| 4. Cross-image reasoning | ViT cross-frame and text-visual attention experiments exist; the full intended reasoning module is not implemented |
+| 5. Conversation memory | Neighboring-scene context exists as an exploratory branch; full memory is not integrated into primary inference |
+| 6. Speaker-listener graph | Not implemented in the documented system |
+| 7. Cultural RAG | Not implemented in the documented system |
+| 8. MLLM | Not integrated into the proposed full architecture |
+| 9. Humor target | Experimental heuristic candidate extraction exists; not validated |
+| 10. Explanation generator | Limited model-evidence explanations exist |
+| 11. Confidence | Heuristic uncertainty indicators exist; not calibrated |
+| 12. Final output | Structured outputs and dashboard exist for the current system |
 
-The pipeline supports GPU acceleration for computationally expensive extraction components, primarily **Faster-Whisper** and **EasyOCR**.
+### Research references
 
-GPU usage is controlled through the `MMHD_USE_GPU` environment variable.
+The project takes methodological inspiration from the following work. These references do not imply full reproduction of their methods. **MMHD's prediction objective remains humor detection only.**
 
-## Enable GPU
+- **M2H2: A Multimodal Multiparty Hindi Dataset for Humor Recognition in Conversations.** Motivation for multimodal humor recognition and conversational context. [Paper](https://arxiv.org/abs/2108.01260)
+- **Detecting Emotional Incongruity of Sarcasm by Commonsense Reasoning (EICR).** A source of transferable ideas about retrieved context and structured reasoning; these ideas may be adapted to humor, without adding another classification task. [ACL Anthology](https://aclanthology.org/2025.coling-main.608/)
+- **CFMS: Towards Explainable and Fine-Grained Chinese Multimodal Sarcasm Detection Benchmark.** Inspiration for fine-grained target/explanation design, adapted to humor and not a reproduction of the benchmark or its training method. [Manuscript](https://openreview.net/pdf/77f4cb13b3274cc3cde801fdf1e8a35c00d1dd89.pdf)
+- **Additional visual-reasoning reference: MMSD3.0 / CIRM.** Relevant to cross-image and text-image reasoning; MMHD's ViT/cross-frame experiments are not a reproduction of CIRM. [CVPR 2026 paper](https://openaccess.thecvf.com/content/CVPR2026/html/Zhao_MMSD3.0_A_Multi-Image_Benchmark_for_Real-World_Multimodal_Sarcasm_Detection_CVPR_2026_paper.html)
 
-PowerShell:
+## 9. Setup
 
-    $env:MMHD_USE_GPU="1"
-    python src/pipeline.py
+### Requirements
 
-## Use CPU
+- Python 3.12
+- Git
+- FFmpeg available on `PATH`
+- Conda recommended
 
-PowerShell:
+The dataset-generation pipeline's direct dependencies are listed in `requirements.txt`; `cpu_environment.yml` provides the project's CPU environment. Research experiments and the dashboard may require their associated modeling/dashboard dependencies and local artifacts. Verify those against the actual environment before assuming a fresh clone is demo-ready.
 
-    $env:MMHD_USE_GPU="0"
-    python src/pipeline.py
+Example setup for the extraction pipeline:
 
-The GPU and CPU versions use the same:
+```powershell
+conda create -n mmhd python=3.12
+conda activate mmhd
+pip install -r requirements.txt
+ffmpeg -version
+python --version
+```
 
-- candidate definitions
-- candidate IDs
-- source scene/file references
-- candidate timing
-- candidate types
-- dataset schema
-- physical output requirements
-- checkpoint/resume behavior
-- extraction semantics
-- validation requirements
+Expected Python version: `3.12.x`.
 
-The GPU implementation was compared against the CPU implementation on a fixed test subset.
+## 10. Run the dataset-generation pipeline
 
-The comparison verified:
+The main entry point accepts one YouTube URL per execution:
 
-- output consistency
-- transcript consistency
-- modality extraction consistency
-- two-image extraction requirement
-- dataset schema compatibility
-- extraction behavior
+```powershell
+python src/pipeline.py
+```
 
-The tested GPU implementation produced equivalent outputs for the fixed comparison subset while reducing processing time.
+Follow the prompt to enter a URL. Existing downloads and valid processed candidates may be reused. The pipeline supports checkpoint/resume; rerunning it can continue processing after an interruption.
 
-The fixed benchmark measured approximately:
+Enable GPU acceleration for supported extraction components in PowerShell:
 
-    GPU speedup: ~2.52×
+```powershell
+$env:MMHD_USE_GPU="1"
+python src/pipeline.py
+```
 
-The benchmark was performed on a small fixed subset and should be treated as a measured optimization result rather than a guaranteed end-to-end speedup for every video or hardware configuration.
+Use CPU mode instead:
 
-For systems without a compatible GPU, use:
+```powershell
+$env:MMHD_USE_GPU="0"
+python src/pipeline.py
+```
 
-    $env:MMHD_USE_GPU="0"
+GPU acceleration is primarily used for Faster-Whisper and EasyOCR where the configured environment supports it. Extraction output and schema should be validated after changing execution environments.
 
-and run the same pipeline using CPU execution.
+## 11. Validate the dataset
 
----
+From the repository root:
 
-# Important Rules
+```powershell
+python validate_dataset.py
+```
 
-1. **PySceneDetect does not detect humor.**
+The latest documented validation covered 7,289 accepted samples and 7,368 candidates. It reported zero duplicate sample IDs and zero contract problems, while separately warning about eight exact-transcript duplicate groups involving 26 accepted samples. Use the generated report/log for the actual run rather than assuming historical counts still describe a modified dataset.
 
-2. Candidate generation does not assign humor labels.
+## 12. Run the dashboard
 
-3. Do not automatically assign humor, sarcasm, irony, or hate-speech labels during Phase 1.
+When its dependencies, dataset assets, models, and expected result files are available:
 
-4. Natural missing modalities are allowed.
+```powershell
+streamlit run .\src\mmhd_dashboard.py
+```
 
-5. `empty` does not mean `failed`.
+The primary experiment outputs and some generated CSV/model/embedding artifacts are excluded from Git. If the dashboard reports missing artifacts after a fresh clone, supply the required local artifacts or regenerate them using the corresponding scripts, then verify the app at runtime.
 
-6. Emoji is currently transcript-derived, not visually detected.
+## 13. Useful documentation and scripts
 
-7. Two representative images are extracted per accepted candidate.
+- [`MMHD_TECHNICAL_HANDOFF.md`](MMHD_TECHNICAL_HANDOFF.md) — verified metrics, artifact locations, architecture boundaries, dashboard checks, and report/PPT guardrails.
+- [`docs/research_results.md`](docs/research_results.md) — earlier experimental results and methodological limitations.
+- `src/predict_full_corpus_humor.py` — primary full-corpus inference.
+- `src/explain_full_corpus_humor.py` — evidence and explanation generation.
+- `src/compare_multimodal_540.py` — grouped modality/model comparisons.
+- `src/compare_late_fusion_540.py` — late-fusion evaluation using saved out-of-fold predictions.
+- `src/enrich_structured_output_with_context.py` — neighboring-scene context enrichment.
+- `src/extract_vit_keyframe_embeddings_540.py` — frozen ViT keyframe embeddings.
+- `src/compare_cross_frame_vit_540.py` — cross-frame visual experiments.
+- `src/train_cross_modal_attention_391.py` — text-visual cross-attention experiment.
 
-8. Long scenes use distributed candidate windows.
+Confirm each script and artifact exists in the checked-out version before relying on it.
 
-9. Exact transcript diversity is enforced during production extraction.
+## 14. Limitations and reporting rules
 
-10. Semantic similarity is treated as a QC signal rather than automatic deduplication.
+- Only human-annotated subsets support the documented supervised evaluation; the whole corpus is not human-labeled.
+- Full-corpus inference outputs are not evaluation predictions.
+- The primary inference path does not integrate every modality or experimental model.
+- Current late-fusion improvement over audio-only is small and not established as reliable.
+- The contextual and cross-modal experiments did not outperform the primary baseline in their documented comparisons.
+- OCR can capture irrelevant overlays, and the derived emoji signal is sparse and heuristic.
+- Humor-target candidates are not independently verified.
+- Explanations reflect model evidence and are not causal explanations of human humor.
+- Confidence indicators are heuristic; model probabilities are not calibrated.
+- The research papers inform selected design choices; the project does not claim faithful reproduction of their complete architectures.
+- Unimplemented stages in the intended architecture must remain labelled as future work.
 
-11. Do not change segmentation or candidate parameters without validating the effect.
+## License and data
 
-12. Keep generated videos, clips, audio, images, and datasets outside Git.
-
-13. Test pipeline changes on a small dataset before large-scale processing.
-
-14. Preserve checkpoint/resume behavior when modifying extraction logic.
-
-15. Do not change the dataset schema without revalidating the pipeline.
-
-16. Treat the validated CPU pipeline as the reference baseline when evaluating GPU or future performance changes.
-
-17. GPU optimization must preserve the validated candidate-generation and extraction behavior.
-
----
-
-# Git and Generated Data
-
-The following generated directories are ignored:
-
-    source_videos/
-    sample_clips/
-    __pycache__/
-
-Generated datasets and media should not normally be pushed to GitHub.
-
-The repository should contain:
-
-    source code
-    configuration
-    requirements
-    validation tools
-    documentation
-
-rather than the full generated dataset.
-
-Use focused Git commits for meaningful pipeline changes.
-
----
-
-# Handoff
-
-The intended operator workflow is:
-
-    conda activate mmhd
-
-    $env:MMHD_USE_GPU="1"
-
-    python src/pipeline.py
-
-For CPU execution:
-
-    conda activate mmhd
-
-    $env:MMHD_USE_GPU="0"
-
-    python src/pipeline.py
-
-Provide the YouTube URL when prompted.
-
-For interrupted processing, rerun the pipeline.
-
-Existing candidates whose stored records match the current candidate definition will be skipped. Stale records are reprocessed when a mismatch is detected.
-
-Before large-scale processing, verify:
-
-    1. Python environment is active
-    2. FFmpeg is installed
-    3. Dependencies are installed
-    4. GPU/CPU execution mode is configured correctly
-    5. Source video downloads correctly
-    6. Scene segmentation completes
-    7. Candidate report is generated
-    8. dataset.json is generated
-    9. Extracted audio/images exist
-    10. Sample IDs are unique
-    11. Candidate ↔ dataset consistency passes
-    12. Empty modalities are interpreted correctly
-    13. Exact transcript diversity validation passes
-    14. Checkpoint/resume behavior works
-
-For GPU execution, verify that the environment variable is set before starting the pipeline:
-
-    $env:MMHD_USE_GPU="1"
-
-For CPU execution:
-
-    $env:MMHD_USE_GPU="0"
-
-The pipeline should be treated as the **validated dataset-generation baseline**.
-
-Any future modification should first be tested on a small controlled sample and validated before being used for large-scale collection.
-
----
-
-# Phase 1 Scope
-
-Phase 1 is responsible for:
-
-    Source Videos
-         ↓
-    Scene Segmentation
-         ↓
-    Candidate Generation
-         ↓
-    Multimodal Feature Extraction
-         ↓
-    Structured Dataset
-
-Phase 1 does **not** perform Humor Classification.
-
----
-
-# Humor Classification Experiments (Separate Research Stage)
-
-Phase 1 remains responsible for dataset generation and multimodal extraction. The following experiments were conducted separately using the annotated pilot; they do not change the scope of the Phase 1 pipeline.
-
-## Pilot and Evaluation Subsets
-
-The initial completed pilot contains 240 manually labeled samples:
-
-    Humorous:      82
-    Non-humorous: 158
-
-Different experiments used different modality-eligible subsets. The main subsets included 191 samples for text experiments, 232 for the audio baseline, 185 for the text/audio/visual comparison, and 145 for OCR-related comparisons.
-
-The reported experiments used five-fold GroupKFold evaluation by source video. Scores from different subsets should not be treated as a single directly comparable ranking.
-
-## Main Findings
-
-- In the 185-sample text/audio/visual comparison, audio-only achieved 58.09% balanced accuracy and 57.18% macro F1. Its accuracy was 57.84%, below the 61.62% majority-class baseline.
-- On the 145-sample OCR-eligible subset, raw OCR-only achieved 67.59% accuracy, 58.93% balanced accuracy, and 59.12% macro F1. Its accuracy was only 0.69 percentage points above the majority baseline.
-- Removing selected branding and promotional phrases reduced OCR-only macro F1 from 59.12% to 42.13%. This indicates sensitivity to the removed text, but does not prove that branding alone explains the original performance.
-- Simple multimodal fusion did not consistently outperform the strongest individual modality.
-- The neighboring-scene context experiment used nearby scene transcripts as a proxy, not verified conversational turns, and did not demonstrate a meaningful improvement.
-- Emoji coverage was too sparse to establish the value of emoji as a supervised modality in the current pilot.
-- These are exploratory binary humor-recognition experiments. They do not constitute a completed hate-speech classifier or a demonstrated reliable humor-understanding system.
-
-The full experimental tables, evaluation details, and limitations are documented in [Research Results](docs/research_results.md).
-
-A second annotation round has been prepared with 300 new samples and a 100-sample independent review subset. Its results remain pending until the annotation files are returned and validated.
+Review the source-video terms, dataset distribution restrictions, and licenses of third-party software and models before redistributing generated media or trained artifacts. Large local datasets, media, outputs, and caches should not be committed to Git unless there is an explicit, appropriate reason and authorization.
