@@ -1001,6 +1001,106 @@ with tab_corpus:
         st.warning("The accepted corpus contains no records.")
         st.stop()
 
+        # Full-corpus prediction coverage.
+    scored_df = corpus_df[corpus_df["prediction_status"] == "Scored"]
+
+    unavailable_count = total_records - len(scored_df)
+
+    predicted_humorous = int((scored_df["predicted_label"] == "humorous").sum())
+
+    predicted_non_humorous = int((scored_df["predicted_label"] == "non_humorous").sum())
+
+    scored_count = len(scored_df)
+
+    coverage_pct = 100 * scored_count / total_records if total_records else 0.0
+
+    humorous_pct = 100 * predicted_humorous / scored_count if scored_count else 0.0
+
+    non_humorous_pct = (
+        100 * predicted_non_humorous / scored_count if scored_count else 0.0
+    )
+
+    unavailable_pct = 100 * unavailable_count / total_records if total_records else 0.0
+
+    st.markdown("#### Full-corpus inference overview")
+
+    st.caption(
+        "Statistics cover all accepted corpus records. Predicted classes "
+        "are model outputs, not human-verified labels. Unavailable records "
+        "are not counted as non-humorous."
+    )
+
+    p1, p2, p3, p4, p5 = st.columns(5)
+
+    p1.metric(
+        "Corpus records",
+        f"{total_records:,}",
+    )
+
+    p2.metric(
+        "Scored records",
+        f"{scored_count:,}",
+        delta=f"{coverage_pct:.1f}% coverage",
+    )
+
+    p3.metric(
+        "Predicted humorous",
+        f"{predicted_humorous:,}",
+        delta=f"{humorous_pct:.1f}% of scored",
+    )
+
+    p4.metric(
+        "Predicted non-humorous",
+        f"{predicted_non_humorous:,}",
+        delta=f"{non_humorous_pct:.1f}% of scored",
+    )
+
+    p5.metric(
+        "Unavailable",
+        f"{unavailable_count:,}",
+        delta=f"{unavailable_pct:.1f}% of corpus",
+    )
+
+    chart_left, chart_right = st.columns(2)
+
+    with chart_left:
+        st.markdown("##### Predicted class distribution")
+
+        class_distribution = pd.DataFrame(
+            {
+                "Predicted class": [
+                    "Humorous",
+                    "Non-humorous",
+                    "Unavailable",
+                ],
+                "Records": [
+                    predicted_humorous,
+                    predicted_non_humorous,
+                    unavailable_count,
+                ],
+            }
+        ).set_index("Predicted class")
+
+        st.bar_chart(class_distribution)
+
+    with chart_right:
+        st.markdown("##### Prediction method distribution")
+
+        method_distribution = (
+            corpus_df["prediction_method_full"]
+            .value_counts()
+            .rename_axis("Prediction method")
+            .reset_index(name="Records")
+        )
+
+        st.dataframe(
+            method_distribution,
+            use_container_width=True,
+            hide_index=True,
+        )
+
+    st.divider()
+
     # Corpus-wide statistics
     m1, m2, m3 = st.columns(3)
 
@@ -1110,6 +1210,30 @@ with tab_corpus:
         key="corpus_required_modalities",
     )
 
+    prediction_filter_left, prediction_filter_right = st.columns(2)
+    with prediction_filter_left:
+        prediction_class_filter = st.selectbox(
+            "Predicted humor class",
+            [
+                "All prediction statuses",
+                "Predicted humorous",
+                "Predicted non-humorous",
+                "Unavailable",
+            ],
+            key="corpus_prediction_class_filter",
+        )
+
+    with prediction_filter_right:
+        available_methods = sorted(
+            corpus_df["prediction_method_full"].dropna().unique().tolist()
+        )
+
+        prediction_method_filter = st.selectbox(
+            "Prediction method",
+            ["All methods", *available_methods],
+            key="corpus_prediction_method_filter",
+        )
+
     filtered = corpus_df.copy()
 
     if selected_video != "All videos":
@@ -1119,6 +1243,24 @@ with tab_corpus:
         filtered = filtered[filtered["human_label"] != "Not annotated"]
     elif annotation_filter == "Unlabelled only":
         filtered = filtered[filtered["human_label"] == "Not annotated"]
+
+    if prediction_class_filter == "Predicted humorous":
+        filtered = filtered[
+            filtered["predicted_label"] == "humorous"
+        ]
+    elif prediction_class_filter == "Predicted non-humorous":
+        filtered = filtered[
+            filtered["predicted_label"] == "non_humorous"
+        ]
+    elif prediction_class_filter == "Unavailable":
+        filtered = filtered[
+            filtered["prediction_status"] == "Unavailable"
+        ]
+
+    if prediction_method_filter != "All methods":
+        filtered = filtered[
+            filtered["prediction_method_full"] == prediction_method_filter
+        ]
 
     if search_query.strip():
         query = re.escape(search_query.strip())
@@ -1163,6 +1305,10 @@ with tab_corpus:
         "start_seconds",
         "duration_seconds",
         "human_label",
+        "prediction_status",
+        "predicted_label",
+        "humor_probability_full",
+        "prediction_method_full",
         "candidate_type",
         "has_text",
         "has_audio",
@@ -1171,11 +1317,39 @@ with tab_corpus:
         "has_emoji",
     ]
 
+    display_df = filtered[display_columns].rename(
+        columns={
+            "sample_id": "Sample ID",
+            "video_id": "Video ID",
+            "start_seconds": "Start (seconds)",
+            "duration_seconds": "Duration (seconds)",
+            "human_label": "Human label",
+            "prediction_status": "Prediction status",
+            "predicted_label": "Predicted class",
+            "humor_probability_full": "Humor probability",
+            "prediction_method_full": "Prediction method",
+            "candidate_type": "Candidate type",
+            "has_text": "Transcript available",
+            "has_audio": "Audio available",
+            "has_image": "Image available",
+            "has_ocr": "OCR available",
+            "has_emoji": "Emoji available",
+        }
+    )
+
     st.dataframe(
-        filtered[display_columns],
+        display_df,
         use_container_width=True,
         hide_index=True,
-        height=350,
+        height=400,
+    )
+
+    st.download_button(
+        label="Download matching corpus records (CSV)",
+        data=display_df.to_csv(index=False).encode("utf-8"),
+        file_name="mmhd_filtered_corpus_records.csv",
+        mime="text/csv",
+        key="download_full_corpus_filtered_records",
     )
 
     if filtered.empty:
