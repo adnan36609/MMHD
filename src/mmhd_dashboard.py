@@ -263,15 +263,82 @@ structured_by_id = {row["sample_id"]: row for row in structured_outputs}
 context_by_id = {row["sample_id"]: row for row in context_enriched}
 cross_modal_by_id = {row["sample_id"]: row for row in cross_modal_predictions}
 
-corpus_records = [
-    {
-        **row,
-        "human_label": annotation_by_id.get(row["sample_id"], {}).get(
-            "humor_label", "Not annotated"
-        ),
-    }
-    for row in corpus_records
-]
+
+def parse_optional_probability(value):
+    """Return a valid probability in [0, 1], or None if unavailable."""
+    try:
+        score = float(value)
+    except (ValueError, TypeError):
+        return None
+
+    return score if 0.0 <= score <= 1.0 else None
+
+
+PREDICTION_METHOD_LABELS = {
+    "text_audio_late_fusion": "Text-audio late fusion",
+    "audio_only_fallback": "Audio-only fallback",
+    "text_only_fallback": "Text-only fallback",
+    "no_available_model": "Unavailable (no model input)",
+}
+
+enriched_corpus_records = []
+
+for row in corpus_records:
+    sample_id = row["sample_id"]
+
+    annotation = annotation_by_id.get(sample_id, {})
+    full_prediction = structured_by_id.get(sample_id, {})
+
+    raw_method = str(full_prediction.get("prediction_method") or "").strip()
+
+    raw_label = str(full_prediction.get("humor_prediction") or "").strip().lower()
+
+    humor_probability = parse_optional_probability(
+        full_prediction.get("humor_probability")
+    )
+
+    text_probability = parse_optional_probability(
+        full_prediction.get("text_humorous_probability")
+    )
+
+    audio_probability = parse_optional_probability(
+        full_prediction.get("audio_humorous_probability")
+    )
+
+    has_prediction = (
+        raw_label in {"humorous", "non_humorous"}
+        and humor_probability is not None
+        and raw_method != "no_available_model"
+    )
+
+    prediction_status = "Scored" if has_prediction else "Unavailable"
+
+    predicted_label = raw_label if has_prediction else "Unavailable"
+
+    method_label = PREDICTION_METHOD_LABELS.get(
+        raw_method,
+        raw_method or "No prediction record",
+    )
+
+    enriched_corpus_records.append(
+        {
+            **row,
+            # Ground truth: only use the existing annotation.
+            "human_label": annotation.get(
+                "humor_label",
+                "Not annotated",
+            ),
+            # Full-corpus inference: separate from ground truth.
+            "prediction_status": prediction_status,
+            "predicted_label": predicted_label,
+            "prediction_method_full": method_label,
+            "humor_probability_full": humor_probability,
+            "text_probability_full": text_probability,
+            "audio_probability_full": audio_probability,
+        }
+    )
+
+corpus_records = enriched_corpus_records
 
 corpus_df = pd.DataFrame(corpus_records)
 
