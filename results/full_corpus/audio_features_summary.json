@@ -1,0 +1,28 @@
+{
+  "experiment": "Full-corpus audio feature extraction",
+  "feature_source": "Existing extract_audio_features function",
+  "corpus_records": 7289,
+  "unique_sample_ids": 7289,
+  "feature_columns": [
+    "duration_seconds",
+    "rms_mean",
+    "rms_std",
+    "rms_p90",
+    "zero_crossing_mean",
+    "zero_crossing_std",
+    "spectral_centroid_mean",
+    "spectral_centroid_std",
+    "spectral_bandwidth_mean",
+    "spectral_rolloff_mean",
+    "spectral_flatness_mean",
+    "spectral_flatness_std",
+    "silence_frame_ratio"
+  ],
+  "status_counts": {
+    "ok": 6290,
+    "missing_audio_path": 999
+  },
+  "elapsed_seconds": 194.08,
+  "output_file": "results\\full_corpus\\audio_features.csv",
+  "note": "Features contain no human or pseudo-label targets. This extraction does not retrain the existing classifier."
+}
