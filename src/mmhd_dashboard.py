@@ -1663,7 +1663,10 @@ with tab_corpus:
         st.markdown("##### Cross-modal attention experiment")
 
         experiment_results = cross_modal_metrics.get("metrics", {})
-        baseline_metrics = experiment_results.get("text_audio_late_fusion", {})
+        baseline_metrics = experiment_results.get(
+            "existing_text_audio_late_fusion",
+            experiment_results.get("text_audio_late_fusion", {}),
+        )
         attention_metrics = experiment_results.get(
             "text_visual_cross_modal_attention", {}
         )
