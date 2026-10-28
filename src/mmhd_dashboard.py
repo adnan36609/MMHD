@@ -1352,6 +1352,8 @@ with tab_corpus:
         key="download_full_corpus_filtered_records",
     )
 
+    selected_corpus_id = None
+
     if filtered.empty:
         st.info(
             "No records match these filters. Change the search or filters to continue."
@@ -1512,7 +1514,11 @@ with tab_corpus:
     st.divider()
     st.markdown("#### Structured humor analysis")
 
-    structured_record = structured_by_id.get(selected_corpus_id)
+    structured_record = (
+        structured_by_id.get(selected_corpus_id)
+        if selected_corpus_id is not None
+        else None
+    )
 
     def parse_structured_value(value):
         import json
