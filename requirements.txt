@@ -4,3 +4,6 @@ easyocr
 yt-dlp[default]
 scenedetect
 imageio-ffmpeg
+numpy>=1.26,<2
+pandas
+streamlit>=1.55.0,<2.0
